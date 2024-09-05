@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 using File = System.IO.File;
 
-public static class Base64
+public static class KeyEncryption
 {
     private static string FILE_PATH = Application.streamingAssetsPath + "/API_KEY.txt";
     

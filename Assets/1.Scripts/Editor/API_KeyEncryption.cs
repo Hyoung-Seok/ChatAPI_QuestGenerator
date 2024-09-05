@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,7 +31,7 @@ public class API_KeyEncryption : EditorWindow
         GUI.enabled = !string.IsNullOrEmpty(_key);
         if (GUILayout.Button("Save Key"))
         {
-            _result = Base64.EncodingBase64(_key)
+            _result = KeyEncryption.EncodingBase64(_key)
                 ? "Key successfully saved and encoded!"
                 : "Failed: Key cannot be empty.";
   
