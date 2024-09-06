@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using OpenAI_API;
 using OpenAI_API.Chat;
-using OpenAI_API.Models;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
