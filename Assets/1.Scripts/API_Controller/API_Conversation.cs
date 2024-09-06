@@ -8,10 +8,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// OpenAPI 사용 메서드는 Update에 작성하지 말것.
-/// 프레임마다 통신을 시도해 AI 크레딧이 매우 많이 사용됨.
+/// OpenAPI Question & Response 클래스
+/// SystemMessage에 입력된 정보에 따라 사용자 답변에 대답
 /// </summary>
-public class GptAPIController : MonoBehaviour
+public class API_Conversation : OpenAIController
 {
     [Header("Prefabs")] 
     [SerializeField] private GameObject questionText;
@@ -21,8 +21,7 @@ public class GptAPIController : MonoBehaviour
     [SerializeField] private Transform textParent;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Button sendButton;
-
-    private OpenAIAPI _api;
+    
     private Conversation _chat;
     
     private void Start()
@@ -48,13 +47,13 @@ public class GptAPIController : MonoBehaviour
         
         sendButton.interactable = true;
     }
-    
-    private void InitGpt()
+
+    protected override void InitGpt()
     {
-        _api = new OpenAIAPI(KeyEncryption.DecodingBase64());
+        base.InitGpt();
         
-        _chat = _api.Chat.CreateConversation();
-        _chat.Model = Model.GPT4_Turbo;
+        _chat = Api.Chat.CreateConversation();
+        _chat.Model = Model;
         _chat.RequestParameters.Temperature = 0;
     }
 
