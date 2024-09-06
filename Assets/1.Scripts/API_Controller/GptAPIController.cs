@@ -35,6 +35,8 @@ public class GptAPIController : MonoBehaviour
 
     private async void StartConversation()
     {
+        sendButton.interactable = false;
+        
         var sendMsg = inputField.text;
         inputField.text = string.Empty;
         CreateTextBox(questionText, sendMsg);
@@ -43,6 +45,8 @@ public class GptAPIController : MonoBehaviour
         
         var response = await _chat.GetResponseFromChatbotAsync();
         CreateTextBox(responseText, response);
+        
+        sendButton.interactable = true;
     }
     
     private void InitGpt()
