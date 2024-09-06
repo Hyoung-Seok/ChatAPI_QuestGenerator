@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e2f0c2cc4559d5468cdc6b97912c470, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gptModel: 1
   questionText: {fileID: 9024005870999879745, guid: 5b2c77ff718cffb4db5e63e9d2804dc4, type: 3}
   responseText: {fileID: 2616556301129738714, guid: c2c27818547f9f14bbbf0010d00c2743, type: 3}
   textParent: {fileID: 463511326}
@@ -657,7 +658,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -600}
+  m_AnchoredPosition: {x: 0, y: -599.9999}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &463511327
@@ -920,7 +921,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 233214246}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999064
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
