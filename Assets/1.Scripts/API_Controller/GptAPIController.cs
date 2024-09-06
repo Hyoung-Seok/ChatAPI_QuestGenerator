@@ -13,39 +13,42 @@ using UnityEngine.UI;
 /// </summary>
 public class GptAPIController : MonoBehaviour
 {
+    [Header("Prefabs")] 
+    [SerializeField] private GameObject questionText;
+    [SerializeField] private GameObject responseText;
+    
     [Header("Component")] 
-    [SerializeField] private TMP_Text textField;
+    [SerializeField] private Transform textParent;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private Button sendButton;
 
     private OpenAIAPI _api;
     private Conversation _chat;
-    private List<ChatMessage> _messageList;
     
     private void Start()
     {
         InitGpt();
         SettingRole();
 
-        sendButton.onClick.AddListener(() => StartConversation());
+        sendButton.onClick.AddListener(StartConversation);
     }
 
     private async void StartConversation()
     {
-        textField.text = string.Empty;
-        
         var sendMsg = inputField.text;
+        inputField.text = string.Empty;
+        CreateTextBox(questionText, sendMsg);
+        
         _chat.AppendUserInput(sendMsg);
         
-        string response = await _chat.GetResponseFromChatbotAsync();
-        
-        Debug.Log(response);
-        textField.text = "ChatGPT : " + response;
+        var response = await _chat.GetResponseFromChatbotAsync();
+        CreateTextBox(responseText, response);
     }
     
     private void InitGpt()
     {
         _api = new OpenAIAPI(KeyEncryption.DecodingBase64());
+        
         _chat = _api.Chat.CreateConversation();
         _chat.Model = Model.GPT4_Turbo;
         _chat.RequestParameters.Temperature = 0;
@@ -54,5 +57,15 @@ public class GptAPIController : MonoBehaviour
     private void SettingRole()
     {
         _chat.AppendSystemMessage("사용자에 대답에 친절하게 응대해줘.");
+    }
+
+    private void CreateTextBox(GameObject obj, string msg)
+    {
+        var textBox = Instantiate(obj, textParent);
+
+        if (textBox.TryGetComponent(out TMP_Text text) == true)
+        {
+            text.text = msg;
+        }
     }
 }
