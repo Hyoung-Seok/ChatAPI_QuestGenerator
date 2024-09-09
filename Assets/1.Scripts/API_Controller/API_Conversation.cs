@@ -49,7 +49,7 @@ public class API_Conversation : OpenAIController
         base.InitGpt();
         
         _chat = Api.Chat.CreateConversation();
-        _chat.Model = Model;
+        _chat.Model = AI_Model;
         _chat.RequestParameters.Temperature = 0;
     }
 
