@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using OpenAI_API;
 using OpenAI_API.Models;
 using UnityEngine;
