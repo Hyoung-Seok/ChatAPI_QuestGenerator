@@ -23,7 +23,7 @@ public class API_JsonMod : OpenAIController
 
         _chatRequest = new ChatRequest()
         {
-            Model = Model.GPT4_Turbo,
+            Model = AI_Model,
             Temperature = 0.0,
             ResponseFormat = ChatRequest.ResponseFormats.JsonObject
         };

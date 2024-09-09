@@ -166,7 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdd68e434e063174e828d771d1a4bea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gptModel: 0
+  gptModel: 1
   resultText: {fileID: 1763291342}
 --- !u!1 &105696821
 GameObject:
