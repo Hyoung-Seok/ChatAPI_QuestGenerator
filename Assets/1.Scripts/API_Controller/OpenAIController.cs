@@ -35,18 +35,17 @@ public class OpenAIController : MonoBehaviour
             case EModel.GPT4:
                 AI_Model = Model.GPT4;
                 break;
-            
+
             case EModel.GPT4_TERBO:
                 AI_Model = Model.GPT4_Turbo;
                 break;
-            
+
             case EModel.GPT4_Vision:
                 AI_Model = Model.GPT4_Vision;
                 break;
-            
+
             default:
                 return;
         }
     }
-    
 }

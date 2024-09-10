@@ -55,7 +55,10 @@ public class API_Conversation : OpenAIController
 
     private void SettingRole()
     {
-        _chat.AppendSystemMessage("사용자에 대답에 친절하게 응대해줘.");
+        _chat.AppendSystemMessage("너는 유저에게 기업의 CEO를 알려주는 시스템이야." +
+                                  "대답은 CEO이름 : , CEO나이 : , 회사설립일 : 로 해줘. " +
+                                  "만약 기업 이름이 아니라 다른 질문이 들어오면 응답할 수 없습니다" +
+                                  "라고 대답해.");
     }
 
     private void CreateTextBox(GameObject obj, string msg)
