@@ -51,12 +51,12 @@ public class UnitStateController : MonoBehaviour
     {
         if (MainState != null)
         {
-            MainState.OnUpdate();
+            MainState.OnFixedUpdate();
         }
         
         if (SubState != null)
         {
-            SubState.OnUpdate();
+            SubState.OnFixedUpdate();
         }
     }
 
@@ -64,12 +64,12 @@ public class UnitStateController : MonoBehaviour
     {
         if (MainState != null)
         {
-            MainState.OnUpdate();
+            MainState.OnLateUpdate();
         }
         
         if (SubState != null)
         {
-            SubState.OnUpdate();
+            SubState.OnLateUpdate();
         }
     }
 }
