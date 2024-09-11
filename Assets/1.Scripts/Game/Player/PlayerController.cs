@@ -1,16 +1,23 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerController : UnitStateController
 {
-    [Header("state")] 
+    [Header("Component")] 
+    [SerializeField] private Rigidbody playerRig;
+    [SerializeField] private Transform cameraDir;
+     
+    [Header("State")] 
     [SerializeField] private PlayerBaseState moveState;
-    [SerializeField] private PlayerBaseState attackState;
 
+    #region Property
     public PlayerBaseState MoveState => moveState;
-    public PlayerBaseState AttackState => attackState;
+    public Rigidbody PlayerRig => playerRig;
+    public Transform CameraDir => cameraDir;
+    #endregion
 
     private void Awake()
     {
