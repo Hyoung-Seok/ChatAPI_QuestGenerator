@@ -15,7 +15,7 @@ public class OpenAIController : MonoBehaviour
     [SerializeField] private EModel gptModel;
     
     protected OpenAIAPI Api = null;
-    protected Model Model = null;
+    protected Model AI_Model = null;
     
     /// <summary>
     /// API 키와 모델 초기화
@@ -33,20 +33,19 @@ public class OpenAIController : MonoBehaviour
         switch (gptModel)
         {
             case EModel.GPT4:
-                Model = Model.GPT4;
+                AI_Model = Model.GPT4;
                 break;
-            
+
             case EModel.GPT4_TERBO:
-                Model = Model.GPT4_Turbo;
+                AI_Model = Model.GPT4_Turbo;
                 break;
-            
+
             case EModel.GPT4_Vision:
-                Model = Model.GPT4_Vision;
+                AI_Model = Model.GPT4_Vision;
                 break;
-            
+
             default:
                 return;
         }
     }
-    
 }
