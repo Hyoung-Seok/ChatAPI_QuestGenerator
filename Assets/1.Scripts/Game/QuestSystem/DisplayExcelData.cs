@@ -15,12 +15,17 @@ public class DisplayExcelData : MonoBehaviour
     [SerializeField] private string filePath = "_ExcelData/";
     [SerializeField] private string fileName = "NPCData.xlsx";
 
-    [Header("Component")]
+    [Header("Component - Default")]
     [SerializeField] private TMP_Dropdown keyDropdown;
     [SerializeField] private TMP_Dropdown valueDropDown;
+    [SerializeField] private TMP_InputField searchInput;
     [SerializeField] private Button loadValueBt;
     [SerializeField] private Button getPromptBt;
     [SerializeField] private TMP_Text resultData;
+
+    [Header("Component - Monster")] 
+    [SerializeField] private TMP_InputField minValueInput;
+    [SerializeField] private TMP_InputField maxValueInput;
     
     private ExcelParser _excelParser;
     private string _data;
@@ -55,6 +60,15 @@ public class DisplayExcelData : MonoBehaviour
         _data = _excelParser.ConvertSelectedDataToString(
             keyDropdown.options[keyDropdown.value].text,
             valueDropDown.options[valueDropDown.value].text);
+
+        resultData.text = _data;
+    }
+
+    public void LoadSearchData()
+    {
+        _data = _excelParser.ConvertSelectedDataToString(
+            keyDropdown.options[keyDropdown.value].text,
+            searchInput.text);
 
         resultData.text = _data;
     }

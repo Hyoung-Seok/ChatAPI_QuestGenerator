@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using ExcelDataReader;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class ExcelParser
             throw new Exception("File not exists!");
         }
 
-        _fileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+        _fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
         _fileReader = ExcelReaderFactory.CreateReader(_fileStream);
         _dataTable = _fileReader.AsDataSet().Tables[0];
         _keyList = new List<string>();
@@ -107,7 +108,30 @@ public class ExcelParser
             result.Append(_keyList[i] + " : " + values[i] + '\n');
         }
         
+        return result.ToString();
+    }
+    
+    public string ConvertSelectedDataToString(int row)
+    {
+        var values = new string[_columnsCount];
+        
+        for (var col = 0; col < _columnsCount; ++col)
+        {
+            values[col] = _dataTable.Rows[row][col].ToString();
+        }
 
+        var result = new StringBuilder();
+        for (var i = 0; i < _keyList.Count; ++i)
+        {
+            if (i >= _keyList.Count - 1)
+            {
+                result.Append(_keyList[i] + " : " + values[i]);
+                continue;
+            }
+            
+            result.Append(_keyList[i] + " : " + values[i] + '\n');
+        }
+        
         return result.ToString();
     }
     
