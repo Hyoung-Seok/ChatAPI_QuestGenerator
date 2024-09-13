@@ -1,81 +1,59 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data;
 using System.IO;
-using System.Text;
 using UnityEngine;
-using ExcelDataReader;
 using TMPro;
-using UnityEngine.UI;
 
 public class DisplayExcelData : MonoBehaviour
 {
     [Header("Path")] 
-    [SerializeField] private string filePath = "_ExcelData/";
+    [SerializeField] private string filePath = "/_ExcelData/";
     [SerializeField] private string fileName = "NPCData.xlsx";
 
-    [Header("Component - Default")]
+    [Header("Component - Default")] 
     [SerializeField] private TMP_Dropdown keyDropdown;
-    [SerializeField] private TMP_Dropdown valueDropDown;
-    [SerializeField] private TMP_InputField searchInput;
-    [SerializeField] private Button loadValueBt;
-    [SerializeField] private Button getPromptBt;
-    [SerializeField] private TMP_Text resultData;
-
-    [Header("Component - Monster")] 
-    [SerializeField] private TMP_InputField minValueInput;
-    [SerializeField] private TMP_InputField maxValueInput;
+    [SerializeField] private TMP_Dropdown valueDropdown;
+    [SerializeField] private TMP_InputField searchInputField;
+    [SerializeField] protected TMP_Text resultField;
     
-    private ExcelParser _excelParser;
-    private string _data;
+    protected ExcelParser ExcelParser;
     
-    private void Start()
+    protected virtual void InitData()
     {
         try
         {
-            _excelParser = new ExcelParser(Path.Combine(Application.dataPath + filePath + fileName));
+            ExcelParser = new ExcelParser(Path.Combine(Application.dataPath + filePath + fileName));
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
-
-        loadValueBt.interactable = true;
+        
         InitKeyDropdown();
     }
 
-    public void InitValueDropdown()
-    {
-        getPromptBt.interactable = true;
-        valueDropDown.options.Clear();
-        
-        var values = _excelParser.GetAllRowValue(keyDropdown.options[keyDropdown.value].text);
-        valueDropDown.AddOptions(values);
-    }
-
-    public void LoadSelectedData()
-    {
-        _data = _excelParser.ConvertSelectedDataToString(
-            keyDropdown.options[keyDropdown.value].text,
-            valueDropDown.options[valueDropDown.value].text);
-
-        resultData.text = _data;
-    }
-
-    public void LoadSearchData()
-    {
-        _data = _excelParser.ConvertSelectedDataToString(
-            keyDropdown.options[keyDropdown.value].text,
-            searchInput.text);
-
-        resultData.text = _data;
-    }
-    
+    // 키 드랍다운 초기화
     private void InitKeyDropdown()
     {
-        var keys = _excelParser.GetKeyList();
-        keyDropdown.AddOptions(keys);
+        keyDropdown.AddOptions(ExcelParser.GetAllKeyValue());
+    }
+    
+    // 키 값에 해당하는 모든 Value초기화
+    public void InitValueDropdown()
+    {
+        valueDropdown.options.Clear();
+        valueDropdown.AddOptions(ExcelParser.GetAllValueByKey(keyDropdown.value));
+    }
+    
+    // 현재 선택된 값 저장
+    protected string ConvertSelectedDataToString()
+    {
+        return ExcelParser.ConvertRowDataToString(valueDropdown.value + 1);
+    }
+
+    // 키 값에 해당하는 value값 검색 후 저장
+    protected string ConvertSearchDataToString()
+    {
+        return ExcelParser.FindValueByKey(keyDropdown.value, searchInputField.text);
     }
 }
