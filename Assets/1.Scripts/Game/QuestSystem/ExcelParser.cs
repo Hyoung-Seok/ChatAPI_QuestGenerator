@@ -32,118 +32,63 @@ public class ExcelParser
         _columnsCount = _dataTable.Columns.Count;
         _rowsCount = _dataTable.Rows.Count;
     }
-
-    /// <summary>
-    /// 시트의 Key값 (row0)들을 가져옵니다.
-    /// </summary>
-    public List<string> GetKeyList()
+    
+    // 키 값 초기화
+    public List<string> GetAllKeyValue()
     {
-        for (var i = 0; i < _columnsCount; ++i)
+        _keyList.Clear();
+
+        for (var col = 0; col < _columnsCount; ++col)
         {
-            _keyList.Add(_dataTable.Rows[0][i].ToString());
+            _keyList.Add(_dataTable.Rows[0][col].ToString());
         }
 
         return _keyList;
     }
-
-    /// <summary>
-    /// Key 값에 있는 모든 Value값을 가져옵니다.
-    /// </summary>
-    public List<string> GetAllRowValue(string key)
+    
+    // 키 값에 해당하는 모든 Value값 불러오기
+    public List<string> GetAllValueByKey(int col)
     {
-        var index = GetKeyColumnsIndex(key);
-        var valueList = new List<string>();
-        
-        for (var row = 1; row < _rowsCount; ++row)
-        {
-            valueList.Add(_dataTable.Rows[row][index].ToString());
-        }
-        
-        return valueList;
-    }
-
-    /// <summary>
-    /// 선택한 Key, Value값을 string으로 변환합니다.
-    /// </summary>
-    /// <param name="key"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public string ConvertSelectedDataToString(string key, string value)
-    {
-        var colIndex = GetKeyColumnsIndex(key);
-        var rowIndex = -1;
+        var result = new List<string>();
 
         for (var row = 1; row < _rowsCount; ++row)
         {
-            if (Equals(_dataTable.Rows[row][colIndex], value) == false)
-            {
-                continue;
-            }
-
-            rowIndex = row;
-            break;
+            result.Add(_dataTable.Rows[row][col].ToString());
         }
 
-        if (rowIndex == -1)
+        return result;
+    }
+    
+    // 선택된 key에서 value 찾기
+    public string FindValueByKey(int col, string value)
+    {
+        for (var row = 1; row < _rowsCount; ++row)
         {
-            throw new Exception("Value Not exists!");
+            if (string.Equals(_dataTable.Rows[row][col].ToString(), value) == true)
+            {
+                return ConvertRowDataToString(row);
+            }
         }
 
-        var values = new string[_columnsCount];
-        
+        return "Can't Find value!!";
+    }
+    
+    // 해당 행의 내용을 key + value 형태의 string으로 반환
+    public string ConvertRowDataToString(int row)
+    {
+        var result = new StringBuilder();
+
         for (var col = 0; col < _columnsCount; ++col)
         {
-            values[col] = _dataTable.Rows[rowIndex][col].ToString();
-        }
-
-        var result = new StringBuilder();
-        for (var i = 0; i < _keyList.Count; ++i)
-        {
-            if (i >= _keyList.Count - 1)
+            if (col >= _columnsCount - 1)
             {
-                result.Append(_keyList[i] + " : " + values[i]);
+                result.Append(_keyList[col] + " : " + _dataTable.Rows[row][col]);
                 continue;
             }
             
-            result.Append(_keyList[i] + " : " + values[i] + '\n');
-        }
-        
-        return result.ToString();
-    }
-    
-    public string ConvertSelectedDataToString(int row)
-    {
-        var values = new string[_columnsCount];
-        
-        for (var col = 0; col < _columnsCount; ++col)
-        {
-            values[col] = _dataTable.Rows[row][col].ToString();
+            result.Append(_keyList[col] + " : " + _dataTable.Rows[row][col] + '\n');
         }
 
-        var result = new StringBuilder();
-        for (var i = 0; i < _keyList.Count; ++i)
-        {
-            if (i >= _keyList.Count - 1)
-            {
-                result.Append(_keyList[i] + " : " + values[i]);
-                continue;
-            }
-            
-            result.Append(_keyList[i] + " : " + values[i] + '\n');
-        }
-        
         return result.ToString();
-    }
-    
-    private int GetKeyColumnsIndex(string key)
-    {
-        var index = _keyList.IndexOf(key);
-        
-        if (index < 0)
-        {
-            throw new Exception("Input Key is not exists!");
-        }
-
-        return index;
     }
 }
