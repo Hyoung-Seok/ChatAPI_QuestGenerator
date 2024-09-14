@@ -10,6 +10,7 @@ public class NpcDataDisplay : DisplayExcelData
     [SerializeField] private TMP_Dropdown questType;
     [SerializeField] private TMP_InputField additionalInfoField;
 
+    public int CurrentQuestType => questType.value;
     public string NpcData => _npcData;
     public string AddInfo => additionalInfoField.text;
     

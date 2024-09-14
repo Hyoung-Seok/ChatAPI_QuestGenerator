@@ -4,6 +4,7 @@ using System.Data;
 using System.IO;
 using System.Text;
 using ExcelDataReader;
+using UnityEngine;
 
 public class ExcelReader
 {
@@ -61,6 +62,12 @@ public class ExcelReader
         return result;
     }
     
+    // row의 데이터 추출
+    public string GetSelectedKeyRowData(int row, int col)
+    {
+        return _dataTable.Rows[row][col].ToString();
+    }
+    
     // 선택된 key에서 value 찾기
     public string FindValueByKey(int col, string value)
     {
@@ -92,5 +99,28 @@ public class ExcelReader
         }
 
         return result.ToString();
+    }
+    
+    
+    // Lv키에서 조건에 만족하는 row값 반환
+    public List<int> GetConditionRow(int min, int max)
+    {
+        var result = new List<int>();
+        var lvCol = _keyList.IndexOf("LV");
+
+        for (var row = 1; row < _rowsCount; ++row)
+        {
+            if (int.TryParse(_dataTable.Rows[row][lvCol].ToString(), out var data) == false)
+            {
+                return null;
+            }
+
+            if (min <= data && data < max)
+            {
+                result.Add(row);
+            }
+        }
+
+        return result;
     }
 }

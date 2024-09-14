@@ -10,6 +10,7 @@ public class QuestGenerator : MonoBehaviour
 {
     [Header("Component")] 
     [SerializeField] private NpcDataDisplay npcData;
+    [SerializeField] private MonsterDataDisplay monsterData;
     [SerializeField] private API_JsonMod jsonAPI;
 
     [Header("Path")] 
@@ -27,7 +28,23 @@ public class QuestGenerator : MonoBehaviour
 
     public void CreateJsonMessage()
     {
-        jsonAPI.CreateJsonMessage(npcData.NpcData);
+        var finalMsg = string.Empty;
+        
+        switch (npcData.CurrentQuestType)
+        {
+            case 0:
+                finalMsg = npcData.NpcData + '\n' + "몬스터 목록 : " +
+                           monsterData.ConvertMonsterDataToString();
+                break;
+            
+            default:
+                return;
+        }
+
+        if (string.IsNullOrEmpty(finalMsg) == false)
+        {
+            jsonAPI.CreateJsonMessage(finalMsg);   
+        }
     }
 
     public void ExtractionValue()
@@ -61,8 +78,7 @@ public class QuestGenerator : MonoBehaviour
                          "Target : 잡아야 할 몬스터, 얻어야 할 아이템, 전달 목표인 npc이름이 들어가." +
                          "Count : 갯수" +
                          "Scripts : 퀘스트를 줄 때 NPC의 대사. 대사는 플레이어가 퀘스트를 받을 때 나타나는 대사와 퀘스트를 수락하고 나타나는 대사를 만들어줘." +
-                         "이 두 종류의 대사를 구분하기 위해 대사 사이에는 *을 넣어줘" +
-                         "이 외의 키값은 생성하지마.";
+                         "이 두 종류의 대사를 구분하기 위해 대사 사이에는 *을 넣어주고 다른 키 값은 생성하지 마.";
         
         jsonAPI.InitSystemMessage(_systemMessage);
     }

@@ -10,8 +10,8 @@ public class DisplayExcelData : MonoBehaviour
     [SerializeField] private string fileName = "NPCData.xlsx";
 
     [Header("Component - Default")] 
-    [SerializeField] private TMP_Dropdown keyDropdown;
-    [SerializeField] private TMP_Dropdown valueDropdown;
+    [SerializeField] protected TMP_Dropdown keyDropdown;
+    [SerializeField] protected TMP_Dropdown valueDropdown;
     [SerializeField] private TMP_InputField searchInputField;
     [SerializeField] protected TMP_Text resultField;
     
