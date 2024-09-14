@@ -8,7 +8,10 @@ using UnityEngine;
 
 public class API_JsonMod : OpenAIController
 {
+    [Header("Component")]
     [SerializeField] private TextMeshProUGUI resultText;
+
+    public string Result => resultText.text;
     
     private ChatRequest _chatRequest;
     private string _systemMessage;
@@ -32,7 +35,7 @@ public class API_JsonMod : OpenAIController
 
     public async void CreateJsonMessage(string chatMessage)
     {
-        _chatRequest.Messages = new ChatMessage[]
+        _chatRequest.Messages = new[]
         {
             new ChatMessage(ChatMessageRole.System, _systemMessage),
             new ChatMessage(ChatMessageRole.User, chatMessage)

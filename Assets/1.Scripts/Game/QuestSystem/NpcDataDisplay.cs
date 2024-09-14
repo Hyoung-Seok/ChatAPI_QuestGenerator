@@ -11,6 +11,8 @@ public class NpcDataDisplay : DisplayExcelData
     [SerializeField] private TMP_InputField additionalInfoField;
 
     public string NpcData => _npcData;
+    public string AddInfo => additionalInfoField.text;
+    
     private string _npcData;
     
     private void Start()

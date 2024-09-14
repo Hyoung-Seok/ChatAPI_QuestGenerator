@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -28,6 +29,26 @@ public class QuestGenerator : MonoBehaviour
     {
         jsonAPI.CreateJsonMessage(npcData.NpcData);
     }
+
+    public void ExtractionValue()
+    {
+        var jsonString = jsonAPI.Result;
+
+        var jsonObj = JObject.Parse(jsonString);
+        var valueList = new List<string>();
+
+        foreach (var item in jsonObj)
+        {
+            valueList.Add(item.Value.ToString());
+        }
+
+        if (string.IsNullOrEmpty(npcData.AddInfo) == false)
+        {
+            valueList.Add(npcData.AddInfo);            
+        }
+
+        _excelWriter.WriteAllValueData(2, valueList);
+    }
     
     private void InitSystemMessage()
     {
@@ -40,7 +61,8 @@ public class QuestGenerator : MonoBehaviour
                          "Target : 잡아야 할 몬스터, 얻어야 할 아이템, 전달 목표인 npc이름이 들어가." +
                          "Count : 갯수" +
                          "Scripts : 퀘스트를 줄 때 NPC의 대사. 대사는 플레이어가 퀘스트를 받을 때 나타나는 대사와 퀘스트를 수락하고 나타나는 대사를 만들어줘." +
-                         "이 두 종류의 대사를 구분하기 위해 대사 사이에는 *을 넣어줘";
+                         "이 두 종류의 대사를 구분하기 위해 대사 사이에는 *을 넣어줘" +
+                         "이 외의 키값은 생성하지마.";
         
         jsonAPI.InitSystemMessage(_systemMessage);
     }

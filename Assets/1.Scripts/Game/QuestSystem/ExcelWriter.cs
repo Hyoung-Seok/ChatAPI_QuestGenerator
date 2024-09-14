@@ -55,7 +55,7 @@ public class ExcelWriter
     {
         for (var col = 1; col <= valueList.Count; ++col)
         {
-            _worksheet.Cells[row, col].Value = valueList[col];
+            _worksheet.Cells[row, col].Value = valueList[col - 1];
             _package.Save();
         }
     }
