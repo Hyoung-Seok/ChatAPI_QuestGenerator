@@ -17,14 +17,15 @@ public class ExcelParser
     private readonly int _columnsCount = 0;
     private readonly int _rowsCount = 0;
     
-    public ExcelParser(string filePath)
+    public ExcelParser(string filePath, FileMode fileMode = FileMode.Open, FileAccess fileAccess = FileAccess.Read, 
+        FileShare fileShare = FileShare.Read)
     {
         if (File.Exists(filePath) == false)
         {
             throw new Exception("File not exists!");
         }
 
-        _fileStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        _fileStream = File.Open(filePath, fileMode, fileAccess, fileShare);
         _fileReader = ExcelReaderFactory.CreateReader(_fileStream);
         _dataTable = _fileReader.AsDataSet().Tables[0];
         _keyList = new List<string>();
