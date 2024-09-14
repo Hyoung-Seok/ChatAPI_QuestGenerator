@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text;
 using ExcelDataReader;
-using UnityEngine;
 
-public class ExcelParser
+public class ExcelReader
 {
     private FileStream _fileStream;
     private IExcelDataReader _fileReader;
@@ -16,8 +14,10 @@ public class ExcelParser
     
     private readonly int _columnsCount = 0;
     private readonly int _rowsCount = 0;
+
+    private string _filePath;
     
-    public ExcelParser(string filePath, FileMode fileMode = FileMode.Open, FileAccess fileAccess = FileAccess.Read, 
+    public ExcelReader(string filePath, FileMode fileMode = FileMode.Open, FileAccess fileAccess = FileAccess.Read, 
         FileShare fileShare = FileShare.Read)
     {
         if (File.Exists(filePath) == false)
@@ -25,6 +25,7 @@ public class ExcelParser
             throw new Exception("File not exists!");
         }
 
+        _filePath = filePath;
         _fileStream = File.Open(filePath, fileMode, fileAccess, fileShare);
         _fileReader = ExcelReaderFactory.CreateReader(_fileStream);
         _dataTable = _fileReader.AsDataSet().Tables[0];

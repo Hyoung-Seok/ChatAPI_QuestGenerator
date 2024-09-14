@@ -15,13 +15,13 @@ public class DisplayExcelData : MonoBehaviour
     [SerializeField] private TMP_InputField searchInputField;
     [SerializeField] protected TMP_Text resultField;
     
-    protected ExcelParser ExcelParser;
+    protected ExcelReader ExcelReader;
     
     protected virtual void InitData()
     {
         try
         {
-            ExcelParser = new ExcelParser(Path.Combine(Application.dataPath + filePath + fileName));
+            ExcelReader = new ExcelReader(Path.Combine(Application.dataPath + filePath + fileName));
         }
         catch (Exception e)
         {
@@ -35,25 +35,25 @@ public class DisplayExcelData : MonoBehaviour
     // 키 드랍다운 초기화
     private void InitKeyDropdown()
     {
-        keyDropdown.AddOptions(ExcelParser.GetAllKeyValue());
+        keyDropdown.AddOptions(ExcelReader.GetAllKeyValue());
     }
     
     // 키 값에 해당하는 모든 Value초기화
     public void InitValueDropdown()
     {
         valueDropdown.options.Clear();
-        valueDropdown.AddOptions(ExcelParser.GetAllValueByKey(keyDropdown.value));
+        valueDropdown.AddOptions(ExcelReader.GetAllValueByKey(keyDropdown.value));
     }
     
     // 현재 선택된 값 저장
     protected string ConvertSelectedDataToString()
     {
-        return ExcelParser.ConvertRowDataToString(valueDropdown.value + 1);
+        return ExcelReader.ConvertRowDataToString(valueDropdown.value + 1);
     }
 
     // 키 값에 해당하는 value값 검색 후 저장
     protected string ConvertSearchDataToString()
     {
-        return ExcelParser.FindValueByKey(keyDropdown.value, searchInputField.text);
+        return ExcelReader.FindValueByKey(keyDropdown.value, searchInputField.text);
     }
 }
