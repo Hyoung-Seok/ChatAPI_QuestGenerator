@@ -16,7 +16,7 @@ public class NpcController : MonoBehaviour
             return;
         }
         
-        QuestManager.Instance.SetInteractionButton(true);
+        QuestUIManager.Instance.SetInteractionButton(true);
     }
 
     private void OnTriggerStay(Collider other)
@@ -26,10 +26,10 @@ public class NpcController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.E) == true && QuestManager.Instance.CurrentState == false)
+        if (Input.GetKeyDown(KeyCode.E) == true && QuestUIManager.Instance.CurrentState == false)
         {
-            QuestManager.Instance.InitNpcTextInfo("찰리 중사", idleScripts);
-            QuestManager.Instance.InitQuestButton(questList);
+            QuestUIManager.Instance.InitNpcTextInfo("찰리 중사", idleScripts);
+            QuestUIManager.Instance.InitQuestButton(questList);
         }
     }
 
@@ -40,6 +40,6 @@ public class NpcController : MonoBehaviour
             return;
         }
         
-        QuestManager.Instance.SetInteractionButton(false);
+        QuestUIManager.Instance.SetInteractionButton(false);
     }
 }

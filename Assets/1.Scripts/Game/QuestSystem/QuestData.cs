@@ -43,7 +43,7 @@ public class QuestData : ScriptableObject
 
     public void OnClickEvent()
     {
-        QuestManager.Instance.InitScripts(scripts);
+        QuestUIManager.Instance.InitScripts(scripts);
     }
     
     private EQuestType ConvertQuestType(string type)

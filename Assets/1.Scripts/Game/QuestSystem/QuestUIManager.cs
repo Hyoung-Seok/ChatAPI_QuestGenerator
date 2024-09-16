@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class QuestManager : MonoBehaviour
+public class QuestUIManager : MonoBehaviour
 {
     [Header("Component")] 
     [SerializeField] private GameObject UI;
@@ -20,10 +20,10 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private TMP_Text scriptsText;
     [SerializeField] private PlayerController playerController;
 
-    public static QuestManager Instance => _questManager;
+    public static QuestUIManager Instance => _questUIManager;
     public bool CurrentState => UI.activeSelf;
     
-    private static QuestManager _questManager;
+    private static QuestUIManager _questUIManager;
     private List<Button> _curQuestButton;
 
     private string[] _curScripts;
@@ -31,9 +31,9 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        if (_questManager == null)
+        if (_questUIManager == null)
         {
-            _questManager = this;
+            _questUIManager = this;
         }
         else
         {
