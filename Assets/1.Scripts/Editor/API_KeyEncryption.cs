@@ -9,7 +9,7 @@ public class API_KeyEncryption : EditorWindow
     private string _key = string.Empty;
     private string _result = string.Empty;
     
-    [MenuItem("Window/OpenAPI Key")]
+    [MenuItem("OpenAI/OpenAPI Key")]
     private static void Init()
     {
         var window = (API_KeyEncryption)GetWindow(typeof(API_KeyEncryption));
