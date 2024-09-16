@@ -8,7 +8,8 @@ using UnityEngine;
 
 public class QuestGenerator : MonoBehaviour
 {
-    [Header("Component")] 
+    [Header("Component")]
+    [SerializeField] private TMP_InputField rowInputField;
     [SerializeField] private NpcDataDisplay npcData;
     [SerializeField] private MonsterDataDisplay monsterData;
     [SerializeField] private API_JsonMod jsonAPI;
@@ -35,6 +36,10 @@ public class QuestGenerator : MonoBehaviour
             case 0:
                 finalMsg = npcData.NpcData + '\n' + "몬스터 목록 : " +
                            monsterData.ConvertMonsterDataToString();
+                break;
+            
+            case 2:
+                finalMsg = npcData.NpcData;
                 break;
             
             default:
@@ -64,7 +69,12 @@ public class QuestGenerator : MonoBehaviour
             valueList.Add(npcData.AddInfo);            
         }
 
-        _excelWriter.WriteAllValueData(2, valueList);
+        if (int.TryParse(rowInputField.text, out var row) == false)
+        {
+            Debug.Log("잘못된 Row 값!");
+            return;
+        }
+        _excelWriter.WriteAllValueData(row, valueList);
     }
     
     private void InitSystemMessage()
