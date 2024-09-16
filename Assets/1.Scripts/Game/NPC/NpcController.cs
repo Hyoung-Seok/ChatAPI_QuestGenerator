@@ -9,6 +9,16 @@ public class NpcController : MonoBehaviour
     [SerializeField] private string idleScripts;
     [SerializeField] private List<QuestData> questList;
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player") == false)
+        {
+            return;
+        }
+        
+        QuestManager.Instance.SetInteractionButton(true);
+    }
+
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player") == false)
@@ -21,5 +31,15 @@ public class NpcController : MonoBehaviour
             QuestManager.Instance.InitNpcTextInfo("찰리 중사", idleScripts);
             QuestManager.Instance.InitQuestButton(questList);
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player") == false)
+        {
+            return;
+        }
+        
+        QuestManager.Instance.SetInteractionButton(false);
     }
 }

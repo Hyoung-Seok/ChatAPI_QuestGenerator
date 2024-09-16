@@ -41,6 +41,11 @@ public class QuestData : ScriptableObject
         }
     }
 
+    public void OnClickEvent()
+    {
+        QuestManager.Instance.InitScripts(scripts);
+    }
+    
     private EQuestType ConvertQuestType(string type)
     {
         if (string.Equals(type, "Fight") == true)
