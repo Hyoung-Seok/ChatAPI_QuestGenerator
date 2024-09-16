@@ -99,20 +99,32 @@ public class QuestUIManager : MonoBehaviour
         
         scriptsText.text = _curScripts[_curScriptsIndex];
     }
-
-    public void OnAcceptEvent()
-    {
-        playerController.ChangeMainState(playerController.MoveState);
-        
-        accBt.SetActive(false);
-        UI.SetActive(false);
-    }
     
     public void SetInteractionButton(bool active)
     {
         interactionText.SetActive(active);    
     }
 
+    public void OnAcceptEvent()
+    {
+        _curScriptsIndex = 0;
+        
+        for (var i = 0; i < _curQuestButton.Count; ++i)
+        {
+            if (_curQuestButton[i].gameObject.activeSelf == false)
+            {
+                break;
+            }
+            
+            _curQuestButton[i].GetComponentInChildren<TMP_Text>().text = "";
+        }
+        
+        playerController.ChangeMainState(playerController.MoveState);
+        
+        accBt.SetActive(false);
+        UI.SetActive(false);
+    }
+    
     private void CreateQuestListButton(int count)
     {
         for (var i = 0; i < count; ++i)
