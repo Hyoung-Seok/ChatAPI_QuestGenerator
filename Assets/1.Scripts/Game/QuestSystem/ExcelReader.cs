@@ -68,6 +68,19 @@ public class ExcelReader
         return _dataTable.Rows[row][col].ToString();
     }
     
+    // row의 모든 데이터 추출
+    public List<string> GetAllRowData(int row)
+    {
+        var result = new List<string>();
+
+        for (var col = 0; col < _columnsCount; ++col)
+        {
+            result.Add(_dataTable.Rows[row][col].ToString());
+        }
+
+        return result;
+    }
+     
     // 선택된 key에서 value 찾기
     public string FindValueByKey(int col, string value)
     {
