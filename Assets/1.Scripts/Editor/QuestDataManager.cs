@@ -28,9 +28,25 @@ public class QuestDataManager : EditorWindow
     private Button _npcSearchBt;
     private Button _npcSaveBt;
     
-    private DropdownField _excelFileList;
-    private ExcelParser _excelParser;
+    private ExcelParser _npcExcelParser;
+    private ExcelParser _etcExcelParser;
     private string _curNpcData;
+    
+    // Other UI
+    private DropdownField _excelDropDown;
+    private DropdownField _etcNameDropDown;
+    private TextField _etcSearchField;
+    private MinMaxSlider _minMaxSlider;
+    private Label _minMaxInfo;
+    private TextField _etcNotice;
+    private Button _etcValueInitBt;
+    private Button _addBt;
+    private Button _etcSearchBt;
+    private Button _applyBt;
+    private Button _resetButton;
+    private Button _etcSaveButton;
+    private string _curEtcData;
+    
     
     [MenuItem("OpenAI/QuestData")]
     public static void ShowEditor()
@@ -48,14 +64,8 @@ public class QuestDataManager : EditorWindow
     {
         visualTreeAsset.CloneTree(rootVisualElement);
         
-        InitUIFiled();
-        
-        
-        // 각 경로 초기화
-        _defaultFilePath = Application.dataPath + "/_ExcelData/";
-
-        // 파일 경로 컨트롤
-
+        InitNpcUIField();
+        InitOtherUIField();
 
         // // 엑셀 파일 드랍다운 컨트롤
         // _excelFileList = rootVisualElement.Q<DropdownField>("DataList");
@@ -63,9 +73,9 @@ public class QuestDataManager : EditorWindow
 
     }
 
-    private void InitUIFiled()
+    private void InitNpcUIField()
     {
-        _excelParser = new ExcelParser();
+        _npcExcelParser = new ExcelParser();
         
         //경로 초기화
         _defaultFilePath = Application.dataPath + "/_ExcelData/";
@@ -97,27 +107,66 @@ public class QuestDataManager : EditorWindow
         _questType.Init(EQuestType.Fight);
     }
 
+    private void InitOtherUIField()
+    {
+        // 드랍다운
+        _excelDropDown = rootVisualElement.Q<DropdownField>("ExcelList");
+        GetFileList();
+        _etcNameDropDown = rootVisualElement.Q<DropdownField>("EctNameField");
+        
+        // 버튼
+        _etcValueInitBt = rootVisualElement.Q<Button>("InitButton");
+        _etcValueInitBt.RegisterCallback<ClickEvent>(OnEctInitValueButtonClickEvent);
+
+        _addBt = rootVisualElement.Q<Button>("AddButton");
+        _addBt.RegisterCallback<ClickEvent>(OnAddButtonClickEvent);
+
+        _etcSearchBt = rootVisualElement.Q<Button>("SearchButton");
+        _etcSearchBt.RegisterCallback<ClickEvent>(OnSearchButtonClickEvent);
+
+        _resetButton = rootVisualElement.Q<Button>("ResetButton");
+        _resetButton.RegisterCallback<ClickEvent>(OnResetButtonClickEvent);
+
+        _applyBt = rootVisualElement.Q<Button>("ApplyButton");
+        _applyBt.RegisterCallback<ClickEvent>(OnApplyButtonClickEvent);
+
+        _etcSaveButton = rootVisualElement.Q<Button>("SaveEtcButton");
+        _etcSaveButton.RegisterCallback<ClickEvent>(OnEtcSaveButtonClickEvent);
+        
+        // 입력 필드
+        _etcSearchField = rootVisualElement.Q<TextField>("NameSearch");
+        _etcNotice = rootVisualElement.Q<TextField>("OtherNotice");
+        
+        // 기타
+        _minMaxSlider = rootVisualElement.Q<MinMaxSlider>("LevelSettingSlider");
+        _minMaxSlider.RegisterValueChangedCallback(OnMinMaxSliderValueChangeEvent);
+
+        _minMaxInfo = rootVisualElement.Q<Label>("MinMaxInfo");
+
+    }
+
+    #region NPC_DATA_UI
     private void NpcDataChangeEvent(ChangeEvent<string> evt)
     {
         var col = _npcNameDropDown.choices.IndexOf(_npcNameDropDown.value) + 1;
 
-        _curNpcData = _excelParser.ConvertValueDataToString(col + 1);
+        _curNpcData = _npcExcelParser.ConvertValueDataToString(col + 1);
         ResultCustomWindow.UpdateMessage(_curNpcData);
     }
 
     private void NpcInitValueButtonClickEvent(ClickEvent evt)
     {
         _npcNameDropDown.choices.Clear();
-        _excelParser.InitParser(_defaultPathField.value + _npcFileName + ".xlsx");
+        _npcExcelParser.InitParser(_defaultPathField.value + _npcFileName + ".xlsx");
 
-        var nameList = _excelParser.GetAllBaseValue();
+        var nameList = _npcExcelParser.GetAllBaseValue();
         _npcNameDropDown.choices = nameList;
     }
 
     private void NpcSearchButtonClickEvent(ClickEvent evt)
     {
-        _curNpcData = _excelParser.ConvertValueDataToString(
-                _excelParser.FindColumnWitValue(_npcNameSearch.value));
+        _curNpcData = _npcExcelParser.ConvertValueDataToString(
+                _npcExcelParser.FindColumnWitValue(_npcNameSearch.value));
        
         ResultCustomWindow.UpdateMessage(_curNpcData);
     }
@@ -129,23 +178,106 @@ public class QuestDataManager : EditorWindow
         ResultCustomWindow.UpdateMessage(_curNpcData);
         ResultCustomWindow.UpdateProcessMessage("Save Done!!");
     }
+    #endregion
+
+    #region OTHER_DATA_UI
+
+    private void OnEctInitValueButtonClickEvent(ClickEvent evt)
+    {
+        _etcExcelParser = new ExcelParser();
+        _etcExcelParser.InitParser(_defaultFilePath + _excelDropDown.value);
+
+        _etcNameDropDown.choices.Clear();
+        _etcNameDropDown.choices = _etcExcelParser.GetAllBaseValue();
+    }
+
+    private void OnAddButtonClickEvent(ClickEvent evt)
+    {
+        _curEtcData += _etcNameDropDown.value + " / ";
+        
+        ResultCustomWindow.UpdateMessage(_curEtcData);
+        ResultCustomWindow.UpdateProcessMessage($"{_etcNameDropDown.value} Add Done!!");
+    }
+
+    private void OnSearchButtonClickEvent(ClickEvent evt)
+    {
+        if (_etcExcelParser.FindColumnWitValue(_etcSearchField.text) <= 0)
+        {
+            ResultCustomWindow.UpdateProcessMessage($"{_etcSearchField.text} Not Found!!!");
+            return;
+        }
+        
+        _curEtcData += _etcSearchField.text + " / ";
+        
+        ResultCustomWindow.UpdateMessage(_curEtcData);
+        ResultCustomWindow.UpdateProcessMessage($"{_etcSearchField.text} Add Done!!");
+    }
+
+    private void OnResetButtonClickEvent(ClickEvent evt)
+    {
+        _curEtcData = string.Empty;
+        
+        ResultCustomWindow.UpdateMessage(_curEtcData);
+        ResultCustomWindow.UpdateProcessMessage($"Reset Done!!");
+    }
+
+    private void OnMinMaxSliderValueChangeEvent(ChangeEvent<Vector2> evt)
+    {
+        var min = _minMaxSlider.minValue;
+        var max = _minMaxSlider.maxValue;
+
+        _minMaxInfo.text = $"Min : {(int)min}      Max : {(int)max}";
+    }
+
+    private void OnApplyButtonClickEvent(ClickEvent evt)
+    {
+        var result =
+            _etcExcelParser.GetValuesByLevel((int)_minMaxSlider.minValue,
+                (int)_minMaxSlider.maxValue);
+
+        if (result == null)
+        {
+            ResultCustomWindow.UpdateProcessMessage($"Value Not Found!!");
+            return;
+        }
+        
+        _etcNameDropDown.choices.Clear();
+        _etcNameDropDown.choices = result;
+    }
+
+    private void OnEtcSaveButtonClickEvent(ClickEvent evt)
+    {
+        if (string.IsNullOrEmpty(_etcNotice.value) == false)
+        {
+            _curEtcData += '\n' + "Additional Information : " + _etcNotice.value;
+        }
+        
+        ResultCustomWindow.UpdateMessage(_curEtcData);
+        ResultCustomWindow.UpdateProcessMessage("Save Done!!");
+    }
+    
+    #endregion
 
     private void GetFileList()
     {
-        if (Directory.Exists(_defaultFilePath))
+        if (Directory.Exists(_defaultFilePath) == false)
         {
-            var files = Directory.GetFiles(_defaultFilePath, "*.xlsx");
+            return;
+        }
+        
+        var files = Directory.GetFiles(_defaultFilePath, "*.xlsx");
             
-            if(files.Length > 0)
-            {
-                _excelFileList.choices.Clear();
+        if(files.Length <= 0)
+        {
+            return;
+        }
+        
+        _excelDropDown.choices.Clear();
 
-                foreach (var filePath in files)
-                {
-                    var name = Path.GetFileName(filePath);
-                    _excelFileList.choices.Add(name);
-                }
-            }
+        foreach (var filePath in files)
+        {
+            var name = Path.GetFileName(filePath);
+            _excelDropDown.choices.Add(name);
         }
     }
 }

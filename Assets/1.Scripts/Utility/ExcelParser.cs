@@ -37,10 +37,11 @@ public class ExcelParser
     public List<string> GetAllBaseValue()
     {
         var result = new List<string>();
+        var col = 2;
 
-        for (var col = 2; col <= _columnCount; ++col)
+        while (string.IsNullOrEmpty(_workSheet.Cells[col, _baseRow].Text) == false)
         {
-            result.Add(_workSheet.Cells[col, _baseRow].Text);
+            result.Add(_workSheet.Cells[col++, _baseRow].Text);
         }
         
         return result;
@@ -49,12 +50,15 @@ public class ExcelParser
     // Value가 존재하는 열 반환
     public int FindColumnWitValue(string value)
     {
-        for (var col = 2; col <= _columnCount; ++col)
+        var col = 2;
+        while (string.IsNullOrEmpty(_workSheet.Cells[col, _baseRow].Text) == false)
         {
             if (string.Equals(_workSheet.Cells[col, _baseRow].Text, value) == true)
             {
                 return col;
             }
+
+            col++;
         }
 
         return -1;
@@ -76,6 +80,39 @@ public class ExcelParser
         }
 
         return result.ToString();
+    }
+    
+    // 조건에 맞는 Value 모두 반환
+    public List<string> GetValuesByLevel(int min, int max)
+    {
+        var curRow = -1;
+
+        for (var row = 1; row < _rowCount; ++row)
+        {
+            if (int.TryParse(_workSheet.Cells[2, row].Text, out var temp) == true)
+            {
+                curRow = row;
+            }
+        }
+
+        if (curRow < 0) return null;
+
+        var result = new List<string>();
+        var col = 2;
+
+        while (string.IsNullOrEmpty(_workSheet.Cells[col, curRow].Text) == false)
+        {
+            var lv = int.Parse(_workSheet.Cells[col, curRow].Text);
+
+            if (min <= lv && lv < max)
+            {
+                result.Add(_workSheet.Cells[col, _baseRow].Text);
+            }
+
+            col++;
+        }
+
+        return result;
     }
 
     private void InitKeyList()
