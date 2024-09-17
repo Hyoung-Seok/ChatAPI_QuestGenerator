@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.VersionControl;
@@ -279,5 +280,10 @@ public class QuestDataManager : EditorWindow
             var name = Path.GetFileName(filePath);
             _excelDropDown.choices.Add(name);
         }
+    }
+
+    private void OnDestroy()
+    {
+        ResultCustomWindow.CloseWindow();
     }
 }

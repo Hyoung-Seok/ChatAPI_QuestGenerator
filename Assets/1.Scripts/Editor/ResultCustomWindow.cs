@@ -15,6 +15,14 @@ public class ResultCustomWindow : EditorWindow
         window.titleContent = new GUIContent("Result");
     }
 
+    public static void CloseWindow()
+    {
+        _processResult.text = _resultMessage.text = string.Empty;
+        
+        var window = GetWindow<ResultCustomWindow>();
+        window.Close();
+    }
+
     private void CreateGUI()
     {
         visualTreeAsset.CloneTree(rootVisualElement);
