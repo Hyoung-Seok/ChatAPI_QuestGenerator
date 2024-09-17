@@ -10,7 +10,6 @@ public class ExcelParser
 {
     private int _baseRow;
     private int _rowCount;
-    private int _columnCount;
     private List<string> _keyList;
     private ExcelWorksheet _workSheet;
     private ExcelPackage _package;
@@ -28,7 +27,6 @@ public class ExcelParser
 
         _baseRow = baseRow;
         _rowCount = _workSheet.Dimension.End.Row;
-        _columnCount = _workSheet.Dimension.End.Column;
         
         InitKeyList();
     }
