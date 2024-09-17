@@ -99,7 +99,7 @@ public class ExcelReader
     public string ConvertRowDataToString(int row)
     {
         var result = new StringBuilder();
-
+        
         for (var col = 0; col < _columnsCount; ++col)
         {
             if (col >= _columnsCount - 1)
@@ -107,7 +107,7 @@ public class ExcelReader
                 result.Append(_keyList[col] + " : " + _dataTable.Rows[row][col]);
                 continue;
             }
-            
+
             result.Append(_keyList[col] + " : " + _dataTable.Rows[row][col] + '\n');
         }
 
