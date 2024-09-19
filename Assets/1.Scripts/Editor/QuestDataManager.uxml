@@ -3,7 +3,7 @@
     <ui:TextField picking-mode="Ignore" label="Default Path" value="_ExcelData" name="DefaultPath" binding-path="defaultFilePath" style="-unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center; font-size: 15px; position: relative; margin-top: 10px;" />
     <ui:TextField picking-mode="Ignore" label="NpcDataFileName" value="NPCData" name="NpcDataFileName" style="-unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center; font-size: 15px; position: relative; margin-top: 10px; margin-bottom: 10px;" />
     <ui:Label tabindex="-1" text="NPC DATA" parse-escape-sequences="true" display-tooltip-when-elided="true" name="NpcData" style="-unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: middle-center; color: rgb(255, 255, 255); font-size: 20px; justify-content: flex-start; -unity-font-style: bold;" />
-    <ui:VisualElement name="NpcDataUI" style="flex-grow: 1; flex-direction: row; height: 167px;">
+    <ui:VisualElement name="NpcDataUI" style="flex-grow: 1; flex-direction: row; height: 5px;">
         <ui:VisualElement name="Left" style="flex-grow: 1; width: 40%; flex-direction: column; align-items: stretch; justify-content: flex-start; align-self: stretch; height: 325px;">
             <ui:DropdownField label="NpcName" name="NpcNameField" style="margin-top: 10px; margin-bottom: 20px; height: 25px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center;" />
             <ui:TextField picking-mode="Ignore" label="SearchName" value="Enter..." name="NpcSearch" password="false" style="-unity-text-align: upper-center; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); margin-top: 10px; margin-left: 4px; margin-bottom: 20px; height: 30px;" />
@@ -17,8 +17,8 @@
         </ui:VisualElement>
     </ui:VisualElement>
     <ui:Label tabindex="-1" text="Other Data Setting" parse-escape-sequences="true" display-tooltip-when-elided="true" name="OtherData" style="-unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center; font-size: 20px;" />
-    <ui:VisualElement name="OtherDataUI" style="flex-grow: 1; flex-direction: row; height: 280px;">
-        <ui:VisualElement name="Left" style="flex-grow: 1; width: 278px; height: 470px;">
+    <ui:VisualElement name="OtherDataUI" style="flex-grow: 1; flex-direction: row; height: 50px;">
+        <ui:VisualElement name="Left" style="flex-grow: 1; width: 278px; height: auto; justify-content: space-around;">
             <ui:DropdownField label="ExcelList" name="ExcelList" style="margin-top: 10px; margin-bottom: 20px; height: 25px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center;" />
             <ui:DropdownField label="Name" name="EctNameField" style="margin-top: 20px; margin-bottom: 20px; height: 25px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center;" />
             <ui:TextField picking-mode="Ignore" label="SearchName" value="Enter..." name="NameSearch" password="false" style="-unity-text-align: upper-center; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); margin-top: 10px; margin-left: 4px; margin-bottom: 20px; height: 30px;" />
@@ -26,7 +26,7 @@
             <ui:Label tabindex="-1" parse-escape-sequences="true" display-tooltip-when-elided="true" name="MinMaxInfo" text="Min :      Max :    " style="-unity-text-align: upper-center; font-size: 16px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;);" />
             <ui:TextField picking-mode="Ignore" label="Notice" value="추가 설명 입력..." name="OtherNotice" style="flex-direction: column; font-size: 15px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center; height: 150px; align-items: center; align-self: flex-end;" />
         </ui:VisualElement>
-        <ui:VisualElement name="Right" style="flex-grow: 1; height: 470px; align-items: stretch; justify-content: flex-start;">
+        <ui:VisualElement name="Right" style="flex-grow: 1; height: auto; align-items: stretch; justify-content: flex-start;">
             <ui:Button text="Init Value" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InitButton" style="height: 40px; margin-bottom: 10px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;" />
             <ui:Button text="Add" parse-escape-sequences="true" display-tooltip-when-elided="true" name="AddButton" style="height: 40px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-bottom: 10px; margin-top: 10px;" />
             <ui:Button text="Search" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SearchButton" style="height: 40px; margin-top: 10px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-bottom: 10px;" />
@@ -35,20 +35,16 @@
             <ui:Button text="Reset" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ResetButton" style="height: 40px; margin-top: 10px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-bottom: 10px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;);" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="JsonUI" style="flex-grow: 1; height: 30px; flex-direction: row;">
-        <ui:VisualElement name="Left" style="flex-grow: 1; width: 70px; justify-content: space-between;">
+    <ui:VisualElement name="JsonUI" style="flex-grow: 1; height: 10px; flex-direction: row; align-items: stretch;">
+        <ui:VisualElement name="Left" style="flex-grow: 1; width: 70px; justify-content: flex-end; align-self: auto;">
             <ui:Label tabindex="-1" text="GenerateData" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Info" style="-unity-text-align: upper-center; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); font-size: 20px; color: rgb(255, 255, 255);" />
-            <ui:Button text="Send" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SendMessageButton" style="-unity-text-align: middle-center; height: 40px; margin-right: 10px; margin-left: 10px;" />
-            <ui:Button text="Save To Excel" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveToExcelButton" style="height: 40px; margin-top: 2px; margin-left: 10px; margin-right: 10px;" />
-            <ui:Button text="Create SO" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CreateSOButton" style="height: 40px; margin-right: 10px; margin-left: 10px;" />
-        </ui:VisualElement>
-        <ui:VisualElement name="Right" style="flex-grow: 1; height: 227px; width: 50%; justify-content: space-between;">
-            <ui:Label tabindex="-1" text="Setting GPT" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Info" style="-unity-text-align: upper-center; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); font-size: 20px; color: rgb(255, 255, 255);" />
-            <ui:EnumField label="ModelType" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" name="ModelField" style="height: 30px;" />
+            <ui:TextField picking-mode="Ignore" label="FileName" value="QuestTable" name="QuestFileName" style="font-size: 15px; margin-bottom: 10px; margin-top: 10px;" />
             <ui:Slider label="Temperature" high-value="1" name="TempSlider" style="height: 30px;" />
             <ui:Label tabindex="-1" text="Current Temperature :  " parse-escape-sequences="true" display-tooltip-when-elided="true" name="TempInfo" style="font-size: 16px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); -unity-text-align: upper-center; height: 30px;" />
-            <ui:Button text="Apply" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveSettingButton" style="height: 30px; margin-right: 30px; margin-left: 30px;" />
+            <ui:Button text="Send" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SendMessageButton" style="-unity-text-align: middle-center; height: 40px; margin-right: 20px; margin-left: 20px; margin-top: 10px; margin-bottom: 10px;" />
+            <ui:Button text="Save To Excel" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SaveToExcelButton" style="height: 40px; margin-top: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 10px;" />
+            <ui:IntegerField label="Column" value="0" name="ColInputField" style="-unity-text-align: upper-center; font-size: 16px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;);" />
+            <ui:Button text="Create SO" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CreateSOButton" style="height: 40px; margin-right: 20px; margin-left: 20px; margin-top: 10px; margin-bottom: 10px;" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:TextField picking-mode="Ignore" label="FileName" value="QuestTable" name="QuestFileName" style="font-size: 15px; margin-bottom: 10px; margin-top: 10px;" />
 </ui:UXML>

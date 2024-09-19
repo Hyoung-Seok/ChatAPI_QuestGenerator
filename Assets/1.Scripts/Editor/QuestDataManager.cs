@@ -7,8 +7,6 @@ using UnityEngine.UIElements;
 
 public class QuestDataManager : EditorWindow
 {
-    private const int KEY_ROW = 0;
-    
     [Header("File Path")]
     private string _defaultFilePath;
 
@@ -50,10 +48,9 @@ public class QuestDataManager : EditorWindow
     private Button _createSoButton;
     
     // GPT Setting UI
-    private EnumField _modelTypeField;
     private Slider _tempSlider;
     private Label _tempInfo;
-    private Button _settingApplyBt;
+    private IntegerField _colInputField;
             
     private ExcelParser _npcExcelParser;
     private ExcelParser _etcExcelParser;
@@ -71,8 +68,8 @@ public class QuestDataManager : EditorWindow
         
         ResultCustomWindow.ShowResultWindow();
 
-         window.minSize = new Vector2(670, 1345);
-         window.maxSize = new Vector2(670, 1345);
+         window.minSize = new Vector2(670, 1200);
+         window.maxSize = new Vector2(670, 1200);
     }
 
     private void CreateGUI()
@@ -158,16 +155,10 @@ public class QuestDataManager : EditorWindow
 
     private void InitGptSettingField()
     {
-        _modelTypeField = rootVisualElement.Q<EnumField>("ModelField");
-        _modelTypeField.Init(EChatModel.GPT4_TERBO);
-
         _tempSlider = rootVisualElement.Q<Slider>("TempSlider");
         _tempSlider.RegisterValueChangedCallback(OnTempSliderChangeEvent);
 
         _tempInfo = rootVisualElement.Q<Label>("TempInfo");
-
-        _settingApplyBt = rootVisualElement.Q<Button>("SaveSettingButton");
-        _settingApplyBt.RegisterCallback<ClickEvent>(OnSettingApplyButtonClickEvent);
 
         _questGenerator = new QuestGenerator(EChatModel.GPT4_TERBO, 0);
     }
@@ -190,6 +181,8 @@ public class QuestDataManager : EditorWindow
 
         _createSoButton = rootVisualElement.Q<Button>("CreateSOButton");
         _createSoButton.RegisterCallback<ClickEvent>(OnCreateSoObjectClickButton);
+
+        _colInputField = rootVisualElement.Q<IntegerField>("ColInputField");
     }
 
     #region NPC_DATA_UI
@@ -313,14 +306,9 @@ public class QuestDataManager : EditorWindow
     private void OnTempSliderChangeEvent(ChangeEvent<float> evt)
     {
         _tempInfo.text = $"Current Temperature : {_tempSlider.value}";
-    }
-
-    private void OnSettingApplyButtonClickEvent(ClickEvent evt)
-    {
         _questGenerator.ChangeTemperature(_tempSlider.value);
-        _questGenerator.ChangeModel((EChatModel)_modelTypeField.value);
     }
-
+    
     #endregion
 
     #region GENERATE_DATA_UI
@@ -350,8 +338,25 @@ public class QuestDataManager : EditorWindow
 
     private void OnCreateSoObjectClickButton(ClickEvent evt)
     {
+        if (_colInputField.value > 1)
+        {
+            var result= _questExcelParser.ConvertValueDataToList(_colInputField.value);
+
+            foreach (var value in result)
+            {
+                Debug.Log(value);
+            }
+            
+            QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
+                _questExcelParser.ConvertValueDataToList(_colInputField.value));
+
+            return;
+        }
+        
         QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
             ExcelParser.GetValueInJsonString(_resultData));
+        
+        ResultCustomWindow.UpdateProcessMessage("데이터 변환 성공!!");
     }
     
     #endregion

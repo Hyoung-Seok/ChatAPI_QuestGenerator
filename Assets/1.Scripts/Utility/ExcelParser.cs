@@ -81,6 +81,25 @@ public class ExcelParser
         return result.ToString();
     }
     
+    // 해당 행의 모든 데이터를 List형태로 반환
+    public List<string> ConvertValueDataToList(int col)
+    {
+        if (col <= 0)
+        {
+            return null;
+        }
+
+        var result = new List<string>();
+        var row = 1;
+
+        while (string.IsNullOrEmpty(_workSheet.Cells[col, row].Text) == false)
+        {
+            result.Add(_workSheet.Cells[col, row++].Text);
+        }
+        
+        return result;
+    }
+    
     // 조건에 맞는 Value 모두 반환
     public List<string> GetValuesByLevel(int min, int max)
     {
