@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json.Linq;
 using OfficeOpenXml;
 using UnityEngine;
 
@@ -108,6 +109,40 @@ public class ExcelParser
             }
 
             col++;
+        }
+
+        return result;
+    }
+    
+    // 엑셀에 데이터 저장
+    public void SaveQuestDataInExcel(string data, string notice)
+    {
+        var emptyColIndex = 2;
+        
+        while(string.IsNullOrEmpty(_workSheet.Cells[emptyColIndex, 1].Text) == false)
+        {
+            emptyColIndex++;
+        }
+        
+        var valueList = GetValueInJsonString(data);
+        
+        for (var row = 1; row <= valueList.Count; ++row)
+        {
+            _workSheet.Cells[emptyColIndex, row].Value = valueList[row - 1];
+        }
+
+        _workSheet.Cells[emptyColIndex, valueList.Count + 1].Value = notice; 
+        _package.Save();
+    }
+
+    public static List<string> GetValueInJsonString(string data)
+    {
+        var jObj = JObject.Parse(data);
+        var result = new List<string>();
+
+        foreach (var item in jObj)
+        {
+            result.Add(item.Value.ToString());
         }
 
         return result;
