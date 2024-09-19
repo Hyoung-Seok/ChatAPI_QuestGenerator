@@ -11,7 +11,6 @@ public class QuestDataManager : EditorWindow
     
     [Header("File Path")]
     private string _defaultFilePath;
-    private string _npcFileName = "NPCData";
 
     [Header("UI Field")] 
     [SerializeField] private VisualTreeAsset visualTreeAsset;
@@ -29,10 +28,6 @@ public class QuestDataManager : EditorWindow
     private Button _npcSearchBt;
     private Button _npcSaveBt;
     
-    private ExcelParser _npcExcelParser;
-    private ExcelParser _etcExcelParser;
-    private string _curNpcData;
-    
     // Other UI
     private DropdownField _excelDropDown;
     private DropdownField _etcNameDropDown;
@@ -48,6 +43,25 @@ public class QuestDataManager : EditorWindow
     private Button _etcSaveButton;
     private string _curEtcData;
     
+    // Generate Data UI
+    private TextField _questFileName;
+    private Button _sendMsgButton;
+    private Button _saveToExcelButton;
+    private Button _createSoButton;
+    
+    // GPT Setting UI
+    private EnumField _modelTypeField;
+    private Slider _tempSlider;
+    private Label _tempInfo;
+    private Button _settingApplyBt;
+            
+    private ExcelParser _npcExcelParser;
+    private ExcelParser _etcExcelParser;
+    private ExcelParser _questExcelParser;
+    
+    private QuestGenerator _questGenerator;
+    private string _curNpcData;
+    private string _resultData;
     
     [MenuItem("OpenAI/QuestData")]
     public static void ShowEditor()
@@ -57,21 +71,20 @@ public class QuestDataManager : EditorWindow
         
         ResultCustomWindow.ShowResultWindow();
 
-        // window.minSize = new Vector2(800, 1000);
-        // window.maxSize = new Vector2(800, 1000);
+         window.minSize = new Vector2(670, 1345);
+         window.maxSize = new Vector2(670, 1345);
     }
 
     private void CreateGUI()
     {
         visualTreeAsset.CloneTree(rootVisualElement);
+
+        _defaultFilePath = Application.dataPath;
         
         InitNpcUIField();
         InitOtherUIField();
-
-        // // 엑셀 파일 드랍다운 컨트롤
-        // _excelFileList = rootVisualElement.Q<DropdownField>("DataList");
-        // GetFileList();
-
+        InitGptSettingField();
+        InitGenerateQuestUIField();
     }
 
     private void InitNpcUIField()
@@ -79,13 +92,10 @@ public class QuestDataManager : EditorWindow
         _npcExcelParser = new ExcelParser();
         
         //경로 초기화
-        _defaultFilePath = Application.dataPath + "/_ExcelData/";
-        
         _defaultPathField = rootVisualElement.Q<TextField>("DefaultPath");
-        _defaultPathField.value = _defaultFilePath;
-        
         _npcDataFileName = rootVisualElement.Q<TextField>("NpcDataFileName");
-        _npcDataFileName.value = _npcFileName;
+        
+        _defaultFilePath = Path.Combine(_defaultFilePath, _defaultPathField.value);
         
         // 인풋 필드 초기화
         _npcNameSearch = rootVisualElement.Q<TextField>("NpcSearch");
@@ -146,6 +156,42 @@ public class QuestDataManager : EditorWindow
 
     }
 
+    private void InitGptSettingField()
+    {
+        _modelTypeField = rootVisualElement.Q<EnumField>("ModelField");
+        _modelTypeField.Init(EChatModel.GPT4_TERBO);
+
+        _tempSlider = rootVisualElement.Q<Slider>("TempSlider");
+        _tempSlider.RegisterValueChangedCallback(OnTempSliderChangeEvent);
+
+        _tempInfo = rootVisualElement.Q<Label>("TempInfo");
+
+        _settingApplyBt = rootVisualElement.Q<Button>("SaveSettingButton");
+        _settingApplyBt.RegisterCallback<ClickEvent>(OnSettingApplyButtonClickEvent);
+
+        _questGenerator = new QuestGenerator(EChatModel.GPT4_TERBO, 0);
+    }
+
+    private void InitGenerateQuestUIField()
+    {
+        _questFileName = rootVisualElement.Q<TextField>("QuestFileName");
+        
+        // 경로 및 파서 초기화
+        _questExcelParser = new ExcelParser();
+
+        var path = Path.Combine(_defaultFilePath, _questFileName.value) + ".xlsx";
+        _questExcelParser.InitParser(path);
+
+        _sendMsgButton = rootVisualElement.Q<Button>("SendMessageButton");
+        _sendMsgButton.RegisterCallback<ClickEvent>(OnSendButtonClickEvent);
+
+        _saveToExcelButton = rootVisualElement.Q<Button>("SaveToExcelButton");
+        _saveToExcelButton.RegisterCallback<ClickEvent>(OnSaveToExcelButtonClickEvent);
+
+        _createSoButton = rootVisualElement.Q<Button>("CreateSOButton");
+        _createSoButton.RegisterCallback<ClickEvent>(OnCreateSoObjectClickButton);
+    }
+
     #region NPC_DATA_UI
     private void NpcDataChangeEvent(ChangeEvent<string> evt)
     {
@@ -158,7 +204,9 @@ public class QuestDataManager : EditorWindow
     private void NpcInitValueButtonClickEvent(ClickEvent evt)
     {
         _npcNameDropDown.choices.Clear();
-        _npcExcelParser.InitParser(_defaultPathField.value + _npcFileName + ".xlsx");
+
+        var path = Path.Combine(_defaultFilePath, _npcDataFileName.value);
+        _npcExcelParser.InitParser(path + ".xlsx");
 
         var nameList = _npcExcelParser.GetAllBaseValue();
         _npcNameDropDown.choices = nameList;
@@ -186,7 +234,8 @@ public class QuestDataManager : EditorWindow
     private void OnEctInitValueButtonClickEvent(ClickEvent evt)
     {
         _etcExcelParser = new ExcelParser();
-        _etcExcelParser.InitParser(_defaultFilePath + _excelDropDown.value);
+        var path = Path.Combine(_defaultFilePath, _excelDropDown.value);
+        _etcExcelParser.InitParser(path);
 
         _etcNameDropDown.choices.Clear();
         _etcNameDropDown.choices = _etcExcelParser.GetAllBaseValue();
@@ -259,6 +308,54 @@ public class QuestDataManager : EditorWindow
     
     #endregion
 
+    #region SETTING_GPT_UI
+
+    private void OnTempSliderChangeEvent(ChangeEvent<float> evt)
+    {
+        _tempInfo.text = $"Current Temperature : {_tempSlider.value}";
+    }
+
+    private void OnSettingApplyButtonClickEvent(ClickEvent evt)
+    {
+        _questGenerator.ChangeTemperature(_tempSlider.value);
+        _questGenerator.ChangeModel((EChatModel)_modelTypeField.value);
+    }
+
+    #endregion
+
+    #region GENERATE_DATA_UI
+
+    private async void OnSendButtonClickEvent(ClickEvent evt)
+    {
+        ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
+        
+        var message = _curNpcData + $"\n Type : {_questType.text} \n" + _curEtcData;
+        _resultData = await _questGenerator.CreateJsonMessage(message);
+        
+        ResultCustomWindow.UpdateMessage(_resultData);
+        ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
+    }
+
+    private void OnSaveToExcelButtonClickEvent(ClickEvent evt)
+    {
+        if (string.IsNullOrEmpty(_resultData) == false)
+        {
+            _questExcelParser.SaveQuestDataInExcel(_resultData, _npcNoticeTextField.value);
+            ResultCustomWindow.UpdateProcessMessage("데이터 저장 완료!");
+            return;
+        }
+        
+        ResultCustomWindow.UpdateProcessMessage("데이터 저장 실패!");
+    }
+
+    private void OnCreateSoObjectClickButton(ClickEvent evt)
+    {
+        QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
+            ExcelParser.GetValueInJsonString(_resultData));
+    }
+    
+    #endregion
+
     private void GetFileList()
     {
         if (Directory.Exists(_defaultFilePath) == false)
@@ -277,8 +374,8 @@ public class QuestDataManager : EditorWindow
 
         foreach (var filePath in files)
         {
-            var name = Path.GetFileName(filePath);
-            _excelDropDown.choices.Add(name);
+            var fileName = Path.GetFileName(filePath);
+            _excelDropDown.choices.Add(fileName);
         }
     }
 
