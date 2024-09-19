@@ -340,13 +340,6 @@ public class QuestDataManager : EditorWindow
     {
         if (_colInputField.value > 1)
         {
-            var result= _questExcelParser.ConvertValueDataToList(_colInputField.value);
-
-            foreach (var value in result)
-            {
-                Debug.Log(value);
-            }
-            
             QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
                 _questExcelParser.ConvertValueDataToList(_colInputField.value));
 

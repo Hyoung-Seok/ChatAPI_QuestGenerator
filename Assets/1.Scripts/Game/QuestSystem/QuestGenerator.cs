@@ -77,7 +77,6 @@ public class QuestGenerator
         _systemMessage = msg;
     }
     
-
     private Model GetAPIModel(EChatModel model)
     {
         return model switch
