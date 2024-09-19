@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 using TMPro;
 using UnityEngine;
 
-public class QuestGenerator : MonoBehaviour
+public class TestQuestGenerator : MonoBehaviour
 {
     [Header("Component")]
     [SerializeField] private TMP_InputField rowInputField;
