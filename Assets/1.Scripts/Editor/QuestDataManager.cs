@@ -215,7 +215,10 @@ public class QuestDataManager : EditorWindow
     
     private void NpcSaveButtonClickEvent(ClickEvent evt)
     {
-        _curNpcData += "Additional Information : " + _npcNoticeTextField.value;
+        if(string.IsNullOrEmpty(_npcNoticeTextField.value) == false)
+        {
+            _curNpcData += "Additional Information : " + _npcNoticeTextField.value;
+        }
         
         ResultCustomWindow.UpdateMessage(_curNpcData);
         ResultCustomWindow.UpdateProcessMessage("Save Done!!");
@@ -319,8 +322,6 @@ public class QuestDataManager : EditorWindow
         ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
 
         var message = $"Type : {_questType.text} \n" + _curNpcData + "\n targetName" + _curEtcData;
-        Debug.Log(message);
-        ResultCustomWindow.UpdateMessage(message);
         _resultData = await _questGenerator.CreateJsonMessage(message);
         
         ResultCustomWindow.UpdateMessage(_resultData);
