@@ -258,6 +258,7 @@ public class QuestDataManager : EditorWindow
 
     private void OnResetButtonClickEvent(ClickEvent evt)
     {
+        _curNpcData = string.Empty;
         _curEtcData = string.Empty;
         
         ResultCustomWindow.UpdateMessage(_curEtcData);
