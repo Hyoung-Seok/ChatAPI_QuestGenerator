@@ -9,6 +9,8 @@ using UnityEngine;
 
 public class ExcelParser
 {
+    private static string FIRST_KEY = "QuestID";
+    
     private int _baseRow;
     private int _rowCount;
     private List<string> _keyList;
@@ -144,26 +146,53 @@ public class ExcelParser
         }
         
         var valueList = GetValueInJsonString(data);
-        
-        for (var row = 1; row <= valueList.Count; ++row)
-        {
-            _workSheet.Cells[emptyColIndex, row].Value = valueList[row - 1];
-        }
 
-        _workSheet.Cells[emptyColIndex, valueList.Count + 1].Value = notice; 
+        foreach (var values in valueList)
+        {
+            for (var row = 1; row <= values.Count; ++row)
+            {
+                _workSheet.Cells[emptyColIndex, row].Value = values[row - 1];
+            }
+            
+            _workSheet.Cells[emptyColIndex++, values.Count + 1].Value = notice;
+        }
+        
         _package.Save();
     }
 
-    public static List<string> GetValueInJsonString(string data)
+    public static List<List<string>> GetValueInJsonString(string data)
     {
         var jObj = JObject.Parse(data);
-        var result = new List<string>();
+        var result = new List<List<string>>();
 
-        foreach (var item in jObj)
+        if (jObj[FIRST_KEY] != null)
         {
-            result.Add(item.Value.ToString());
+            var valueList = new List<string>();
+            
+            foreach (var value in jObj)
+            {
+                valueList.Add(value.Value.ToString());
+            }
+
+            result.Add(valueList);
+
+            return result;
         }
 
+        foreach (var quest in jObj)
+        {        
+            var questValue = new List<string>();
+            var questDetails = quest.Value as JObject;
+
+            if (questDetails == null) continue;
+            
+            foreach (var value in questDetails)
+            {
+                questValue.Add(value.Value.ToString());
+            }
+            
+            result.Add(questValue);
+        }
         return result;
     }
 
