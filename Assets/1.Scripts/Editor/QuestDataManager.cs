@@ -317,8 +317,10 @@ public class QuestDataManager : EditorWindow
     private async void OnSendButtonClickEvent(ClickEvent evt)
     {
         ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
-        
-        var message = _curNpcData + $"\n Type : {_questType.text} \n" + _curEtcData;
+
+        var message = $"Type : {_questType.text} \n" + _curNpcData + "\n targetName" + _curEtcData;
+        Debug.Log(message);
+        ResultCustomWindow.UpdateMessage(message);
         _resultData = await _questGenerator.CreateJsonMessage(message);
         
         ResultCustomWindow.UpdateMessage(_resultData);
