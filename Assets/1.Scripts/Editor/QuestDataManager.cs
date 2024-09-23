@@ -46,6 +46,8 @@ public class QuestDataManager : EditorWindow
     private Button _sendMsgButton;
     private Button _saveToExcelButton;
     private Button _createSoButton;
+    private Button _loadExcelDataButton;
+    private Button _generateCurDataButton;
     
     // GPT Setting UI
     private Slider _tempSlider;
@@ -80,6 +82,7 @@ public class QuestDataManager : EditorWindow
         
         InitNpcUIField();
         InitOtherUIField();
+        
         InitGptSettingField();
         InitGenerateQuestUIField();
     }
@@ -183,6 +186,11 @@ public class QuestDataManager : EditorWindow
         _createSoButton.RegisterCallback<ClickEvent>(OnCreateSoObjectClickButton);
 
         _colInputField = rootVisualElement.Q<IntegerField>("ColInputField");
+
+        _loadExcelDataButton = rootVisualElement.Q<Button>("LoadExcelData");
+        _loadExcelDataButton.RegisterCallback<ClickEvent>(OnLoadExcelDataButtonClickEvent);
+
+        _generateCurDataButton = rootVisualElement.Q<Button>("GenerateCurrentButton");
     }
 
     #region NPC_DATA_UI
@@ -356,6 +364,19 @@ public class QuestDataManager : EditorWindow
             ExcelParser.GetValueInJsonString(_resultData));
         
         ResultCustomWindow.UpdateProcessMessage("데이터 변환 성공!!");
+    }
+
+    private void OnLoadExcelDataButtonClickEvent(ClickEvent evt)
+    {
+        var index = _colInputField.value;
+        
+        if (index <= 1)
+        {
+            ResultCustomWindow.UpdateProcessMessage("Column Index Error!");
+            return;
+        }
+        
+        ResultCustomWindow.UpdateMessage(_questExcelParser.ConvertValueDataToString(index, true));
     }
     
     #endregion
