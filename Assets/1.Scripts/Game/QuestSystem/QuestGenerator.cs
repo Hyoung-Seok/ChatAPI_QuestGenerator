@@ -45,7 +45,9 @@ public class QuestGenerator
                          "Count : 갯수" +
                          "Scripts : 퀘스트를 줄 때 NPC의 대사. 대사는 플레이어가 퀘스트를 받을 때 나타나는 대사와 퀘스트를 수락하고 나타나는 대사를 만들어줘." +
                          "이 두 종류의 대사를 구분하기 위해 대사 사이에는 *을 넣어주고 다른 키 값은 생성하지 마." +
-                         "만약 여러개의 연계되는 퀘스트 생성을 요청하면 Quest1,Quest2 이런식으로 묶어줘.";
+                         "만약 여러개의 연계되는 퀘스트 생성을 요청하면 Quest1,Quest2 이런식으로 묶어줘."+
+                         "Key, Value가 완성된 상태로 전달된다면, 그 퀘스트와 연결되는 퀘스트를 생성해줘. 이때 기존에 전달된 퀘스트는 반환하지 말고 새롭게 생성한" +
+                         "퀘스트만 반환해줘.";
     }
 
     public async Task<string> CreateJsonMessage(string chatMsg)

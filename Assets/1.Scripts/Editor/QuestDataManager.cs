@@ -59,6 +59,7 @@ public class QuestDataManager : EditorWindow
     private ExcelParser _questExcelParser;
     
     private QuestGenerator _questGenerator;
+    private string _curExcelData;
     private string _curNpcData;
     private string _resultData;
     
@@ -70,8 +71,8 @@ public class QuestDataManager : EditorWindow
         
         ResultCustomWindow.ShowResultWindow();
 
-         window.minSize = new Vector2(670, 1200);
-         window.maxSize = new Vector2(670, 1200);
+         window.minSize = new Vector2(670, 1430);
+         window.maxSize = new Vector2(670, 1430);
     }
 
     private void CreateGUI()
@@ -191,6 +192,7 @@ public class QuestDataManager : EditorWindow
         _loadExcelDataButton.RegisterCallback<ClickEvent>(OnLoadExcelDataButtonClickEvent);
 
         _generateCurDataButton = rootVisualElement.Q<Button>("GenerateCurrentButton");
+        _generateCurDataButton.RegisterCallback<ClickEvent>(OnGenerateCurrentButtonClickEvent);
     }
 
     #region NPC_DATA_UI
@@ -329,7 +331,7 @@ public class QuestDataManager : EditorWindow
     {
         ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
         
-        var message = $"Type : {_questType.text} \n" + _curNpcData + "\n targetName" + _curEtcData;
+        var message = $"Type : {_questType.text} \n" + _curNpcData + "\n targetName : " + _curEtcData;
         ResultCustomWindow.UpdateMessage(message);
         
         _resultData = await _questGenerator.CreateJsonMessage(message);
@@ -375,8 +377,20 @@ public class QuestDataManager : EditorWindow
             ResultCustomWindow.UpdateProcessMessage("Column Index Error!");
             return;
         }
+
+        _curExcelData = _questExcelParser.ConvertValueDataToString(index, true);
+        ResultCustomWindow.UpdateMessage(_curExcelData);
+    }
+
+    private async void OnGenerateCurrentButtonClickEvent(ClickEvent evt)
+    {
+        var msg = $"{_curExcelData} \n" + $"연계 퀘스트 생성 : {_questType.text} \n";
+        ResultCustomWindow.UpdateMessage(msg);
+
+        _resultData = await _questGenerator.CreateJsonMessage(msg);
         
-        ResultCustomWindow.UpdateMessage(_questExcelParser.ConvertValueDataToString(index, true));
+        ResultCustomWindow.UpdateMessage(_resultData);
+        ResultCustomWindow.UpdateProcessMessage("연계 퀘스트 생성 완료");
     }
     
     #endregion
