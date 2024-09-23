@@ -35,7 +35,7 @@ public class ExcelParser
     }
 
     // Key에 해당하는 모든 Value값 가져오기
-    public List<string> GetAllBaseValue()
+    public List<string> GetAllValuesFromKey()
     {
         var result = new List<string>();
         var col = 2;

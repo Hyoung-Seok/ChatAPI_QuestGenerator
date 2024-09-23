@@ -211,7 +211,7 @@ public class QuestDataManager : EditorWindow
         var path = Path.Combine(_defaultFilePath, _npcDataFileName.value);
         _npcExcelParser.InitParser(path + ".xlsx");
 
-        var nameList = _npcExcelParser.GetAllBaseValue();
+        var nameList = _npcExcelParser.GetAllValuesFromKey();
         _npcNameDropDown.choices = nameList;
     }
 
@@ -244,7 +244,7 @@ public class QuestDataManager : EditorWindow
         _etcExcelParser.InitParser(path);
 
         _etcNameDropDown.choices.Clear();
-        _etcNameDropDown.choices = _etcExcelParser.GetAllBaseValue();
+        _etcNameDropDown.choices = _etcExcelParser.GetAllValuesFromKey();
     }
 
     private void OnAddButtonClickEvent(ClickEvent evt)
