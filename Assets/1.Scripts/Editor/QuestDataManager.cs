@@ -71,8 +71,8 @@ public class QuestDataManager : EditorWindow
         
         ResultCustomWindow.ShowResultWindow();
 
-         window.minSize = new Vector2(670, 1430);
-         window.maxSize = new Vector2(670, 1430);
+         window.minSize = new Vector2(670, 1300);
+         window.maxSize = new Vector2(670, 1300);
     }
 
     private void CreateGUI()
