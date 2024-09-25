@@ -17,7 +17,7 @@ public class ExcelParser
     private ExcelWorksheet _workSheet;
     private ExcelPackage _package;
 
-    public void InitParser(string path, int sheetIndex = 0, int baseRow = 1)
+    public ExcelParser(string path, int sheetIndex = 0, int baseRow = 1)
     {
         if (File.Exists(path) == false)
         {

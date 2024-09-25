@@ -71,8 +71,8 @@ public class QuestDataManager : EditorWindow
         
         ResultCustomWindow.ShowResultWindow();
 
-         window.minSize = new Vector2(670, 1300);
-         window.maxSize = new Vector2(670, 1300);
+         window.minSize = new Vector2(670, 1460);
+         window.maxSize = new Vector2(670, 1460);
     }
 
     private void CreateGUI()
@@ -90,7 +90,7 @@ public class QuestDataManager : EditorWindow
 
     private void InitNpcUIField()
     {
-        _npcExcelParser = new ExcelParser();
+        //_npcExcelParser = new ExcelParser();
         
         //경로 초기화
         _defaultPathField = rootVisualElement.Q<TextField>("DefaultPath");
@@ -172,10 +172,10 @@ public class QuestDataManager : EditorWindow
         _questFileName = rootVisualElement.Q<TextField>("QuestFileName");
         
         // 경로 및 파서 초기화
-        _questExcelParser = new ExcelParser();
+        //_questExcelParser = new ExcelParser();
 
         var path = Path.Combine(_defaultFilePath, _questFileName.value) + ".xlsx";
-        _questExcelParser.InitParser(path);
+        //_questExcelParser.InitParser(path);
 
         _sendMsgButton = rootVisualElement.Q<Button>("SendMessageButton");
         _sendMsgButton.RegisterCallback<ClickEvent>(OnSendButtonClickEvent);
@@ -209,7 +209,7 @@ public class QuestDataManager : EditorWindow
         _npcNameDropDown.choices.Clear();
 
         var path = Path.Combine(_defaultFilePath, _npcDataFileName.value);
-        _npcExcelParser.InitParser(path + ".xlsx");
+        //_npcExcelParser.InitParser(path + ".xlsx");
 
         var nameList = _npcExcelParser.GetAllValuesFromKey();
         _npcNameDropDown.choices = nameList;
@@ -239,9 +239,9 @@ public class QuestDataManager : EditorWindow
 
     private void OnEctInitValueButtonClickEvent(ClickEvent evt)
     {
-        _etcExcelParser = new ExcelParser();
+        //_etcExcelParser = new ExcelParser();
         var path = Path.Combine(_defaultFilePath, _excelDropDown.value);
-        _etcExcelParser.InitParser(path);
+        //_etcExcelParser.InitParser(path);
 
         _etcNameDropDown.choices.Clear();
         _etcNameDropDown.choices = _etcExcelParser.GetAllValuesFromKey();

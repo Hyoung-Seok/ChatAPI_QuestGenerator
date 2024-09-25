@@ -35,8 +35,8 @@
             <ui:Button text="Reset" parse-escape-sequences="true" display-tooltip-when-elided="true" name="ResetButton" style="height: 40px; margin-top: 10px; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; margin-bottom: 10px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;);" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="JsonUI" style="flex-grow: 1; height: 10px; flex-direction: row; align-items: stretch;">
-        <ui:VisualElement name="Left" style="flex-grow: 1; width: 70px; justify-content: flex-start; align-self: auto;">
+    <ui:VisualElement name="JsonUI" style="flex-grow: 1; height: 550px; flex-direction: row; align-items: stretch; min-height: 0; max-height: 550px;">
+        <ui:VisualElement name="Left" style="flex-grow: 1; width: 70px; justify-content: center; align-self: auto;">
             <ui:Label tabindex="-1" text="GenerateData" parse-escape-sequences="true" display-tooltip-when-elided="true" name="Info" style="-unity-text-align: upper-center; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); font-size: 20px; color: rgb(255, 255, 255);" />
             <ui:TextField picking-mode="Ignore" label="FileName" value="QuestTable" name="QuestFileName" style="font-size: 15px; margin-bottom: 10px; margin-top: 10px;" />
             <ui:Slider label="Temperature" high-value="1" name="TempSlider" style="height: 30px;" />
