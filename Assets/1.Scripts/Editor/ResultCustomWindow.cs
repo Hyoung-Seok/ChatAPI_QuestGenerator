@@ -9,6 +9,8 @@ public class ResultCustomWindow : EditorWindow
     private static Label _resultMessage;
     private static Label _processResult;
 
+    public static string GetCurrentMessage => _resultMessage.text;
+
     public static void ShowResultWindow()
     {
         var window = GetWindow<ResultCustomWindow>();
