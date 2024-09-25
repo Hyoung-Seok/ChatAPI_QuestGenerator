@@ -10,15 +10,21 @@ public class ResultCustomWindow : EditorWindow
     private static Label _processResult;
 
     public static string GetCurrentMessage => _resultMessage.text;
+    
+    private static bool _isOpen;
 
     public static void ShowResultWindow()
     {
+        _isOpen = true;
+        
         var window = GetWindow<ResultCustomWindow>();
         window.titleContent = new GUIContent("Result");
     }
 
     public static void CloseWindow()
     {
+        if(_isOpen == false) return;
+        
         _processResult.text = _resultMessage.text = string.Empty;
         
         var window = GetWindow<ResultCustomWindow>();
@@ -41,5 +47,11 @@ public class ResultCustomWindow : EditorWindow
     public static void UpdateProcessMessage(string msg)
     {
         _processResult.text = msg;
+    }
+
+    private void OnDestroy()
+    {
+        _isOpen = false;
+        QuestGeneratorManager.CloseAllWindow();
     }
 }

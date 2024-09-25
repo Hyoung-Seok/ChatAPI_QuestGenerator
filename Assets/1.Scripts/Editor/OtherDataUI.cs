@@ -31,8 +31,12 @@ public class OtherDataUI : EditorWindow
     private string _curOtherData;
     private ExcelParser _parser;
     
+    private static bool _isOpen;
+    
     public static void CreateWindow()
     {
+        _isOpen = true;
+        
         var win = GetWindow<OtherDataUI>();
         win.titleContent = new GUIContent("Other Data UI");
         
@@ -200,5 +204,19 @@ public class OtherDataUI : EditorWindow
             var fileName = Path.GetFileName(filePath);
             _excelList.choices.Add(fileName);
         }
+    }
+    
+    public static void CloseWindow()
+    {
+        if(_isOpen == false) return;
+        
+        var window = GetWindow<OtherDataUI>();
+        window.Close();
+    }
+    
+    private void OnDestroy()
+    {
+        _isOpen = false;
+        QuestGeneratorManager.CloseAllWindow();
     }
 }

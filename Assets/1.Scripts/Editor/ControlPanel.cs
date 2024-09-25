@@ -28,8 +28,12 @@ public class ControlPanel : EditorWindow
     private ExcelParser _parser;
     private QuestGenerator _questGenerator;
     
+    private static bool _isOpen;
+    
     public static void CreateWindow()
     {
+        _isOpen = true;
+        
         var win = GetWindow<ControlPanel>();
         win.titleContent = new GUIContent("Control Panel");
         
@@ -164,5 +168,19 @@ public class ControlPanel : EditorWindow
     {
         var path = QuestGeneratorManager.GetFullFilePath(_defaultPath.value, _fileName.value);
         _parser = new ExcelParser(path);
+    }
+    
+    public static void CloseWindow()
+    {
+        if(_isOpen == false) return;
+        
+        var window = GetWindow<ControlPanel>();
+        window.Close();
+    }
+
+    private void OnDestroy()
+    {
+        _isOpen = false;
+        QuestGeneratorManager.CloseAllWindow();
     }
 }

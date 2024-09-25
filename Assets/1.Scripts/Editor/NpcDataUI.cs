@@ -29,9 +29,13 @@ public class NpcDataUI : EditorWindow
 
     public static string NpcNotice => _npcNotice.value;
     public static string QuestType => _questType.text;
+
+    private static bool _isOpen;
     
     public static void CreateWindow()
     {
+        _isOpen = true;
+        
         var win = GetWindow<NpcDataUI>();
         win.titleContent = new GUIContent("Npc Data UI");
 
@@ -134,5 +138,19 @@ public class NpcDataUI : EditorWindow
     {
         _fullPath = QuestGeneratorManager.GetFullFilePath(_dataPath.value, _fileName.value);
         _parser = new ExcelParser(_fullPath);
+    }
+    
+    public static void CloseWindow()
+    {
+        if(_isOpen == false) return;
+        
+        var window = GetWindow<NpcDataUI>();
+        window.Close();
+    }
+    
+    private void OnDestroy()
+    {
+        _isOpen = false;
+        QuestGeneratorManager.CloseAllWindow();
     }
 }

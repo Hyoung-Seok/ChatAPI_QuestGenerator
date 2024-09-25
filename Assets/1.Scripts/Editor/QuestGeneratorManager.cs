@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
@@ -39,5 +36,13 @@ public class QuestGeneratorManager : EditorWindow
         result = Path.Combine(result, name);
 
         return result;
+    }
+
+    public static void CloseAllWindow()
+    {
+        NpcDataUI.CloseWindow();
+        OtherDataUI.CloseWindow();
+        ControlPanel.CloseWindow();
+        ResultCustomWindow.CloseWindow();
     }
 }
