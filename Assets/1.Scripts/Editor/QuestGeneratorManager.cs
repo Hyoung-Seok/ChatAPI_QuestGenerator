@@ -10,13 +10,16 @@ public class QuestGeneratorManager : EditorWindow
     [Header("Data")] 
     public static string NpcData;
     public static string OtherData;
+    public static string ResultData;
     
     [MenuItem("OpenAI/QuestGenerator")]
     private static void CreateWindow()
     {
         ResultCustomWindow.ShowResultWindow();
+        
         NpcDataUI.CreateWindow();
         OtherDataUI.CreateWindow();
+        ControlPanel.CreateWindow();
     }
 
     public void CreateGUI()

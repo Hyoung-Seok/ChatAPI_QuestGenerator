@@ -11,11 +11,11 @@ public class NpcDataUI : EditorWindow
     private TextField _dataPath;
     private TextField _fileName;
     private TextField _searchName;
-    private TextField _npcNotice;
+    private static TextField _npcNotice;
 
     [Header("Dropdown")] 
     private DropdownField _npcNameList;
-    private EnumField _questType;
+    private static EnumField _questType;
 
     [Header("Button")] 
     private Button _initBt;
@@ -26,6 +26,9 @@ public class NpcDataUI : EditorWindow
     private string _fullPath;
     private string _curNpcData;
     private ExcelParser _parser;
+
+    public static string NpcNotice => _npcNotice.value;
+    public static string QuestType => _questType.text;
     
     public static void CreateWindow()
     {
@@ -112,7 +115,8 @@ public class NpcDataUI : EditorWindow
 
     private void SaveButtonClickEvent(ClickEvent evt)
     {
-        QuestGeneratorManager.NpcData = _curNpcData;
+        QuestGeneratorManager.NpcData = "Quest Type : " + _questType.text + '\n';
+        QuestGeneratorManager.NpcData += _curNpcData;
         
         if (string.IsNullOrEmpty(_npcNotice.value) == false)
         {
