@@ -3,23 +3,31 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ResultCustomWindow : EditorWindow
+public class ResultWindow : EditorWindow
 {
     [SerializeField] private VisualTreeAsset visualTreeAsset;
     private static Label _resultMessage;
     private static Label _processResult;
 
+    public static string GetCurrentMessage => _resultMessage.text;
+    
+    private static bool _isOpen;
+
     public static void ShowResultWindow()
     {
-        var window = GetWindow<ResultCustomWindow>();
+        _isOpen = true;
+        
+        var window = GetWindow<ResultWindow>();
         window.titleContent = new GUIContent("Result");
     }
 
     public static void CloseWindow()
     {
+        if(_isOpen == false) return;
+        
         _processResult.text = _resultMessage.text = string.Empty;
         
-        var window = GetWindow<ResultCustomWindow>();
+        var window = GetWindow<ResultWindow>();
         window.Close();
     }
 
@@ -39,5 +47,11 @@ public class ResultCustomWindow : EditorWindow
     public static void UpdateProcessMessage(string msg)
     {
         _processResult.text = msg;
+    }
+
+    private void OnDestroy()
+    {
+        _isOpen = false;
+        GeneratorManager.CloseAllWindow();
     }
 }

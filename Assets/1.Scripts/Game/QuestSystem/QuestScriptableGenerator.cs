@@ -18,4 +18,22 @@ public static class QuestScriptableGenerator
         AssetDatabase.CreateAsset(sObj, path);
         AssetDatabase.SaveAssets();
     }
+    
+    public static void CreateAndSaveScriptableObj<T>(List<List<string>> data) where T : ScriptableObject
+    {
+        foreach (var valueList in data)
+        {
+            var sObj = ScriptableObject.CreateInstance<T>();
+            
+            if (sObj is QuestData questData)
+            {
+                questData.InitQuestData(valueList);
+            }            
+            
+            var path = "Assets/QuestData/" + valueList[0] + ".asset";
+        
+            AssetDatabase.CreateAsset(sObj, path);
+            AssetDatabase.SaveAssets();
+        }
+    }
 }
