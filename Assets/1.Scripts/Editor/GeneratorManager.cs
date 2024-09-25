@@ -2,7 +2,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-public class QuestGeneratorManager : EditorWindow
+public class GeneratorManager : EditorWindow
 {
     [Header("Data")] 
     public static string NpcData;

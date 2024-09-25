@@ -101,20 +101,20 @@ public class ControlPanel : EditorWindow
     {
         ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
         
-        var message = QuestGeneratorManager.NpcData + "\n targetName : " + QuestGeneratorManager.OtherData;
+        var message = GeneratorManager.NpcData + "\n targetName : " + GeneratorManager.OtherData;
         ResultWindow.UpdateMessage(message);
         
-        QuestGeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
+        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
         
-        ResultWindow.UpdateMessage(QuestGeneratorManager.ResultData);
+        ResultWindow.UpdateMessage(GeneratorManager.ResultData);
         ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
     }
 
     private void SaveButtonClickEvent(ClickEvent evt)
     {
-        if (string.IsNullOrEmpty(QuestGeneratorManager.ResultData) == false)
+        if (string.IsNullOrEmpty(GeneratorManager.ResultData) == false)
         {
-            _parser.SaveQuestDataInExcel(QuestGeneratorManager.ResultData, NpcDataUI.NpcNotice);
+            _parser.SaveQuestDataInExcel(GeneratorManager.ResultData, NpcDataUI.NpcNotice);
             ResultWindow.UpdateProcessMessage("데이터 저장 완료!");
             return;
         }
@@ -147,7 +147,7 @@ public class ControlPanel : EditorWindow
         }
         
         QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
-            ExcelParser.GetValueInJsonString(QuestGeneratorManager.ResultData));
+            ExcelParser.GetValueInJsonString(GeneratorManager.ResultData));
         
         ResultWindow.UpdateProcessMessage("데이터 변환 성공!!");
     }
@@ -157,16 +157,16 @@ public class ControlPanel : EditorWindow
         var msg = $"{_curExcelData} \n" + $"연계 퀘스트 생성 : {NpcDataUI.QuestType} \n";
         ResultWindow.UpdateMessage(msg);
 
-        QuestGeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg);
+        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg);
         
-        ResultWindow.UpdateMessage(QuestGeneratorManager.ResultData);
+        ResultWindow.UpdateMessage(GeneratorManager.ResultData);
         ResultWindow.UpdateProcessMessage("연계 퀘스트 생성 완료");
     }
     #endregion
 
     private void InitParser()
     {
-        var path = QuestGeneratorManager.GetFullFilePath(_defaultPath.value, _fileName.value);
+        var path = GeneratorManager.GetFullFilePath(_defaultPath.value, _fileName.value);
         _parser = new ExcelParser(path);
     }
     
@@ -181,6 +181,6 @@ public class ControlPanel : EditorWindow
     private void OnDestroy()
     {
         _isOpen = false;
-        QuestGeneratorManager.CloseAllWindow();
+        GeneratorManager.CloseAllWindow();
     }
 }

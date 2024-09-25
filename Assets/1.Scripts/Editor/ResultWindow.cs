@@ -52,6 +52,6 @@ public class ResultWindow : EditorWindow
     private void OnDestroy()
     {
         _isOpen = false;
-        QuestGeneratorManager.CloseAllWindow();
+        GeneratorManager.CloseAllWindow();
     }
 }

@@ -111,7 +111,7 @@ public class NpcDataUI : EditorWindow
 
     private void ResetButtonClickEvent(ClickEvent evt)
     {
-        QuestGeneratorManager.NpcData = string.Empty;
+        GeneratorManager.NpcData = string.Empty;
         
         ResultWindow.UpdateMessage(string.Empty);
         ResultWindow.UpdateProcessMessage("Npc Data Reset Done!!");
@@ -119,16 +119,16 @@ public class NpcDataUI : EditorWindow
 
     private void SaveButtonClickEvent(ClickEvent evt)
     {
-        QuestGeneratorManager.NpcData = "Quest Type : " + _questType.text + '\n';
-        QuestGeneratorManager.NpcData += _curNpcData;
+        GeneratorManager.NpcData = "Quest Type : " + _questType.text + '\n';
+        GeneratorManager.NpcData += _curNpcData;
         
         if (string.IsNullOrEmpty(_npcNotice.value) == false)
         {
-            QuestGeneratorManager.NpcData += 
+            GeneratorManager.NpcData += 
                 "Additional Information : " + _npcNotice.value;
         }
         
-        ResultWindow.UpdateMessage(QuestGeneratorManager.NpcData);
+        ResultWindow.UpdateMessage(GeneratorManager.NpcData);
         ResultWindow.UpdateProcessMessage("Save Done!!");
     }
 
@@ -136,7 +136,7 @@ public class NpcDataUI : EditorWindow
     
     private void InitParser()
     {
-        _fullPath = QuestGeneratorManager.GetFullFilePath(_dataPath.value, _fileName.value);
+        _fullPath = GeneratorManager.GetFullFilePath(_dataPath.value, _fileName.value);
         _parser = new ExcelParser(_fullPath);
     }
     
@@ -151,6 +151,6 @@ public class NpcDataUI : EditorWindow
     private void OnDestroy()
     {
         _isOpen = false;
-        QuestGeneratorManager.CloseAllWindow();
+        GeneratorManager.CloseAllWindow();
     }
 }

@@ -153,7 +153,7 @@ public class OtherDataUI : EditorWindow
     private void ResetButtonClickEvent(ClickEvent evt)
     {
         _curOtherData = string.Empty;
-        QuestGeneratorManager.OtherData = string.Empty;
+        GeneratorManager.OtherData = string.Empty;
         
         ResultWindow.UpdateMessage(_curOtherData);
         ResultWindow.UpdateProcessMessage($"Reset Done!!");
@@ -166,8 +166,8 @@ public class OtherDataUI : EditorWindow
             _curOtherData += '\n' + "Additional Information : " + _otherNotice.value;
         }
 
-        QuestGeneratorManager.OtherData = _curOtherData;
-        ResultWindow.UpdateMessage(QuestGeneratorManager.OtherData);
+        GeneratorManager.OtherData = _curOtherData;
+        ResultWindow.UpdateMessage(GeneratorManager.OtherData);
         ResultWindow.UpdateProcessMessage("Save Done!!");
     }
 
@@ -176,7 +176,7 @@ public class OtherDataUI : EditorWindow
     private void InitParser()
     {
         // TODO : 통합 경로를 받을 수 있는 걸로 수정
-        var path = QuestGeneratorManager.GetFullFilePath("_ExcelData", _excelList.value);
+        var path = GeneratorManager.GetFullFilePath("_ExcelData", _excelList.value);
         _parser = new ExcelParser(path);
         
         _nameList.choices.Clear();
@@ -217,6 +217,6 @@ public class OtherDataUI : EditorWindow
     private void OnDestroy()
     {
         _isOpen = false;
-        QuestGeneratorManager.CloseAllWindow();
+        GeneratorManager.CloseAllWindow();
     }
 }
