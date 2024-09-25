@@ -28,7 +28,7 @@ public class OtherDataUI : EditorWindow
     private Button _resetBt;
     private Button _saveBt;
 
-    private string _curOtherData;
+    public static string CurOtherData;
     private ExcelParser _parser;
     
     private static bool _isOpen;
@@ -42,6 +42,11 @@ public class OtherDataUI : EditorWindow
         
         win.minSize = new Vector2(550, 510);
         win.maxSize = new Vector2(550, 510);
+    }
+
+    public static void ResetCurrentData()
+    {
+        CurOtherData = string.Empty;
     }
 
     private void CreateGUI()
@@ -115,9 +120,9 @@ public class OtherDataUI : EditorWindow
 
     private void AddButtonClickEvent(ClickEvent evt)
     {
-        _curOtherData += _nameList.value + " / ";
+        CurOtherData += _nameList.value + " / ";
         
-        ResultWindow.UpdateMessage(_curOtherData);
+        ResultWindow.UpdateMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
     }
     
@@ -129,9 +134,9 @@ public class OtherDataUI : EditorWindow
             return;
         }
         
-        _curOtherData += _searchName.text + " / ";
+        CurOtherData += _searchName.text + " / ";
         
-        ResultWindow.UpdateMessage(_curOtherData);
+        ResultWindow.UpdateMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_searchName.text} Add Done!!");
     }
 
@@ -152,10 +157,10 @@ public class OtherDataUI : EditorWindow
 
     private void ResetButtonClickEvent(ClickEvent evt)
     {
-        _curOtherData = string.Empty;
+        CurOtherData = string.Empty;
         GeneratorManager.OtherData = string.Empty;
         
-        ResultWindow.UpdateMessage(_curOtherData);
+        ResultWindow.UpdateMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"Reset Done!!");
     }
 
@@ -163,10 +168,10 @@ public class OtherDataUI : EditorWindow
     {
         if (string.IsNullOrEmpty(_otherNotice.value) == false)
         {
-            _curOtherData += '\n' + "Additional Information : " + _otherNotice.value;
+            CurOtherData += '\n' + "Additional Information : " + _otherNotice.value;
         }
 
-        GeneratorManager.OtherData = _curOtherData;
+        GeneratorManager.OtherData = CurOtherData;
         ResultWindow.UpdateMessage(GeneratorManager.OtherData);
         ResultWindow.UpdateProcessMessage("Save Done!!");
     }
@@ -175,7 +180,6 @@ public class OtherDataUI : EditorWindow
 
     private void InitParser()
     {
-        // TODO : 통합 경로를 받을 수 있는 걸로 수정
         var path = GeneratorManager.GetFullFilePath("_ExcelData", _excelList.value);
         _parser = new ExcelParser(path);
         
@@ -185,7 +189,6 @@ public class OtherDataUI : EditorWindow
 
     private void GetFileList()
     {
-        // TODO : 통합 경로를 받을 수 있는 걸로 수정
         var path = Path.Combine(Application.dataPath, "_ExcelData");
         
         if (Directory.Exists(path) == false) return;

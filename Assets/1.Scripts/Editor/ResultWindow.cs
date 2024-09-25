@@ -49,6 +49,12 @@ public class ResultWindow : EditorWindow
         _processResult.text = msg;
     }
 
+    public static void UpdateBothMessage(string result, string process)
+    {
+        _resultMessage.text = result;
+        _processResult.text = process;
+    }
+
     private void OnDestroy()
     {
         _isOpen = false;

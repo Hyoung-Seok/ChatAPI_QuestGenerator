@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -12,6 +13,7 @@ public class ControlPanel : EditorWindow
     private TextField _fileName;
     private IntegerField _columnField;
     private Label _infoLabel;
+    private TextField _linkageNotice;
 
     [Header("Toggle")] 
     private Toggle _ignoreData;
@@ -25,10 +27,12 @@ public class ControlPanel : EditorWindow
     private Button _saveBt;
     private Button _loadBt;
     private Button _createBt;
-    private Button _generateBt;
+    private Button _generateCurrentBt;
+    private Button _generateExcelBt;
     
     private ExcelParser _parser;
     private QuestGenerator _questGenerator;
+    private string _curExcelData;
     
     private static bool _isOpen;
     
@@ -39,8 +43,8 @@ public class ControlPanel : EditorWindow
         var win = GetWindow<ControlPanel>();
         win.titleContent = new GUIContent("Control Panel");
         
-        win.minSize = new Vector2(550, 510);
-        win.maxSize = new Vector2(550, 510);
+        win.minSize = new Vector2(550, 800);
+        win.maxSize = new Vector2(550, 800);
     }
 
     private void CreateGUI()
@@ -58,6 +62,7 @@ public class ControlPanel : EditorWindow
         _fileName = rootVisualElement.Q<TextField>("FileName");
         _columnField = rootVisualElement.Q<IntegerField>("ExcelColumn");
         _infoLabel = rootVisualElement.Q<Label>("CurrentInfo");
+        _linkageNotice = rootVisualElement.Q<TextField>("LinkageNotice");
         
         // toggle
         _ignoreData = rootVisualElement.Q<Toggle>("IgnoreToggle");
@@ -71,7 +76,9 @@ public class ControlPanel : EditorWindow
         _saveBt = rootVisualElement.Q<Button>("SaveButton");
         _loadBt = rootVisualElement.Q<Button>("LoadDataButton");
         _createBt = rootVisualElement.Q<Button>("CreateSoButton");
-        _generateBt = rootVisualElement.Q<Button>("GenerateLinkageButton");
+
+        _generateCurrentBt = rootVisualElement.Q<Button>("LinkageFromCurrentButton");
+        _generateExcelBt = rootVisualElement.Q<Button>("LinkageFromExcelButton");
     }
 
     private void InitEventAndField()
@@ -84,7 +91,8 @@ public class ControlPanel : EditorWindow
         _saveBt.RegisterCallback<ClickEvent>(SaveButtonClickEvent);
         _loadBt.RegisterCallback<ClickEvent>(LoadExcelDataButtonClickEvent);
         _createBt.RegisterCallback<ClickEvent>(CreateSoButtonClickEvent);
-        _generateBt.RegisterCallback<ClickEvent>(GenerateLinkageQuestButton);
+        _generateCurrentBt.RegisterCallback<ClickEvent>(GenerateFromCurrentLinkageQuestButton);
+        _generateExcelBt.RegisterCallback<ClickEvent>(GenerateFromExcelLinkageQuestButton);
 
         _temperatureSlider.RegisterValueChangedCallback(TemperatureValueChangeEvent);
     }
@@ -110,6 +118,8 @@ public class ControlPanel : EditorWindow
         ResultWindow.UpdateMessage(message);
         
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
+        OtherDataUI.CurOtherData = string.Empty;
+        GeneratorManager.OtherData = string.Empty;
         
         ResultWindow.UpdateMessage(GeneratorManager.ResultData);
         ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
@@ -136,8 +146,9 @@ public class ControlPanel : EditorWindow
             ResultWindow.UpdateProcessMessage("Column Index Error!");
             return;
         }
-        
-        ResultWindow.UpdateMessage(_parser.ConvertValueDataToString(index, _ignoreData.value));
+
+        _curExcelData = _parser.ConvertValueDataToString(index, _ignoreData.value);
+        ResultWindow.UpdateMessage(_curExcelData);
     }
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
@@ -156,15 +167,52 @@ public class ControlPanel : EditorWindow
         ResultWindow.UpdateProcessMessage("데이터 변환 성공!!");
     }
 
-    private async void GenerateLinkageQuestButton(ClickEvent evt)
+    private async void GenerateFromCurrentLinkageQuestButton(ClickEvent evt)
     {
-        var msg = $"{ResultWindow.GetCurrentMessage} \n" + $"연계 퀘스트 생성 : {NpcDataUI.QuestType} \n";
-        ResultWindow.UpdateMessage(msg);
+        var msg = new StringBuilder(GeneratorManager.ResultData + '\n');
+        msg.AppendLine($"연계 퀘스트 생성 : {NpcDataUI.QuestType}");
 
-        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg);
+        if (string.IsNullOrEmpty(GeneratorManager.OtherData) == false)
+        {
+            msg.AppendLine("Target Name : " + GeneratorManager.OtherData);
+        }
+
+        if (string.IsNullOrEmpty(_linkageNotice.value) == false)
+        {
+            msg.AppendLine("Additional Information : " + _linkageNotice.value);
+        }
         
-        ResultWindow.UpdateMessage(GeneratorManager.ResultData);
-        ResultWindow.UpdateProcessMessage("연계 퀘스트 생성 완료");
+        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
+        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
+        
+        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
+    }
+
+    private async void GenerateFromExcelLinkageQuestButton(ClickEvent evt)
+    {
+        if (string.IsNullOrEmpty(_curExcelData) == true)
+        {
+            ResultWindow.UpdateProcessMessage("Excel Data Is Empty!");
+            return;
+        }
+
+        var msg = new StringBuilder(_curExcelData);
+        msg.AppendLine($"연계 퀘스트 생성 : {NpcDataUI.QuestType}");
+
+        if (string.IsNullOrEmpty(GeneratorManager.OtherData) == false)
+        {
+            msg.AppendLine("Target Name : " + GeneratorManager.OtherData);
+        }
+
+        if (string.IsNullOrEmpty(_linkageNotice.value) == false)
+        {
+            msg.AppendLine("Additional Information : " + _linkageNotice.value);
+        }
+        
+        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
+        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
+        
+        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
     }
     #endregion
 
