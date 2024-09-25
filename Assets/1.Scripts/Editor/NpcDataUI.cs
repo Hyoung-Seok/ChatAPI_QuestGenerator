@@ -30,7 +30,10 @@ public class NpcDataUI : EditorWindow
     public static void CreateWindow()
     {
         var win = GetWindow<NpcDataUI>();
-        win.titleContent = new GUIContent("NpcDataUI");
+        win.titleContent = new GUIContent("Npc Data UI");
+
+        win.minSize = new Vector2(550, 510);
+        win.maxSize = new Vector2(550, 510);
     }
 
     private void CreateGUI()
