@@ -99,7 +99,7 @@ public class OtherDataUI : EditorWindow
         var col = _nameList.choices.IndexOf(_nameList.value) + 1;
         var data = _parser.ConvertValueDataToString(col + 1);
         
-        ResultCustomWindow.UpdateMessage(data);
+        ResultWindow.UpdateMessage(data);
     }
 
     private void LevelSliderValueChangeEvent(ChangeEvent<Vector2> evt)
@@ -117,22 +117,22 @@ public class OtherDataUI : EditorWindow
     {
         _curOtherData += _nameList.value + " / ";
         
-        ResultCustomWindow.UpdateMessage(_curOtherData);
-        ResultCustomWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
+        ResultWindow.UpdateMessage(_curOtherData);
+        ResultWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
     }
     
     private void SearchButtonClickEvent(ClickEvent evt)
     {
         if (_parser.FindColumnWitValue(_searchName.text) <= 0)
         {
-            ResultCustomWindow.UpdateProcessMessage($"{_searchName.text} Not Found!!!");
+            ResultWindow.UpdateProcessMessage($"{_searchName.text} Not Found!!!");
             return;
         }
         
         _curOtherData += _searchName.text + " / ";
         
-        ResultCustomWindow.UpdateMessage(_curOtherData);
-        ResultCustomWindow.UpdateProcessMessage($"{_searchName.text} Add Done!!");
+        ResultWindow.UpdateMessage(_curOtherData);
+        ResultWindow.UpdateProcessMessage($"{_searchName.text} Add Done!!");
     }
 
     private void ApplyButtonClickEvent(ClickEvent evt)
@@ -142,7 +142,7 @@ public class OtherDataUI : EditorWindow
 
         if (list == null)
         {
-            ResultCustomWindow.UpdateProcessMessage($"Value Not Found!!");
+            ResultWindow.UpdateProcessMessage($"Value Not Found!!");
             return;
         }
         
@@ -155,8 +155,8 @@ public class OtherDataUI : EditorWindow
         _curOtherData = string.Empty;
         QuestGeneratorManager.OtherData = string.Empty;
         
-        ResultCustomWindow.UpdateMessage(_curOtherData);
-        ResultCustomWindow.UpdateProcessMessage($"Reset Done!!");
+        ResultWindow.UpdateMessage(_curOtherData);
+        ResultWindow.UpdateProcessMessage($"Reset Done!!");
     }
 
     private void SaveButtonClickEvent(ClickEvent evt)
@@ -167,8 +167,8 @@ public class OtherDataUI : EditorWindow
         }
 
         QuestGeneratorManager.OtherData = _curOtherData;
-        ResultCustomWindow.UpdateMessage(QuestGeneratorManager.OtherData);
-        ResultCustomWindow.UpdateProcessMessage("Save Done!!");
+        ResultWindow.UpdateMessage(QuestGeneratorManager.OtherData);
+        ResultWindow.UpdateProcessMessage("Save Done!!");
     }
 
     #endregion

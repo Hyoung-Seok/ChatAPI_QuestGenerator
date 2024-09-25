@@ -99,15 +99,15 @@ public class ControlPanel : EditorWindow
 
     private async void SendButtonClickEvent(ClickEvent evt)
     {
-        ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
+        ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
         
         var message = QuestGeneratorManager.NpcData + "\n targetName : " + QuestGeneratorManager.OtherData;
-        ResultCustomWindow.UpdateMessage(message);
+        ResultWindow.UpdateMessage(message);
         
         QuestGeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
         
-        ResultCustomWindow.UpdateMessage(QuestGeneratorManager.ResultData);
-        ResultCustomWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
+        ResultWindow.UpdateMessage(QuestGeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
     }
 
     private void SaveButtonClickEvent(ClickEvent evt)
@@ -115,11 +115,11 @@ public class ControlPanel : EditorWindow
         if (string.IsNullOrEmpty(QuestGeneratorManager.ResultData) == false)
         {
             _parser.SaveQuestDataInExcel(QuestGeneratorManager.ResultData, NpcDataUI.NpcNotice);
-            ResultCustomWindow.UpdateProcessMessage("데이터 저장 완료!");
+            ResultWindow.UpdateProcessMessage("데이터 저장 완료!");
             return;
         }
         
-        ResultCustomWindow.UpdateProcessMessage("데이터 저장 실패!");
+        ResultWindow.UpdateProcessMessage("데이터 저장 실패!");
     }
 
     private void LoadExcelDataButtonClickEvent(ClickEvent evt)
@@ -128,12 +128,12 @@ public class ControlPanel : EditorWindow
         
         if (index <= 1)
         {
-            ResultCustomWindow.UpdateProcessMessage("Column Index Error!");
+            ResultWindow.UpdateProcessMessage("Column Index Error!");
             return;
         }
 
         _curExcelData = _parser.ConvertValueDataToString(index, true);
-        ResultCustomWindow.UpdateMessage(_curExcelData);
+        ResultWindow.UpdateMessage(_curExcelData);
     }
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
@@ -149,18 +149,18 @@ public class ControlPanel : EditorWindow
         QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
             ExcelParser.GetValueInJsonString(QuestGeneratorManager.ResultData));
         
-        ResultCustomWindow.UpdateProcessMessage("데이터 변환 성공!!");
+        ResultWindow.UpdateProcessMessage("데이터 변환 성공!!");
     }
 
     private async void GenerateLinkageQuestButton(ClickEvent evt)
     {
         var msg = $"{_curExcelData} \n" + $"연계 퀘스트 생성 : {NpcDataUI.QuestType} \n";
-        ResultCustomWindow.UpdateMessage(msg);
+        ResultWindow.UpdateMessage(msg);
 
         QuestGeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg);
         
-        ResultCustomWindow.UpdateMessage(QuestGeneratorManager.ResultData);
-        ResultCustomWindow.UpdateProcessMessage("연계 퀘스트 생성 완료");
+        ResultWindow.UpdateMessage(QuestGeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage("연계 퀘스트 생성 완료");
     }
     #endregion
 

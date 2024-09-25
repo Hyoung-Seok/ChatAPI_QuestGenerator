@@ -92,7 +92,7 @@ public class NpcDataUI : EditorWindow
         var col = _npcNameList.choices.IndexOf(_npcNameList.value) + 1;
         _curNpcData = _parser.ConvertValueDataToString(col + 1);
         
-        ResultCustomWindow.UpdateMessage(_curNpcData);
+        ResultWindow.UpdateMessage(_curNpcData);
     }
 
     private void InitValueClickEvent(ClickEvent evt)
@@ -106,15 +106,15 @@ public class NpcDataUI : EditorWindow
     private void SearchButtonClickEvent(ClickEvent evt)
     {
         _curNpcData = _parser.ConvertValueDataToString(_parser.FindColumnWitValue(_searchName.value));
-        ResultCustomWindow.UpdateMessage(_curNpcData);
+        ResultWindow.UpdateMessage(_curNpcData);
     }
 
     private void ResetButtonClickEvent(ClickEvent evt)
     {
         QuestGeneratorManager.NpcData = string.Empty;
         
-        ResultCustomWindow.UpdateMessage(string.Empty);
-        ResultCustomWindow.UpdateProcessMessage("Npc Data Reset Done!!");
+        ResultWindow.UpdateMessage(string.Empty);
+        ResultWindow.UpdateProcessMessage("Npc Data Reset Done!!");
     }
 
     private void SaveButtonClickEvent(ClickEvent evt)
@@ -128,8 +128,8 @@ public class NpcDataUI : EditorWindow
                 "Additional Information : " + _npcNotice.value;
         }
         
-        ResultCustomWindow.UpdateMessage(QuestGeneratorManager.NpcData);
-        ResultCustomWindow.UpdateProcessMessage("Save Done!!");
+        ResultWindow.UpdateMessage(QuestGeneratorManager.NpcData);
+        ResultWindow.UpdateProcessMessage("Save Done!!");
     }
 
     #endregion

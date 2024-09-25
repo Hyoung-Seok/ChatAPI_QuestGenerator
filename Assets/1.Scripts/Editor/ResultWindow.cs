@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ResultCustomWindow : EditorWindow
+public class ResultWindow : EditorWindow
 {
     [SerializeField] private VisualTreeAsset visualTreeAsset;
     private static Label _resultMessage;
@@ -17,7 +17,7 @@ public class ResultCustomWindow : EditorWindow
     {
         _isOpen = true;
         
-        var window = GetWindow<ResultCustomWindow>();
+        var window = GetWindow<ResultWindow>();
         window.titleContent = new GUIContent("Result");
     }
 
@@ -27,7 +27,7 @@ public class ResultCustomWindow : EditorWindow
         
         _processResult.text = _resultMessage.text = string.Empty;
         
-        var window = GetWindow<ResultCustomWindow>();
+        var window = GetWindow<ResultWindow>();
         window.Close();
     }
 

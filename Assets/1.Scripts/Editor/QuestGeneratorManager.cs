@@ -12,7 +12,7 @@ public class QuestGeneratorManager : EditorWindow
     [MenuItem("OpenAI/QuestGenerator")]
     private static void CreateWindow()
     {
-        ResultCustomWindow.ShowResultWindow();
+        ResultWindow.ShowResultWindow();
         
         NpcDataUI.CreateWindow();
         OtherDataUI.CreateWindow();
@@ -43,6 +43,6 @@ public class QuestGeneratorManager : EditorWindow
         NpcDataUI.CloseWindow();
         OtherDataUI.CloseWindow();
         ControlPanel.CloseWindow();
-        ResultCustomWindow.CloseWindow();
+        ResultWindow.CloseWindow();
     }
 }
