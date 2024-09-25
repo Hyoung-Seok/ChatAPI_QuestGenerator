@@ -13,6 +13,9 @@ public class ControlPanel : EditorWindow
     private IntegerField _columnField;
     private Label _infoLabel;
 
+    [Header("Toggle")] 
+    private Toggle _ignoreData;
+    
     [Header("Slider")] 
     private Slider _temperatureSlider;
 
@@ -23,8 +26,7 @@ public class ControlPanel : EditorWindow
     private Button _loadBt;
     private Button _createBt;
     private Button _generateBt;
-
-    private string _curExcelData;
+    
     private ExcelParser _parser;
     private QuestGenerator _questGenerator;
     
@@ -56,6 +58,9 @@ public class ControlPanel : EditorWindow
         _fileName = rootVisualElement.Q<TextField>("FileName");
         _columnField = rootVisualElement.Q<IntegerField>("ExcelColumn");
         _infoLabel = rootVisualElement.Q<Label>("CurrentInfo");
+        
+        // toggle
+        _ignoreData = rootVisualElement.Q<Toggle>("IgnoreToggle");
 
         // slider
         _temperatureSlider = rootVisualElement.Q<Slider>("Temperature");
@@ -131,9 +136,8 @@ public class ControlPanel : EditorWindow
             ResultWindow.UpdateProcessMessage("Column Index Error!");
             return;
         }
-
-        _curExcelData = _parser.ConvertValueDataToString(index, true);
-        ResultWindow.UpdateMessage(_curExcelData);
+        
+        ResultWindow.UpdateMessage(_parser.ConvertValueDataToString(index, _ignoreData.value));
     }
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
@@ -154,7 +158,7 @@ public class ControlPanel : EditorWindow
 
     private async void GenerateLinkageQuestButton(ClickEvent evt)
     {
-        var msg = $"{_curExcelData} \n" + $"연계 퀘스트 생성 : {NpcDataUI.QuestType} \n";
+        var msg = $"{ResultWindow.GetCurrentMessage} \n" + $"연계 퀘스트 생성 : {NpcDataUI.QuestType} \n";
         ResultWindow.UpdateMessage(msg);
 
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg);
