@@ -32,6 +32,7 @@ public class ControlPanel : EditorWindow
     
     private ExcelParser _parser;
     private QuestGenerator _questGenerator;
+    private string _curExcelData;
     
     private static bool _isOpen;
     
@@ -91,6 +92,7 @@ public class ControlPanel : EditorWindow
         _loadBt.RegisterCallback<ClickEvent>(LoadExcelDataButtonClickEvent);
         _createBt.RegisterCallback<ClickEvent>(CreateSoButtonClickEvent);
         _generateCurrentBt.RegisterCallback<ClickEvent>(GenerateFromCurrentLinkageQuestButton);
+        _generateExcelBt.RegisterCallback<ClickEvent>(GenerateFromExcelLinkageQuestButton);
 
         _temperatureSlider.RegisterValueChangedCallback(TemperatureValueChangeEvent);
     }
@@ -144,8 +146,9 @@ public class ControlPanel : EditorWindow
             ResultWindow.UpdateProcessMessage("Column Index Error!");
             return;
         }
-        
-        ResultWindow.UpdateMessage(_parser.ConvertValueDataToString(index, _ignoreData.value));
+
+        _curExcelData = _parser.ConvertValueDataToString(index, _ignoreData.value);
+        ResultWindow.UpdateMessage(_curExcelData);
     }
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
@@ -167,6 +170,33 @@ public class ControlPanel : EditorWindow
     private async void GenerateFromCurrentLinkageQuestButton(ClickEvent evt)
     {
         var msg = new StringBuilder(GeneratorManager.ResultData + '\n');
+        msg.AppendLine($"연계 퀘스트 생성 : {NpcDataUI.QuestType}");
+
+        if (string.IsNullOrEmpty(GeneratorManager.OtherData) == false)
+        {
+            msg.AppendLine("Target Name : " + GeneratorManager.OtherData);
+        }
+
+        if (string.IsNullOrEmpty(_linkageNotice.value) == false)
+        {
+            msg.AppendLine("Additional Information : " + _linkageNotice.value);
+        }
+        
+        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
+        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
+        
+        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
+    }
+
+    private async void GenerateFromExcelLinkageQuestButton(ClickEvent evt)
+    {
+        if (string.IsNullOrEmpty(_curExcelData) == true)
+        {
+            ResultWindow.UpdateProcessMessage("Excel Data Is Empty!");
+            return;
+        }
+
+        var msg = new StringBuilder(_curExcelData);
         msg.AppendLine($"연계 퀘스트 생성 : {NpcDataUI.QuestType}");
 
         if (string.IsNullOrEmpty(GeneratorManager.OtherData) == false)
