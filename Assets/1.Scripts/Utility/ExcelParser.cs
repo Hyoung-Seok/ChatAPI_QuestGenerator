@@ -10,6 +10,7 @@ using UnityEngine;
 public class ExcelParser
 {
     private static string FIRST_KEY = "QuestID";
+    private const int COST_ROW = 10;
     
     private int _baseRow;
     private int _rowCount;
@@ -139,11 +140,11 @@ public class ExcelParser
     // 엑셀에 데이터 저장
     public void SaveQuestDataInExcel(string data, string notice)
     {
-        var emptyColIndex = 2;
+        var inputCol = 2;
         
-        while(string.IsNullOrEmpty(_workSheet.Cells[emptyColIndex, 1].Text) == false)
+        while(string.IsNullOrEmpty(_workSheet.Cells[inputCol, 1].Text) == false)
         {
-            emptyColIndex++;
+            inputCol++;
         }
         
         var valueList = GetValueInJsonString(data);
@@ -152,13 +153,28 @@ public class ExcelParser
         {
             for (var row = 1; row <= values.Count; ++row)
             {
-                _workSheet.Cells[emptyColIndex, row].Value = values[row - 1];
+                _workSheet.Cells[inputCol, row].Value = values[row - 1];
             }
             
-            _workSheet.Cells[emptyColIndex++, values.Count + 1].Value = notice;
+            SaveGenerateCostData(inputCol);
+            _workSheet.Cells[inputCol++, values.Count + 1].Value = notice;
         }
         
         _package.Save();
+    }
+    
+    // 코스트 비용 저장.
+    private void SaveGenerateCostData(int col)
+    {
+        var row = COST_ROW;
+        
+        for (var i = 0; i < TokensData.TokenData.Length; ++i)
+        {
+            _workSheet.Cells[col, row++].Value =
+                $"Token : {TokensData.TokenData[i]} \n Cost : {TokensData.CostData[i]}$";
+        }
+
+        _workSheet.Cells[col, row].Value = $"{TokensData.CreateTime}S";
     }
 
     public static List<List<string>> GetValueInJsonString(string data)
