@@ -92,7 +92,7 @@ public class NpcDataUI : EditorWindow
         var col = _npcNameList.choices.IndexOf(_npcNameList.value) + 1;
         _curNpcData = _parser.ConvertValueDataToString(col + 1);
         
-        ResultWindow.UpdateMessage(_curNpcData);
+        ResultWindow.UpdateNpcDataMessage(_curNpcData);
     }
 
     private void InitValueClickEvent(ClickEvent evt)
@@ -106,14 +106,14 @@ public class NpcDataUI : EditorWindow
     private void SearchButtonClickEvent(ClickEvent evt)
     {
         _curNpcData = _parser.ConvertValueDataToString(_parser.FindColumnWitValue(_searchName.value));
-        ResultWindow.UpdateMessage(_curNpcData);
+        ResultWindow.UpdateNpcDataMessage(_curNpcData);
     }
 
     private void ResetButtonClickEvent(ClickEvent evt)
     {
         GeneratorManager.NpcData = string.Empty;
         
-        ResultWindow.UpdateMessage(string.Empty);
+        ResultWindow.UpdateNpcDataMessage(string.Empty);
         ResultWindow.UpdateProcessMessage("Npc Data Reset Done!!");
     }
 
@@ -128,7 +128,7 @@ public class NpcDataUI : EditorWindow
                 "Additional Information : " + _npcNotice.value;
         }
         
-        ResultWindow.UpdateMessage(GeneratorManager.NpcData);
+        ResultWindow.UpdateNpcDataMessage(GeneratorManager.NpcData);
         ResultWindow.UpdateProcessMessage("Save Done!!");
     }
 

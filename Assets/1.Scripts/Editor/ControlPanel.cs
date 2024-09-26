@@ -115,13 +115,13 @@ public class ControlPanel : EditorWindow
         ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
         
         var message = GeneratorManager.NpcData + "\n targetName : " + GeneratorManager.OtherData;
-        ResultWindow.UpdateMessage(message);
+        ResultWindow.UpdateResultMessage(message);
         
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
         OtherDataUI.CurOtherData = string.Empty;
         GeneratorManager.OtherData = string.Empty;
         
-        ResultWindow.UpdateMessage(GeneratorManager.ResultData);
+        ResultWindow.UpdateResultMessage(GeneratorManager.ResultData);
         ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
     }
 
@@ -148,7 +148,7 @@ public class ControlPanel : EditorWindow
         }
 
         _curExcelData = _parser.ConvertValueDataToString(index, _ignoreData.value);
-        ResultWindow.UpdateMessage(_curExcelData);
+        ResultWindow.UpdateResultMessage(_curExcelData);
     }
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
@@ -182,10 +182,13 @@ public class ControlPanel : EditorWindow
             msg.AppendLine("Additional Information : " + _linkageNotice.value);
         }
         
-        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
+        ResultWindow.UpdateResultMessage(msg.ToString());
+        ResultWindow.UpdateProcessMessage("연계 퀘스트 생성중..");
+        
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
         
-        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
+        ResultWindow.UpdateResultMessage(GeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage("연계 퀘스트 생성 완료..");
     }
 
     private async void GenerateFromExcelLinkageQuestButton(ClickEvent evt)
@@ -209,10 +212,13 @@ public class ControlPanel : EditorWindow
             msg.AppendLine("Additional Information : " + _linkageNotice.value);
         }
         
-        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
+        ResultWindow.UpdateResultMessage(msg.ToString());
+        ResultWindow.UpdateProcessMessage("연계 퀘스트 생성중..");
+        
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
         
-        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
+        ResultWindow.UpdateResultMessage(GeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage("연계 퀘스트 생성 완료..");
     }
     #endregion
 
