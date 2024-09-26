@@ -57,8 +57,10 @@ public class QuestGenerator
             new ChatMessage(ChatMessageRole.System, _systemMessage),
             new ChatMessage(ChatMessageRole.User, chatMsg)
         };
-
+        
         var result = await _api.Chat.CreateChatCompletionAsync(_chat);
+        TokensData.SaveTokenData(result.Usage);
+        
         return result.ToString();
     }
 
