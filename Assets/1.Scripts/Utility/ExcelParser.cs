@@ -188,6 +188,12 @@ public class ExcelParser
             
             foreach (var value in jObj)
             {
+                if (string.IsNullOrEmpty(value.ToString()) == true)
+                {
+                    valueList.Add("NULL");
+                    continue;
+                }
+                
                 valueList.Add(value.Value.ToString());
             }
 
@@ -204,7 +210,13 @@ public class ExcelParser
             if (questDetails == null) continue;
             
             foreach (var value in questDetails)
-            {
+            {           
+                if (string.IsNullOrEmpty(value.ToString()) == true)
+                {
+                    questValue.Add("NULL");
+                    continue;
+                }
+
                 questValue.Add(value.Value.ToString());
             }
             
