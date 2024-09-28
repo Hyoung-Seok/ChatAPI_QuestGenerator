@@ -45,7 +45,10 @@ public class ResultWindow : EditorWindow
         _resultMessage = rootVisualElement.Q<Label>("ResultField");
 
         _curNpcData.text = _curOtherData.text = _resultMessage.text = string.Empty;
+        
         _resultMessage.style.whiteSpace = WhiteSpace.Normal;
+        _curNpcData.style.whiteSpace = WhiteSpace.Normal;
+        _curOtherData.style.whiteSpace = WhiteSpace.Normal;
     }
 
     #region UpdateMessageFunc
