@@ -104,7 +104,7 @@ public class OtherDataUI : EditorWindow
         var col = _nameList.choices.IndexOf(_nameList.value) + 1;
         var data = _parser.ConvertValueDataToString(col + 1);
         
-        ResultWindow.UpdateMessage(data);
+        ResultWindow.UpdateOtherDataMessage(data);
     }
 
     private void LevelSliderValueChangeEvent(ChangeEvent<Vector2> evt)
@@ -122,7 +122,7 @@ public class OtherDataUI : EditorWindow
     {
         CurOtherData += _nameList.value + " / ";
         
-        ResultWindow.UpdateMessage(CurOtherData);
+        ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
     }
     
@@ -136,7 +136,7 @@ public class OtherDataUI : EditorWindow
         
         CurOtherData += _searchName.text + " / ";
         
-        ResultWindow.UpdateMessage(CurOtherData);
+        ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_searchName.text} Add Done!!");
     }
 
@@ -160,7 +160,7 @@ public class OtherDataUI : EditorWindow
         CurOtherData = string.Empty;
         GeneratorManager.OtherData = string.Empty;
         
-        ResultWindow.UpdateMessage(CurOtherData);
+        ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"Reset Done!!");
     }
 
@@ -172,7 +172,7 @@ public class OtherDataUI : EditorWindow
         }
 
         GeneratorManager.OtherData = CurOtherData;
-        ResultWindow.UpdateMessage(GeneratorManager.OtherData);
+        ResultWindow.UpdateOtherDataMessage(GeneratorManager.OtherData);
         ResultWindow.UpdateProcessMessage("Save Done!!");
     }
 

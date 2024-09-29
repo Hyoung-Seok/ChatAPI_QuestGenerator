@@ -6,10 +6,11 @@ using UnityEngine.UIElements;
 public class ResultWindow : EditorWindow
 {
     [SerializeField] private VisualTreeAsset visualTreeAsset;
+    
+    private static Label _curNpcData;
+    private static Label _curOtherData;
     private static Label _resultMessage;
     private static Label _processResult;
-
-    public static string GetCurrentMessage => _resultMessage.text;
     
     private static bool _isOpen;
 
@@ -25,8 +26,6 @@ public class ResultWindow : EditorWindow
     {
         if(_isOpen == false) return;
         
-        _processResult.text = _resultMessage.text = string.Empty;
-        
         var window = GetWindow<ResultWindow>();
         window.Close();
     }
@@ -34,27 +33,47 @@ public class ResultWindow : EditorWindow
     private void CreateGUI()
     {
         visualTreeAsset.CloneTree(rootVisualElement);
-
-        _resultMessage = rootVisualElement.Q<Label>("ResultMessage");
-        _processResult = rootVisualElement.Q<Label>("ProcessResult");
+        
+        InitUI();
     }
 
-    public static void UpdateMessage(string msg)
+    private void InitUI()
     {
-        _resultMessage.text = msg;
+        _processResult = rootVisualElement.Q<Label>("ProcessMsg");
+        _curNpcData = rootVisualElement.Q<Label>("NpcField");
+        _curOtherData = rootVisualElement.Q<Label>("OtherField");
+        _resultMessage = rootVisualElement.Q<Label>("ResultField");
+
+        _curNpcData.text = _curOtherData.text = _resultMessage.text = string.Empty;
+        
+        _resultMessage.style.whiteSpace = WhiteSpace.Normal;
+        _curNpcData.style.whiteSpace = WhiteSpace.Normal;
+        _curOtherData.style.whiteSpace = WhiteSpace.Normal;
     }
-    
+
+    #region UpdateMessageFunc
+
     public static void UpdateProcessMessage(string msg)
     {
         _processResult.text = msg;
     }
-
-    public static void UpdateBothMessage(string result, string process)
+    
+    public static void UpdateNpcDataMessage(string msg)
     {
-        _resultMessage.text = result;
-        _processResult.text = process;
+        _curNpcData.text = msg;
     }
 
+    public static void UpdateOtherDataMessage(string msg)
+    {
+        _curOtherData.text = msg;
+    }
+
+    public static void UpdateResultMessage(string msg)
+    {
+        _resultMessage.text = msg;
+    }
+
+    #endregion
     private void OnDestroy()
     {
         _isOpen = false;

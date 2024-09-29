@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Text;
+using OpenAI_API.Chat;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -33,6 +35,7 @@ public class ControlPanel : EditorWindow
     private ExcelParser _parser;
     private QuestGenerator _questGenerator;
     private string _curExcelData;
+    private Stopwatch _stopwatch;
     
     private static bool _isOpen;
     
@@ -95,9 +98,11 @@ public class ControlPanel : EditorWindow
         _generateExcelBt.RegisterCallback<ClickEvent>(GenerateFromExcelLinkageQuestButton);
 
         _temperatureSlider.RegisterValueChangedCallback(TemperatureValueChangeEvent);
+
+        _stopwatch = new Stopwatch();
     }
 
-    #region
+    #region Event
 
     private void TemperatureValueChangeEvent(ChangeEvent<float> evt)
     {
@@ -112,17 +117,20 @@ public class ControlPanel : EditorWindow
 
     private async void SendButtonClickEvent(ClickEvent evt)
     {
-        ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
+        StartStopWatch();
         
         var message = GeneratorManager.NpcData + "\n targetName : " + GeneratorManager.OtherData;
-        ResultWindow.UpdateMessage(message);
+        ResultWindow.UpdateResultMessage(message);
         
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
+        
         OtherDataUI.CurOtherData = string.Empty;
         GeneratorManager.OtherData = string.Empty;
+
+        var time = EndStopWatch();
         
-        ResultWindow.UpdateMessage(GeneratorManager.ResultData);
-        ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 완료...");
+        ResultWindow.UpdateResultMessage(GeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage($"GPT 퀘스트 생성 완료...(생성 시간 : {time});");
     }
 
     private void SaveButtonClickEvent(ClickEvent evt)
@@ -148,7 +156,7 @@ public class ControlPanel : EditorWindow
         }
 
         _curExcelData = _parser.ConvertValueDataToString(index, _ignoreData.value);
-        ResultWindow.UpdateMessage(_curExcelData);
+        ResultWindow.UpdateResultMessage(_curExcelData);
     }
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
@@ -182,10 +190,14 @@ public class ControlPanel : EditorWindow
             msg.AppendLine("Additional Information : " + _linkageNotice.value);
         }
         
-        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
-        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
+        ResultWindow.UpdateResultMessage(msg.ToString());
+        StartStopWatch();
         
-        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
+        GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
+
+        var time = EndStopWatch();
+        ResultWindow.UpdateResultMessage(GeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage($"GPT 퀘스트 생성 완료...(생성 시간 : {time});");
     }
 
     private async void GenerateFromExcelLinkageQuestButton(ClickEvent evt)
@@ -195,7 +207,7 @@ public class ControlPanel : EditorWindow
             ResultWindow.UpdateProcessMessage("Excel Data Is Empty!");
             return;
         }
-
+        
         var msg = new StringBuilder(_curExcelData);
         msg.AppendLine($"연계 퀘스트 생성 : {NpcDataUI.QuestType}");
 
@@ -209,10 +221,14 @@ public class ControlPanel : EditorWindow
             msg.AppendLine("Additional Information : " + _linkageNotice.value);
         }
         
-        ResultWindow.UpdateBothMessage(msg.ToString(), "연계 퀘스트 생성중..");
+        ResultWindow.UpdateResultMessage(msg.ToString());
+        StartStopWatch();
+        
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(msg.ToString());
         
-        ResultWindow.UpdateBothMessage(GeneratorManager.ResultData, "연계 퀘스트 생성 완료!!");
+        var time = EndStopWatch();
+        ResultWindow.UpdateResultMessage(GeneratorManager.ResultData);
+        ResultWindow.UpdateProcessMessage($"GPT 퀘스트 생성 완료...(생성 시간 : {time});");
     }
     #endregion
 
@@ -228,6 +244,24 @@ public class ControlPanel : EditorWindow
         
         var window = GetWindow<ControlPanel>();
         window.Close();
+    }
+
+    private void StartStopWatch()
+    {
+        ResultWindow.UpdateProcessMessage("GPT 퀘스트 생성 중...");
+        
+        _stopwatch.Reset();
+        _stopwatch.Start();
+    }
+
+    private float EndStopWatch()
+    {
+        _stopwatch.Stop();
+
+        var result = (float)Math.Floor(_stopwatch.Elapsed.TotalSeconds * 10) / 10;
+        TokensData.SaveCreateTime(result);
+        
+        return result;
     }
 
     private void OnDestroy()
