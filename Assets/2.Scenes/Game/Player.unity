@@ -1046,6 +1046,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerRig: {fileID: 1537853911}
   cameraDir: {fileID: 651288415}
+  idleState: {fileID: 0}
   moveState: {fileID: 1537853909}
 --- !u!54 &1537853911
 Rigidbody:
