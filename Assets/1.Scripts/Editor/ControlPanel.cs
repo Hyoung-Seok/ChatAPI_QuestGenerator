@@ -149,7 +149,7 @@ public class ControlPanel : EditorWindow
     {
         var index = _columnField.value;
         
-        if (index <= 1)
+        if (index <= 0)
         {
             ResultWindow.UpdateProcessMessage("Column Index Error!");
             return;
@@ -161,7 +161,7 @@ public class ControlPanel : EditorWindow
 
     private void CreateSoButtonClickEvent(ClickEvent evt)
     {
-        if (_columnField.value > 1)
+        if (_columnField.value > 0)
         {
             QuestScriptableGenerator.CreateAndSaveScriptableObj<QuestData>(
                 _parser.ConvertValueDataToList(_columnField.value));

@@ -1,11 +1,10 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
-using OfficeOpenXml;
-using UnityEngine;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 
 public class ExcelParser
 {
@@ -15,52 +14,71 @@ public class ExcelParser
     private int _baseRow;
     private int _rowCount;
     private List<string> _keyList;
-    private ExcelWorksheet _workSheet;
-    private ExcelPackage _package;
 
-    public ExcelParser(string path, int sheetIndex = 0, int baseRow = 1)
+    private string _path;
+    private IWorkbook _workbook;
+    private ISheet _sheet;
+
+    public ExcelParser(string path, int sheetIndex = 0)
     {
         if (File.Exists(path) == false)
         {
             throw new Exception("File Not Exists!!");
         }
 
-        var fileInfo = new FileInfo(path);
-        _package = new ExcelPackage(fileInfo);
-        _workSheet = _package.Workbook.Worksheets[sheetIndex];
-
-        _baseRow = baseRow;
+        _path = path;
+        var fileStream = new FileStream(_path, FileMode.Open, FileAccess.ReadWrite);
+        _workbook = new XSSFWorkbook(fileStream);
+        _sheet = _workbook.GetSheetAt(sheetIndex);
         
-        CheckCurrentLowCount();
+        CheckMaxRowCount();
         InitKeyList();
     }
 
     // Key에 해당하는 모든 Value값 가져오기
-    public List<string> GetAllValuesFromKey()
+    public List<string> GetAllValuesFromKeyOrNull(string key = "Name")
     {
         var result = new List<string>();
-        var col = 2;
+        var keyIndex = _keyList.IndexOf(key);
 
-        while (string.IsNullOrEmpty(_workSheet.Cells[col, _baseRow].Text) == false)
+        if (keyIndex <= -1)
         {
-            result.Add(_workSheet.Cells[col++, _baseRow].Text);
+            return null;
+        }
+
+        var index = 1;
+        var row = _sheet.GetRow(index);
+        var cell = row.GetCell(keyIndex);
+
+        while (string.IsNullOrEmpty(cell?.ToString()) == false)
+        {
+            result.Add(cell.ToString());
+            
+            row = _sheet.GetRow(++index);
+            cell = row?.GetCell(keyIndex);
         }
         
         return result;
     }
 
     // Value가 존재하는 열 반환
-    public int FindColumnWitValue(string value)
+    public int FindColumnWithValue(string value, string key = "Name")
     {
-        var col = 2;
-        while (string.IsNullOrEmpty(_workSheet.Cells[col, _baseRow].Text) == false)
+        var keyIndex = _keyList.IndexOf(key);
+
+        var index = 1;
+        var row = _sheet.GetRow(index);
+        var cell = row.GetCell(keyIndex);
+        
+        while (string.IsNullOrEmpty(cell?.ToString()) == false)
         {
-            if (string.Equals(_workSheet.Cells[col, _baseRow].Text, value) == true)
+            if (string.Equals(cell?.ToString(), value) == true)
             {
-                return col;
+                return index;
             }
 
-            col++;
+            row = _sheet.GetRow(++index);
+            cell = row.GetCell(keyIndex);
         }
 
         return -1;
@@ -75,11 +93,14 @@ public class ExcelParser
         }
         
         var result = new StringBuilder();
-        var row = (ignoreFinalData) ? _rowCount - 1 : _rowCount;
-
-        for (var i = 1; i < row; ++i)
+        
+        var rowCell = _sheet.GetRow(col);
+        var iter = (ignoreFinalData) ? _rowCount - 1 : _rowCount;
+        
+        for (var row = 0; row < iter; ++row)
         {
-            result.Append(_keyList[i - 1] + " : " + _workSheet.Cells[col, i].Text + '\n');
+            var cell = rowCell.GetCell(row);
+            result.Append(_keyList[row] + " : " + cell.ToString() + '\n');
         }
         
         return result.ToString();
@@ -94,44 +115,46 @@ public class ExcelParser
         }
 
         var result = new List<string>();
-        var row = 1;
+        var rowCell = _sheet.GetRow(col);
 
-        while (string.IsNullOrEmpty(_workSheet.Cells[col, row].Text) == false)
+        for (var row = 0; row < _rowCount; ++row)
         {
-            result.Add(_workSheet.Cells[col, row++].Text);
+            var cell = rowCell.GetCell(row);
+            result.Add(cell.ToString());
         }
-        
+
         return result;
     }
     
     // 조건에 맞는 Value 모두 반환
     public List<string> GetValuesByLevel(int min, int max)
     {
-        var curRow = -1;
-
-        for (var row = 1; row < _rowCount; ++row)
-        {
-            if (int.TryParse(_workSheet.Cells[2, row].Text, out var temp) == true)
-            {
-                curRow = row;
-            }
-        }
-
-        if (curRow < 0) return null;
+        var levelIndex = _keyList.IndexOf("LV");
+        
+        if (levelIndex < 0) return null;
 
         var result = new List<string>();
-        var col = 2;
+        var nameIndex = _keyList.IndexOf("Name");
 
-        while (string.IsNullOrEmpty(_workSheet.Cells[col, curRow].Text) == false)
+        var index = 1;
+        var rowCell = _sheet.GetRow(index);
+        var cell = rowCell.GetCell(levelIndex);
+            
+        while (string.IsNullOrEmpty(cell?.ToString()) == false)
         {
-            var lv = int.Parse(_workSheet.Cells[col, curRow].Text);
-
+            var value = cell.ToString();
+            var lv = int.Parse(value);
+        
             if (min <= lv && lv < max)
             {
-                result.Add(_workSheet.Cells[col, _baseRow].Text);
+                var nameRow = _sheet.GetRow(index);
+                var nameCell = nameRow.GetCell(nameIndex);
+                
+                result.Add(nameCell.ToString());
             }
-
-            col++;
+        
+            rowCell = _sheet.GetRow(++index);
+            cell = rowCell?.GetCell(levelIndex);
         }
 
         return result;
@@ -140,41 +163,47 @@ public class ExcelParser
     // 엑셀에 데이터 저장
     public void SaveQuestDataInExcel(string data, string notice)
     {
-        var inputCol = 2;
-        
-        while(string.IsNullOrEmpty(_workSheet.Cells[inputCol, 1].Text) == false)
-        {
-            inputCol++;
-        }
-        
+        var lastRowIndex = _sheet.LastRowNum + 1;
         var valueList = GetValueInJsonString(data);
-
-        foreach (var values in valueList)
-        {
-            for (var row = 1; row <= values.Count; ++row)
-            {
-                _workSheet.Cells[inputCol, row].Value = values[row - 1];
-            }
-            
-            SaveGenerateCostData(inputCol);
-            _workSheet.Cells[inputCol++, values.Count + 1].Value = notice;
-        }
+        var newRow = _sheet.CreateRow(lastRowIndex);
+        var count = 1;
         
-        _package.Save();
+        foreach (var value in valueList)
+        {
+            for (var i = 0; i < value.Count; ++i)
+            {
+                var cell = newRow.CreateCell(i);
+                cell.SetCellValue(value[i]);
+            }
+
+            var noticeCell = newRow.CreateCell(value.Count);
+            noticeCell.SetCellValue(notice);
+            
+            SaveGenerateCostData(newRow);
+            
+            newRow = _sheet.CreateRow(lastRowIndex + count);
+            count++;
+        }
+
+        using var writeStream = new FileStream(_path, FileMode.Create, FileAccess.Write);
+        
+        _workbook.Write(writeStream);
+        writeStream.Close();
     }
     
     // 코스트 비용 저장.
-    private void SaveGenerateCostData(int col)
+    private void SaveGenerateCostData(IRow rowCell)
     {
-        var row = COST_ROW;
-        
         for (var i = 0; i < TokensData.TokenData.Length; ++i)
         {
-            _workSheet.Cells[col, row++].Value =
-                $"Token : {TokensData.TokenData[i]} \n Cost : {TokensData.CostData[i]}$";
-        }
+            var data = $"Token : {TokensData.TokenData[i]} \n Cost : {TokensData.CostData[i]}$";
 
-        _workSheet.Cells[col, row].Value = $"{TokensData.CreateTime}S";
+            var newCell = rowCell.CreateCell(COST_ROW + i);
+            newCell.SetCellValue(data);
+        }
+        
+        var timeCell = rowCell.CreateCell(COST_ROW + TokensData.TokenData.Length);
+        timeCell.SetCellValue($"{TokensData.CreateTime}S");
     }
 
     public static List<List<string>> GetValueInJsonString(string data)
@@ -228,23 +257,25 @@ public class ExcelParser
     private void InitKeyList()
     {
         _keyList = new List<string>();
+        var rowData = _sheet.GetRow(0);
 
-        for (var row = 1; row < _rowCount; ++row)
+        for (var row = 0; row < _rowCount; ++row)
         {
-            _keyList.Add(_workSheet.Cells[1, row].Text);
+            var cell = rowData.GetCell(row);
+            _keyList.Add(cell?.ToString());
         }
     }
 
-    private void CheckCurrentLowCount()
+    private void CheckMaxRowCount()
     {
-        var row = 1;
-        
-        while (string.IsNullOrEmpty(_workSheet.Cells[1, row].Text) == false)
+        var row = _sheet.GetRow(0);
+        var cell = row.GetCell(0);
+
+        while (string.IsNullOrEmpty(cell?.StringCellValue) == false)
         {
-            row++;
+            cell = row.GetCell(_rowCount++);
         }
 
-        _rowCount = row;
+        _rowCount--;
     }
-
 }
