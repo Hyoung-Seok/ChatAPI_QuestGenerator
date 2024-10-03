@@ -131,7 +131,7 @@ public class OtherDataUI : EditorWindow
 
     private void AddButtonClickEvent(ClickEvent evt)
     {
-        CurOtherData += _nameList.value + " / ";
+        CurOtherData += _nameList.value + "/";
         
         ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
@@ -145,7 +145,7 @@ public class OtherDataUI : EditorWindow
             return;
         }
         
-        CurOtherData += _searchName.text + " / ";
+        CurOtherData += _searchName.text + "/";
         
         ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_searchName.text} Add Done!!");
@@ -178,6 +178,8 @@ public class OtherDataUI : EditorWindow
 
     private void SaveButtonClickEvent(ClickEvent evt)
     {
+        CurOtherData = CurOtherData.TrimEnd('/');
+        
         if (string.IsNullOrEmpty(_otherNotice.value) == false)
         {
             CurOtherData += '\n' + "Additional Information : " + _otherNotice.value;
