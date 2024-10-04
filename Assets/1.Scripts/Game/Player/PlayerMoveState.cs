@@ -30,44 +30,60 @@ public class PlayerMoveState : PlayerBaseState
         _horizontal = Input.GetAxis("Horizontal");
         _vertical = Input.GetAxis("Vertical");
 
+        InitCameraDir();
+        UpdateMoveSpeed();
+        
         if (_horizontal != 0 || _vertical != 0)
         {
             _isMove = true;
             
-        }
-        else
-        {
-            _isMove = false;
-        }
-        
-        UpdateMoveSpeed();
-    }
-
-    public override void OnFixedUpdate()
-    {
-        InitCameraDir();
-        
-        if (_isMove == true)
-        {
             _moveDir = (_camForward * _vertical) + (_camRight * _horizontal);
             _moveDir.Normalize();
             _lookDir = _moveDir;
         }
         else
         {
+            _isMove = false;
+            
             _moveDir = _prevDir;
             _moveDir.Normalize();
             _lookDir = _moveDir;
         }
         
         _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : transform.forward;
+        
+        // var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
+        // transform.rotation = targetRot;
+        
+        Debug.DrawRay(transform.position, _lookDir);
+        _prevDir = _lookDir;
+    }
 
-        var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot,
-            rotationSpeed * Time.fixedDeltaTime);
+    public override void OnFixedUpdate()
+    {
+        //InitCameraDir();
+        //
+        // if (_isMove == true)
+        // {
+        //     _moveDir = (_camForward * _vertical) + (_camRight * _horizontal);
+        //     _moveDir.Normalize();
+        //     _lookDir = _moveDir;
+        // }
+        // else
+        // {
+        //     _moveDir = _prevDir;
+        //     _moveDir.Normalize();
+        //     _lookDir = _moveDir;
+        // }
+        
+        //_lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : transform.forward;
+
+        // var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
+        // transform.rotation = Quaternion.Slerp(transform.rotation, targetRot,
+        //     rotationSpeed * Time.fixedDeltaTime);
         
         Controller.PlayerRig.velocity = _moveDir * _curSpeed;
-        _prevDir = _lookDir;
+        //_prevDir = _lookDir;
     }
 
     public override void OnLateUpdate()

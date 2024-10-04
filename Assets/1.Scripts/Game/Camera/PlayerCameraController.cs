@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
@@ -12,12 +13,13 @@ public class PlayerCameraController : MonoBehaviour
 
     [Header("Component")]
     [SerializeField] private Transform target;
+    [SerializeField] private CinemachineBrain mainCam;
 
     private float _mouseX;
     private float _mouseY;
     private Vector2 _targetRotation = Vector2.zero;
 
-    private void LateUpdate()
+    private void Update()
     {
         CameraMove();
     }
@@ -35,6 +37,9 @@ public class PlayerCameraController : MonoBehaviour
 
         var targetAngle = Quaternion.Euler(_targetRotation.x, _targetRotation.y, 0);
         transform.rotation = targetAngle;
+        
+        transform.position = target.transform.position;
+        target.rotation = Quaternion.LookRotation(CalLookDir(), Vector3.up);
     }
 
     private float Clamp360()
@@ -47,5 +52,22 @@ public class PlayerCameraController : MonoBehaviour
         }
 
         return result;
+    }
+
+    private Vector3 CalLookDir()
+    {
+        var horizontal = Input.GetAxis("Horizontal");
+        var vertical = Input.GetAxis("Vertical");
+        
+        var camForward = transform.forward;
+        camForward.y = 0;
+        camForward.Normalize();
+
+        var camRight = transform.right;
+        camRight.y = 0;
+        camRight.Normalize();
+
+        var lookDir = camForward * vertical + camRight * horizontal;
+        return lookDir.normalized;
     }
 }

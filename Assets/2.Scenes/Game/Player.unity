@@ -388,10 +388,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1154116834}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &651288416
 MonoBehaviour:
@@ -409,6 +409,7 @@ MonoBehaviour:
   pitchMin: -50
   pitchMax: 50
   target: {fileID: 1154116834}
+  mainCam: {fileID: 1342044548}
 --- !u!1 &696901325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,11 +1075,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 8575836885528271663, guid: 51c738dec53e6394da911504ec1bd1df, type: 3}
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7810315018774784284, guid: 51c738dec53e6394da911504ec1bd1df,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 651288415}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7433191788137444262, guid: 51c738dec53e6394da911504ec1bd1df,
         type: 3}
@@ -1236,7 +1233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damping: {x: 0.1, y: 0.5, z: 0.3}
+  Damping: {x: 0, y: 0, z: 0}
   ShoulderOffset: {x: 1, y: 2, z: 0.6}
   VerticalArmLength: 0.4
   CameraSide: 0.8
@@ -1414,7 +1411,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 1
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -1473,3 +1470,4 @@ SceneRoots:
   - {fileID: 372778573}
   - {fileID: 1375773439}
   - {fileID: 696901326}
+  - {fileID: 651288415}
