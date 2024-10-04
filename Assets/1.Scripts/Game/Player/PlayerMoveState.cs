@@ -16,11 +16,13 @@ public class PlayerMoveState : PlayerBaseState
     private bool _isMove = false;
     private Vector3 _camForward = Vector3.zero;
     private Vector3 _camRight = Vector3.zero;
+    private Vector3 _moveDir = Vector3.zero;
     private Vector3 _lookDir = Vector3.zero;
+    private Vector3 _prevDir = Vector3.zero;
     
     public override void Enter()
     {
-            
+        _prevDir = transform.forward;
     }
 
     public override void OnUpdate()
@@ -31,6 +33,7 @@ public class PlayerMoveState : PlayerBaseState
         if (_horizontal != 0 || _vertical != 0)
         {
             _isMove = true;
+            
         }
         else
         {
@@ -43,15 +46,28 @@ public class PlayerMoveState : PlayerBaseState
     public override void OnFixedUpdate()
     {
         InitCameraDir();
-
-        _lookDir = (_isMove == true)
-            ? ((_camForward * _vertical) + (_camRight * _horizontal)).normalized
-            : transform.forward;
+        
+        if (_isMove == true)
+        {
+            _moveDir = (_camForward * _vertical) + (_camRight * _horizontal);
+            _moveDir.Normalize();
+            _lookDir = _moveDir;
+        }
+        else
+        {
+            _moveDir = _prevDir;
+            _moveDir.Normalize();
+            _lookDir = _moveDir;
+        }
+        
+        _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : transform.forward;
 
         var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.fixedDeltaTime);
-
-        Controller.PlayerRig.velocity = transform.forward * _curSpeed;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRot,
+            rotationSpeed * Time.fixedDeltaTime);
+        
+        Controller.PlayerRig.velocity = _moveDir * _curSpeed;
+        _prevDir = _lookDir;
     }
 
     public override void OnLateUpdate()
