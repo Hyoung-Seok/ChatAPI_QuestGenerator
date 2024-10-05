@@ -4,24 +4,32 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 
-public class PlayerCameraController : MonoBehaviour
+public class PlayerCameraController : IEventFunction
 {
-    [Header("Value")] 
-    [SerializeField] private float rotationSpeed = 50.0f;
-    [SerializeField] private float pitchMin = -50.0f;
-    [SerializeField] private float pitchMax = 50.0f;
-
-    [Header("Component")]
-    [SerializeField] private Transform target;
-    [SerializeField] private CinemachineBrain mainCam;
-
+    private PlayerCameraData _data;
+    
     private float _mouseX;
     private float _mouseY;
     private Vector2 _targetRotation = Vector2.zero;
 
-    private void Update()
+    public PlayerCameraController(PlayerCameraData data)
+    {
+        _data = data;
+    }
+    
+    public void OnUpdate()
     {
         CameraMove();
+    }
+
+    public void OnFixedUpdate()
+    {
+        
+    }
+
+    public void OnLateUpdate()
+    {
+        
     }
 
     private void CameraMove()
@@ -29,17 +37,16 @@ public class PlayerCameraController : MonoBehaviour
         _mouseX = Input.GetAxis("Mouse Y");
         _mouseY = Input.GetAxis("Mouse X");
         
-        _targetRotation.x += _mouseX * rotationSpeed * Time.deltaTime;
-        _targetRotation.y += _mouseY * rotationSpeed * Time.deltaTime;
+        _targetRotation.x += _mouseX * _data.RotationSpeed * Time.deltaTime;
+        _targetRotation.y += _mouseY * _data.RotationSpeed  * Time.deltaTime;
 
-        _targetRotation.x = Mathf.Clamp(_targetRotation.x, pitchMin, pitchMax);
+        _targetRotation.x = Mathf.Clamp(_targetRotation.x, _data.PitchMin, _data.PitchMax);
         _targetRotation.y = Clamp360();
 
         var targetAngle = Quaternion.Euler(_targetRotation.x, _targetRotation.y, 0);
-        transform.rotation = targetAngle;
+        _data.Transform.rotation = targetAngle;
         
-        transform.position = target.transform.position;
-        target.rotation = Quaternion.LookRotation(CalLookDir(), Vector3.up);
+        _data.Transform.position = _data.TargetTf.position;
     }
 
     private float Clamp360()
@@ -52,22 +59,5 @@ public class PlayerCameraController : MonoBehaviour
         }
 
         return result;
-    }
-
-    private Vector3 CalLookDir()
-    {
-        var horizontal = Input.GetAxis("Horizontal");
-        var vertical = Input.GetAxis("Vertical");
-        
-        var camForward = transform.forward;
-        camForward.y = 0;
-        camForward.Normalize();
-
-        var camRight = transform.right;
-        camRight.y = 0;
-        camRight.Normalize();
-
-        var lookDir = camForward * vertical + camRight * horizontal;
-        return lookDir.normalized;
     }
 }

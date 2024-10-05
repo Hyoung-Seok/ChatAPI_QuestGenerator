@@ -6,25 +6,18 @@ using UnityEngine;
 
 public class PlayerController : UnitStateController
 {
-    [Header("Component")] 
-    [SerializeField] private Rigidbody playerRig;
-    [SerializeField] private Transform cameraDir;
-
-    [Header("State")] 
-    [SerializeField] private PlayerBaseState idleState;
-    [SerializeField] private PlayerBaseState moveState;
-
-    #region Property
-
-    public PlayerBaseState IdleState => idleState;
-    public PlayerBaseState MoveState => moveState;
-    public Rigidbody PlayerRig => playerRig;
-    public Transform CameraDir => cameraDir;
-    #endregion
-
-    private void Awake()
+    [Header("Component")]
+    public Rigidbody Rigidbody;
+    public Transform PlayerTransform;
+    public Transform CameraDir;
+    
+    [Header("State")]
+    private PlayerBaseState _moveState;
+    
+    public void Init(PlayerMoveData data)
     {
-        moveState.InitPlayerController(this);
-        ChangeMainState(moveState);
+        _moveState = new PlayerMoveState(this, data);
+        
+        ChangeMainState(_moveState);
     }
 }
