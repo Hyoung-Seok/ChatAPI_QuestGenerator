@@ -67,7 +67,7 @@ public class QuestUIManager : MonoBehaviour
 
     public void InitNpcTextInfo(string npcName, string text)
     {
-        playerController.ChangeMainState(playerController.IdleState);
+        //playerController.ChangeMainState(playerController.IdleState);
         
         UI.SetActive(true);
         interactionText.SetActive(false);
@@ -119,7 +119,7 @@ public class QuestUIManager : MonoBehaviour
             _curQuestButton[i].GetComponentInChildren<TMP_Text>().text = "";
         }
         
-        playerController.ChangeMainState(playerController.MoveState);
+        //playerController.ChangeMainState(playerController.MoveState);
         
         accBt.SetActive(false);
         UI.SetActive(false);
