@@ -51,7 +51,8 @@ public class PlayerMoveState : PlayerBaseState
         _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : Controller.PlayerTransform.forward;
         
         var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
-        Controller.PlayerTransform.rotation = targetRot;
+        Controller.PlayerTransform.rotation = Quaternion.Lerp(Controller.PlayerTransform.rotation,
+            targetRot, _moveData.RotationSpeed * Time.deltaTime);
         
         _prevDir = _lookDir;
     }

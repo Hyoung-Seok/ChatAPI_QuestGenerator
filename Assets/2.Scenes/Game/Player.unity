@@ -1499,7 +1499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  rotationSpeed: 50
+  rotationSpeed: 20
   acceleration: 20
   deceleration: 40
 --- !u!114 &1858711788
