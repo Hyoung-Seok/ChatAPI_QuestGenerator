@@ -444,6 +444,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Makina_Rig
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 498e9600291ecf840bc042d0ac43e790,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 498e9600291ecf840bc042d0ac43e790,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: ee2f28d6be62974468614c9e9e7eb098, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -519,6 +529,12 @@ CapsuleCollider:
   m_Height: 1.6
   m_Direction: 1
   m_Center: {x: 0, y: 0.8, z: 0}
+--- !u!95 &472888141 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 498e9600291ecf840bc042d0ac43e790,
+    type: 3}
+  m_PrefabInstance: {fileID: 472888135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &651288414
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,7 +928,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 1
+  m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -1076,6 +1092,8 @@ MonoBehaviour:
   Rigidbody: {fileID: 472888139}
   PlayerTransform: {fileID: 472888136}
   CameraDir: {fileID: 651288415}
+  Animator: {fileID: 472888141}
+  MaxHP: 100
 --- !u!1 &2137916548
 GameObject:
   m_ObjectHideFlags: 0

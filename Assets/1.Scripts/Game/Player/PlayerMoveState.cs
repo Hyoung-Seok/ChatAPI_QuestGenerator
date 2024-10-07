@@ -14,6 +14,8 @@ public class PlayerMoveState : PlayerBaseState
     private Vector3 _lookDir = Vector3.zero;
     private Vector3 _prevDir = Vector3.zero;
 
+    private bool _isSetIdleAnimation = false;
+
     public PlayerMoveState(PlayerController controller, PlayerMoveData data) : base(controller)
     {
         _moveData = data;
@@ -30,19 +32,16 @@ public class PlayerMoveState : PlayerBaseState
         _vertical = Input.GetAxis("Vertical");
         
         InitCameraDir();
+        UpdatePlayerSpeed();
         
         if (_horizontal != 0 || _vertical != 0)
         {
-            _curSpeed = Mathf.MoveTowards(_curSpeed, _moveData.MoveSpeed, _moveData.Acceleration * Time.deltaTime);
-            
             _moveDir = (_camForward * _vertical) + (_camRight * _horizontal);
             _moveDir.Normalize();
             _lookDir = _moveDir;
         }
         else
         {
-            _curSpeed = Mathf.MoveTowards(_curSpeed, 0, _moveData.Deceleration * Time.deltaTime);
-            
             _moveDir = _prevDir;
             _moveDir.Normalize();
             _lookDir = _moveDir;
@@ -51,7 +50,7 @@ public class PlayerMoveState : PlayerBaseState
         _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : Controller.PlayerTransform.forward;
         
         var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
-        Controller.PlayerTransform.rotation = Quaternion.Lerp(Controller.PlayerTransform.rotation,
+        Controller.PlayerTransform.rotation = Quaternion.Slerp(Controller.PlayerTransform.rotation,
             targetRot, _moveData.RotationSpeed * Time.deltaTime);
         
         _prevDir = _lookDir;
@@ -82,5 +81,28 @@ public class PlayerMoveState : PlayerBaseState
         _camRight = Controller.CameraDir.right;
         _camRight.y = 0;
         _camRight.Normalize();
+    }
+
+    private void UpdatePlayerSpeed()
+    {
+        if (_horizontal != 0 || _vertical != 0)
+        {
+            _curSpeed = Mathf.MoveTowards(_curSpeed, _moveData.MoveSpeed, _moveData.Acceleration * Time.deltaTime);
+            _isSetIdleAnimation = false;
+        }
+        else
+        {
+            _curSpeed = Mathf.MoveTowards(_curSpeed, 0, _moveData.Deceleration * Time.deltaTime);
+        }
+
+        if (_isSetIdleAnimation == false && _curSpeed <= 0.1f) { SetIdleAnimation(); }
+        
+        Controller.Animator.SetFloat(Controller.SpeedKey, _curSpeed);
+    }
+
+    private void SetIdleAnimation()
+    {
+        Controller.ChangeIdleAnimation();
+        _isSetIdleAnimation = true;
     }
 }

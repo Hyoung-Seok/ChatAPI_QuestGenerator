@@ -7,7 +7,7 @@ public class PlayerMoveData : MonoBehaviour
     [SerializeField] private float rotationSpeed = 50.0f;
     [SerializeField] private float acceleration = 20.0f;
     [SerializeField] private float deceleration = 40.0f;
-
+    
     public float MoveSpeed => moveSpeed;
     public float RotationSpeed => rotationSpeed;
     public float Acceleration => acceleration;

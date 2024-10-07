@@ -25,7 +25,7 @@ public class PlayerCameraController : IEventFunction
 
     public void OnLateUpdate()
     {
-        
+
     }
 
     private void CameraMove()
