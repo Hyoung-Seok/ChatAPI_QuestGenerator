@@ -20,11 +20,14 @@ public class PlayerController : UnitStateController
     public readonly int SpeedKey = Animator.StringToHash("Speed");
     private readonly int _idleAnimation = Animator.StringToHash("IdleMotions");
     private readonly int _playerHpKey = Animator.StringToHash("PlayerHP");
+    private readonly int _quippedTriggerKey = Animator.StringToHash("Equipped");
+    private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
     
     [Header("State")]
     private PlayerBaseState _moveState;
 
     private float _currentHp;
+    private bool _isEquipped = false;
     
     public void Init(PlayerMoveData data)
     {
@@ -32,6 +35,8 @@ public class PlayerController : UnitStateController
         
         _currentHp = MaxHP;
         Animator.SetFloat(_playerHpKey, _currentHp);
+
+        _isEquipped = false;
         
         ChangeMainState(_moveState);
     }
@@ -57,5 +62,20 @@ public class PlayerController : UnitStateController
         
         var num = Random.Range(1, 4);
         Animator.SetInteger(_idleAnimation, num);
+    }
+
+    public void EquippedWeapon()
+    {
+        Animator.SetTrigger(_quippedTriggerKey);
+        
+        if (_isEquipped == true)
+        {
+            Animator.SetBool(_equippedKey, _isEquipped);
+            _isEquipped = false;
+            return;
+        }
+        
+        Animator.SetBool(_equippedKey, _isEquipped);
+        _isEquipped = true;
     }
 }

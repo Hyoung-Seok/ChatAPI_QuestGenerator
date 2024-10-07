@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     [Header("PlayerCamera")] 
     [SerializeField] private PlayerCameraData playerCamData;
     private PlayerCameraController _playerCameraController;
+
+    [Header("Manager")] 
+    [SerializeField] private InputManager inputManager;
     
     private void Awake()
     {
@@ -29,8 +32,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        // player
         _playerCameraController.OnUpdate();
         playerController.OnUpdate();   
+        
+        // manager
+        inputManager.OnUpdate();
     }
 
     private void FixedUpdate()
