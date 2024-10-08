@@ -12,6 +12,7 @@ public class PlayerController : UnitStateController
     public Transform PlayerTransform;
     public Transform CameraDir;
     public Animator Animator;
+    [SerializeField] private RigController rigController;
 
     [Header("Stat")] 
     [SerializeField] private float MaxHP = 100.0f;
@@ -22,6 +23,7 @@ public class PlayerController : UnitStateController
     private readonly int _playerHpKey = Animator.StringToHash("PlayerHP");
     private readonly int _quippedTriggerKey = Animator.StringToHash("Equipped");
     private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
+    private readonly int _aimKey = Animator.StringToHash("Aim");
     
     [Header("State")]
     private PlayerBaseState _moveState;
@@ -80,6 +82,27 @@ public class PlayerController : UnitStateController
 
         Animator.SetBool(_equippedKey, _isEquipped);
         _isEquipped = true;
+    }
+
+    public void ChangeCameraState(ECameraState state)
+    {
+        switch (state)
+        {
+            case ECameraState.AIM:
+                rigController.StartAim();
+                Animator.SetBool(_aimKey, true);
+                break;
+            
+            case ECameraState.IDLE:
+                rigController.StopAim();
+                Animator.SetBool(_aimKey, false);
+                break;
+            
+            default:
+                return;
+        }
+        
+        CurCameraState = state;
     }
 }
 

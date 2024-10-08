@@ -28,12 +28,12 @@ public class InputManager : MonoBehaviour, IEventFunction
 
         if (Input.GetButtonDown("Fire2"))
         {
-            _controller.CurCameraState = ECameraState.AIM;
+            _controller.ChangeCameraState(ECameraState.AIM);
         }
 
         if (Input.GetButtonUp("Fire2"))
         {
-            _controller.CurCameraState = ECameraState.IDLE;
+            _controller.ChangeCameraState(ECameraState.IDLE);
         }
     }
 
