@@ -32,12 +32,12 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        // manager
+        inputManager.OnUpdate();
+        
         // player
         _playerCameraController.OnUpdate();
         playerController.OnUpdate();   
-        
-        // manager
-        inputManager.OnUpdate();
     }
 
     private void FixedUpdate()

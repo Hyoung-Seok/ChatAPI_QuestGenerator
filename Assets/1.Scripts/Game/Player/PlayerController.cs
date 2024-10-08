@@ -27,6 +27,7 @@ public class PlayerController : UnitStateController
     private PlayerBaseState _moveState;
     
     [HideInInspector] public ECameraState CurCameraState;
+    
     private float _currentHp;
     private bool _isEquipped = false;
     

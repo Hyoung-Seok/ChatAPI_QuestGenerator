@@ -46,8 +46,15 @@ public class PlayerMoveState : PlayerBaseState
             _moveDir.Normalize();
             _lookDir = _moveDir;
         }
-        
-        _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : Controller.PlayerTransform.forward;
+
+        if (Controller.CurCameraState == ECameraState.IDLE)
+        {
+            _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : Controller.PlayerTransform.forward;
+        }
+        else
+        {
+            _lookDir = _camForward;
+        }
         
         var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
         Controller.PlayerTransform.rotation = Quaternion.Slerp(Controller.PlayerTransform.rotation,
