@@ -36,4 +36,18 @@ public class WeaponData : ScriptableObject
     public float Damage => damage;
     public float FireRate => fireRate;
     public int Magazine => magazine;
+
+    public Transform GetPistolGripPos()
+    {
+        return (weaponModel == null)
+            ? null
+            : weaponModel.transform.GetChild(weaponModel.transform.childCount - 2);
+    }
+    
+    public Transform GetHandGardPos()
+    {
+        return (weaponModel == null)
+            ? null
+            : weaponModel.transform.GetChild(weaponModel.transform.childCount - 1);
+    } 
 }

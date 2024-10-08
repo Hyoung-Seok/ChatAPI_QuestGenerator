@@ -25,7 +25,8 @@ public class PlayerController : UnitStateController
     
     [Header("State")]
     private PlayerBaseState _moveState;
-
+    
+    [HideInInspector] public ECameraState CurCameraState;
     private float _currentHp;
     private bool _isEquipped = false;
     
@@ -67,15 +68,22 @@ public class PlayerController : UnitStateController
     public void EquippedWeapon()
     {
         Animator.SetTrigger(_quippedTriggerKey);
-        
+
         if (_isEquipped == true)
         {
             Animator.SetBool(_equippedKey, _isEquipped);
             _isEquipped = false;
+            
             return;
         }
-        
+
         Animator.SetBool(_equippedKey, _isEquipped);
         _isEquipped = true;
     }
+}
+
+public enum ECameraState
+{
+    IDLE,
+    AIM
 }
