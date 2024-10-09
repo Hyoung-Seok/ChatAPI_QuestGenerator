@@ -27,6 +27,7 @@ public class WeaponData : ScriptableObject
 
     [Header("Object")] 
     [SerializeField] private GameObject weaponModel;
+    [SerializeField] private GameObject cartridge;
 
     [Header("State")] 
     [SerializeField] private float damage;
@@ -49,6 +50,7 @@ public class WeaponData : ScriptableObject
     public List<Vector3> HintPointOnIdle => hintPoint;
 
     public GameObject WeaponModel => weaponModel;
+    public GameObject Cartridge => cartridge;
 
     public float Damage => damage;
     public float FireRate => fireRate;
