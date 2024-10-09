@@ -57,7 +57,6 @@ public class RigController : MonoBehaviour
     
     private IEnumerator EnableTwoBonIKConstraintRoutine()
     {
-        Debug.Log("Start");
         yield return new WaitForSeconds(0.01f);
         
         grabPos.localPosition = animationEvent.CurrentWeapon.TargetPointOnIdle[0];
@@ -71,7 +70,6 @@ public class RigController : MonoBehaviour
 
     private IEnumerator DisableTwoBonIKConstraintRoutine()
     {
-        Debug.Log("Start");
         yield return new WaitForSeconds(0.01f);
         
         weaponGrabRig.weight = 0;
