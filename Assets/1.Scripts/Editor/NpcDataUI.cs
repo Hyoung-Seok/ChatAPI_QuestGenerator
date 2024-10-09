@@ -74,7 +74,14 @@ public class NpcDataUI : EditorWindow
     private void InitEventAndValue()
     {
         InitParser();
-        _npcNameList.choices = _parser.GetAllValuesFromKey();
+
+        var valueList = _parser.GetAllValuesFromKeyOrNull();
+        if (valueList == null)
+        {
+            ResultWindow.UpdateProcessMessage("Key Not Found!!");
+            return;
+        }
+        _npcNameList.choices = valueList;
 
         _npcNameList.RegisterValueChangedCallback(NpcNameDropdownValueChangeEvent);
         _initBt.RegisterCallback<ClickEvent>(InitValueClickEvent);
@@ -89,7 +96,7 @@ public class NpcDataUI : EditorWindow
     {
         if(_parser == null) return;
         
-        var col = _npcNameList.choices.IndexOf(_npcNameList.value) + 1;
+        var col = _npcNameList.choices.IndexOf(_npcNameList.value);
         _curNpcData = _parser.ConvertValueDataToString(col + 1);
         
         ResultWindow.UpdateNpcDataMessage(_curNpcData);
@@ -100,12 +107,20 @@ public class NpcDataUI : EditorWindow
         InitParser();
         
         _npcNameList.choices.Clear();
-        _npcNameList.choices = _parser.GetAllValuesFromKey();
+        
+        var valueList = _parser.GetAllValuesFromKeyOrNull();
+        if (valueList == null)
+        {
+            ResultWindow.UpdateProcessMessage("Key Not Found!!");
+            return;
+        }
+
+        _npcNameList.choices = valueList;
     }
 
     private void SearchButtonClickEvent(ClickEvent evt)
     {
-        _curNpcData = _parser.ConvertValueDataToString(_parser.FindColumnWitValue(_searchName.value));
+        _curNpcData = _parser.ConvertValueDataToString(_parser.FindColumnWithValue(_searchName.value));
         ResultWindow.UpdateNpcDataMessage(_curNpcData);
     }
 

@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitStateController : MonoBehaviour
+public class UnitStateController : MonoBehaviour, IEventFunction
 {
     protected UnitBaseState MainState;
     protected UnitBaseState SubState;
@@ -34,7 +31,7 @@ public class UnitStateController : MonoBehaviour
         Debug.Log($"State Change = {state}");
     }
 
-    private void Update()
+    public void OnUpdate()
     {
         if (MainState != null)
         {
@@ -47,7 +44,7 @@ public class UnitStateController : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
+    public void OnFixedUpdate()
     {
         if (MainState != null)
         {
@@ -60,7 +57,7 @@ public class UnitStateController : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
+    public void OnLateUpdate()
     {
         if (MainState != null)
         {

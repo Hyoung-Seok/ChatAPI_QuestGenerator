@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
-public abstract class UnitBaseState : MonoBehaviour
+public abstract class UnitBaseState
 {
     public abstract void Enter();
     public abstract void OnUpdate();

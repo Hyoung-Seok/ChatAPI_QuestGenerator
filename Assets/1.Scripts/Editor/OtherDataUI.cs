@@ -32,6 +32,7 @@ public class OtherDataUI : EditorWindow
     private ExcelParser _parser;
     
     private static bool _isOpen;
+    private bool _isSearch = false;
     
     public static void CreateWindow()
     {
@@ -101,8 +102,18 @@ public class OtherDataUI : EditorWindow
 
     private void NameListValueChangeEvent(ChangeEvent<string> evt)
     {
-        var col = _nameList.choices.IndexOf(_nameList.value) + 1;
-        var data = _parser.ConvertValueDataToString(col + 1);
+        string data;
+        
+        if (_isSearch == false)
+        {
+            var col = _nameList.choices.IndexOf(_nameList.value);
+            data = _parser.ConvertValueDataToString(col + 1);    
+        }
+        else
+        {
+            data = _parser.ConvertValueDataToString(_parser.FindColumnWithValue(_nameList.value));
+        }
+        
         
         ResultWindow.UpdateOtherDataMessage(data);
     }
@@ -120,7 +131,7 @@ public class OtherDataUI : EditorWindow
 
     private void AddButtonClickEvent(ClickEvent evt)
     {
-        CurOtherData += _nameList.value + " / ";
+        CurOtherData += _nameList.value + "/";
         
         ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
@@ -128,13 +139,13 @@ public class OtherDataUI : EditorWindow
     
     private void SearchButtonClickEvent(ClickEvent evt)
     {
-        if (_parser.FindColumnWitValue(_searchName.text) <= 0)
+        if (_parser.FindColumnWithValue(_searchName.text) <= 0)
         {
             ResultWindow.UpdateProcessMessage($"{_searchName.text} Not Found!!!");
             return;
         }
         
-        CurOtherData += _searchName.text + " / ";
+        CurOtherData += _searchName.text + "/";
         
         ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_searchName.text} Add Done!!");
@@ -153,6 +164,7 @@ public class OtherDataUI : EditorWindow
         
         _nameList.choices.Clear();
         _nameList.choices = list;
+        _isSearch = true;
     }
 
     private void ResetButtonClickEvent(ClickEvent evt)
@@ -166,6 +178,8 @@ public class OtherDataUI : EditorWindow
 
     private void SaveButtonClickEvent(ClickEvent evt)
     {
+        CurOtherData = CurOtherData.TrimEnd('/');
+        
         if (string.IsNullOrEmpty(_otherNotice.value) == false)
         {
             CurOtherData += '\n' + "Additional Information : " + _otherNotice.value;
@@ -184,7 +198,15 @@ public class OtherDataUI : EditorWindow
         _parser = new ExcelParser(path);
         
         _nameList.choices.Clear();
-        _nameList.choices = _parser.GetAllValuesFromKey();
+
+        var valueList = _parser.GetAllValuesFromKeyOrNull();
+        if (valueList == null)
+        {
+            ResultWindow.UpdateProcessMessage("Key Not Found!!");
+            return;
+        }
+        _nameList.choices = valueList;
+        _isSearch = false;
     }
 
     private void GetFileList()
