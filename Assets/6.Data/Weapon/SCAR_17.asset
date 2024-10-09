@@ -18,15 +18,19 @@ MonoBehaviour:
   onHandPosition: {x: -0.0209, y: 0.0668, z: 0.029}
   onHandRotation: {x: -72.825, y: 106.583, z: 1.316}
   onHandScale: {x: 0.8, y: 0.8, z: 0.8}
-  onAimPosition: {x: 0, y: 0, z: 0}
-  onAimRotation: {x: 0, y: 0, z: 0}
-  onAimScale: {x: 0, y: 0, z: 0}
+  onAimPosition: {x: -0.025, y: 0.076, z: 0.012}
+  onAimRotation: {x: -97.249, y: 151.447, z: -50.88501}
+  onAimScale: {x: 0.8, y: 0.8, z: 0.8}
   targetPoint:
   - {x: -0.0042, y: 0.2318, z: 0.0987}
   - {x: -16.388, y: 268.004, z: 85.421}
+  - {x: -0.0747, y: 0.2477, z: 0.1103}
+  - {x: -9.657, y: -91.883, z: 72.111}
   hintPoint:
   - {x: 0.0381, y: 0.0925, z: 0.297}
   - {x: 0, y: 0, z: 0}
+  - {x: 0.0381, y: 0.092, z: 0.2144}
+  - {x: -0.496, y: 0.131, z: 0.0974}
   weaponModel: {fileID: 3389946306085435819, guid: da549dba36c556b47a308e24d0999d48,
     type: 3}
   damage: 30

@@ -27,7 +27,7 @@ public class PlayerController : UnitStateController
     
     [Header("State")]
     private PlayerBaseState _moveState;
-    
+     
     [HideInInspector] public ECameraState CurCameraState;
     
     private float _currentHp;
