@@ -57,15 +57,15 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.5014224
-        functionName: UnEquipWeapon
+      - time: 0.025229363
+        functionName: SetWeight
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.010990386
-        functionName: StarDisableIKRoutine
+      - time: 0.5011446
+        functionName: UnEquipWeapon
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

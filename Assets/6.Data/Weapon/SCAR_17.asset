@@ -12,27 +12,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fafe9df9c25b53947a9e6eda3cc5eafd, type: 3}
   m_Name: SCAR_17
   m_EditorClassIdentifier: 
-  onBackPosition: {x: -0.055, y: -0.034, z: -0.005}
-  onBackRotation: {x: 71.52, y: 112.394, z: 26.77}
-  onBackScale: {x: 0.8, y: 0.8, z: 0.8}
-  onHandPosition: {x: -0.0209, y: 0.0668, z: 0.029}
-  onHandRotation: {x: -72.825, y: 106.583, z: 1.316}
-  onHandScale: {x: 0.8, y: 0.8, z: 0.8}
-  onAimPosition: {x: -0.025, y: 0.076, z: 0.012}
-  onAimRotation: {x: -97.249, y: 151.447, z: -50.88501}
-  onAimScale: {x: 0.8, y: 0.8, z: 0.8}
-  targetPoint:
-  - {x: -0.0042, y: 0.2318, z: 0.0987}
-  - {x: -16.388, y: 268.004, z: 85.421}
-  - {x: -0.0747, y: 0.2477, z: 0.1103}
-  - {x: -9.657, y: -91.883, z: 72.111}
-  hintPoint:
-  - {x: 0.0381, y: 0.0925, z: 0.297}
-  - {x: 0, y: 0, z: 0}
-  - {x: 0.0381, y: 0.092, z: 0.2144}
-  - {x: -0.496, y: 0.131, z: 0.0974}
-  weaponModel: {fileID: 3389946306085435819, guid: da549dba36c556b47a308e24d0999d48,
-    type: 3}
+  backTf:
+    position: {x: -0.055, y: -0.034, z: 0.005}
+    rotation: {x: 71.52, y: 112.394, z: 26.77}
+    scale: {x: 0.8, y: 0.8, z: 0.8}
+  handTf:
+    position: {x: -0.0209, y: 0.0668, z: 0.029}
+    rotation: {x: -72.825, y: 106.583, z: 1.136}
+    scale: {x: 0.8, y: 0.8, z: 0.8}
+  aimTf:
+    position: {x: -0.022, y: 0.072, z: 0.017}
+    rotation: {x: -67.058, y: 11.311, z: 86.482}
+    scale: {x: 0.8, y: 0.8, z: 0.8}
+  idleTargetPoint:
+    position: {x: -0.0042, y: 0.2318, z: 0.0987}
+    rotation: {x: -16.388, y: 268.004, z: 85.421}
+    scale: {x: 1, y: 1, z: 1}
+  aimTargetPoint:
+    position: {x: -0.032, y: 0.1962, z: 0.1267}
+    rotation: {x: -9.571, y: -91.689, z: 55.819}
+    scale: {x: 1, y: 1, z: 1}
+  idleHintPoint:
+    position: {x: 0.0381, y: 0.0925, z: 0.297}
+    rotation: {x: 0, y: 0, z: 0}
+    scale: {x: 1, y: 1, z: 1}
+  aimHintPoint:
+    position: {x: 0.039, y: -0.067, z: 0.21}
+    rotation: {x: -0.496, y: 0.131, z: 0.097}
+    scale: {x: 1, y: 1, z: 1}
+  weaponModel: {fileID: 0}
   cartridge: {fileID: 5471510219388969344, guid: a82a352bc6c9b3e4dbfcfee1371d838f,
     type: 3}
   damage: 30
