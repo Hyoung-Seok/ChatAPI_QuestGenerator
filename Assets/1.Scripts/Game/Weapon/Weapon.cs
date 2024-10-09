@@ -7,12 +7,13 @@ public class Weapon : MonoBehaviour
 {
     [Header("Component")] 
     [SerializeField] private WeaponData weaponData;
+    [SerializeField] private WeaponSound sound;
     [SerializeField] private Transform cartridgeOutPos;
 
-    private Queue<Cartridge> _shells;
+    [Header("Effect")] 
+    [SerializeField] private ParticleSystem muzzleEffect;
     
-    private IEnumerator _fireRoutine;
-    private WaitForSeconds _waitForSeconds;
+    private Queue<Cartridge> _shells;
     
     private bool _canFire = true;
     private float _curTime = 0;
@@ -41,6 +42,9 @@ public class Weapon : MonoBehaviour
             var cartridge = GetCartridge();
             cartridge.StartCellDischarge(cartridgeOutPos.forward);
             
+            muzzleEffect.Play();
+            sound.PlayFireSound();
+            
             _canFire = false;
             _curTime = 0;
         }
@@ -51,23 +55,9 @@ public class Weapon : MonoBehaviour
         _shells = new Queue<Cartridge>();
         CreateCartridge();
 
-        _fireRoutine = FireRoutine();
-        _waitForSeconds = new WaitForSeconds(weaponData.FireRate);
+        muzzleEffect.Stop();
     }
-
-    public void StartFireRoutine()
-    {
-        if (_canFire == true)
-        {
-            return;
-        }
-
-        _canFire = true;
-        
-        _fireRoutine = FireRoutine();
-        StartCoroutine(_fireRoutine);
-    }
-
+    
     public void Reload()
     {
         
@@ -109,15 +99,4 @@ public class Weapon : MonoBehaviour
         cartridge.gameObject.SetActive(false);
         _shells.Enqueue(cartridge);
     }
-
-    private IEnumerator FireRoutine()
-    {
-        var cartridge = GetCartridge();
-        cartridge.StartCellDischarge(cartridgeOutPos.forward);
-        
-        yield return _waitForSeconds;
-        
-        _canFire = false;
-    }
-    
 }

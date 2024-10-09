@@ -36,6 +36,7 @@ public class WeaponData : ScriptableObject
 
     public Vector3 OnBackPosition => onBackPosition;
     public Vector3 OnBackRotation => onBackRotation;
+
     public Vector3 OnBackScale => onBackScale;
     
     public Vector3 OnAimPosition => onAimPosition;
