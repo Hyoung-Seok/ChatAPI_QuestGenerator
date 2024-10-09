@@ -14,10 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   onBackPosition: {x: -0.055, y: -0.034, z: -0.005}
   onBackRotation: {x: 71.52, y: 112.394, z: 26.77}
-  onBackScale: {x: 1, y: 1, z: 1}
-  onHandPosition: {x: -0.009, y: 0.105, z: 0.015}
-  onHandRotation: {x: -64.318, y: 139.573, z: -48.525}
-  onHandScale: {x: 1.2, y: 1.2, z: 1.2}
+  onBackScale: {x: 0.8, y: 0.8, z: 0.8}
+  onHandPosition: {x: -0.0209, y: 0.0668, z: 0.029}
+  onHandRotation: {x: -72.825, y: 106.583, z: 1.316}
+  onHandScale: {x: 0.8, y: 0.8, z: 0.8}
+  onAimPosition: {x: 0, y: 0, z: 0}
+  onAimRotation: {x: 0, y: 0, z: 0}
+  onAimScale: {x: 0, y: 0, z: 0}
+  targetPoint:
+  - {x: -0.0042, y: 0.2318, z: 0.0987}
+  - {x: -16.388, y: 268.004, z: 85.421}
+  hintPoint:
+  - {x: 0.0381, y: 0.0925, z: 0.297}
+  - {x: 0, y: 0, z: 0}
   weaponModel: {fileID: 3389946306085435819, guid: da549dba36c556b47a308e24d0999d48,
     type: 3}
   damage: 30

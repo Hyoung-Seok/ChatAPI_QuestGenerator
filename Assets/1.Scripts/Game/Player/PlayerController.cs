@@ -74,13 +74,13 @@ public class PlayerController : UnitStateController
 
         if (_isEquipped == true)
         {
-            Animator.SetBool(_equippedKey, _isEquipped);
+            Animator.SetBool(_equippedKey, true);
             _isEquipped = false;
             
             return;
         }
 
-        Animator.SetBool(_equippedKey, _isEquipped);
+        Animator.SetBool(_equippedKey, false);
         _isEquipped = true;
     }
 
