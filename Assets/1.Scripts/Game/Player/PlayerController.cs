@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
@@ -12,7 +13,7 @@ public class PlayerController : UnitStateController
     public Transform PlayerTransform;
     public Transform CameraDir;
     public Animator Animator;
-    [SerializeField] private RigController rigController;
+    [SerializeField] private WeaponManager weaponManager;
 
     [Header("Stat")] 
     [SerializeField] private float MaxHP = 100.0f;
@@ -41,6 +42,7 @@ public class PlayerController : UnitStateController
         Animator.SetFloat(_playerHpKey, _currentHp);
 
         _isEquipped = false;
+        Animator.SetBool(_equippedKey, false);
         
         ChangeMainState(_moveState);
     }
@@ -70,18 +72,17 @@ public class PlayerController : UnitStateController
 
     public void EquippedWeapon()
     {
-        Animator.SetTrigger(_quippedTriggerKey);
+       if (_isEquipped == true)
+       {
+           _isEquipped = false;
+           Animator.SetBool(_equippedKey, _isEquipped);
+           Animator.SetTrigger(_quippedTriggerKey);
+           return;
+       }
 
-        if (_isEquipped == true)
-        {
-            Animator.SetBool(_equippedKey, true);
-            _isEquipped = false;
-            
-            return;
-        }
-
-        Animator.SetBool(_equippedKey, false);
-        _isEquipped = true;
+       _isEquipped = true;
+       Animator.SetBool(_equippedKey, _isEquipped);
+       Animator.SetTrigger(_quippedTriggerKey);
     }
 
     public void ChangeCameraState(ECameraState state)
@@ -89,12 +90,12 @@ public class PlayerController : UnitStateController
         switch (state)
         {
             case ECameraState.AIM:
-                rigController.StartAim();
+                weaponManager.ChangeWeaponState(EWeaponState.AIM);
                 Animator.SetBool(_aimKey, true);
                 break;
             
             case ECameraState.IDLE:
-                rigController.StopAim();
+                weaponManager.ChangeWeaponState(EWeaponState.IDLE);
                 Animator.SetBool(_aimKey, false);
                 break;
             

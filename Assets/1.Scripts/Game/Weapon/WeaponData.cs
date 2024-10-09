@@ -22,7 +22,6 @@ public class WeaponData : ScriptableObject
     [SerializeField] private WeaponTransform aimHintPoint;
 
     [Header("Object")] 
-    [SerializeField] private GameObject weaponModel;
     [SerializeField] private GameObject cartridge;
 
     [Header("State")] 
@@ -38,8 +37,7 @@ public class WeaponData : ScriptableObject
     public WeaponTransform AimTargetPoint => aimTargetPoint;
     public WeaponTransform IdleHintPoint => idleHintPoint;
     public WeaponTransform AimHintPoint => aimHintPoint;
-
-    public GameObject WeaponModel => weaponModel;
+    
     public GameObject Cartridge => cartridge;
 
     public float Damage => damage;
