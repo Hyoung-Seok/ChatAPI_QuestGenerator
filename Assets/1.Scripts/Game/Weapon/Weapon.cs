@@ -12,6 +12,8 @@ public class Weapon : MonoBehaviour
 
     [Header("Effect")] 
     [SerializeField] private ParticleSystem muzzleEffect;
+
+    public WeaponData WeaponData => weaponData;
     
     private Queue<Cartridge> _shells;
     

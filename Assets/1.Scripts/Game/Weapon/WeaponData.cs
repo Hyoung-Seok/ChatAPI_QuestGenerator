@@ -7,23 +7,19 @@ using UnityEngine.Serialization;
 public class WeaponData : ScriptableObject
 {
     [Header("Transform - Back")] 
-    [SerializeField] private Vector3 onBackPosition;
-    [SerializeField] private Vector3 onBackRotation;
-    [SerializeField] private Vector3 onBackScale;
-    
-    [Header("Transform - Hand")]
-    [SerializeField] private Vector3 onHandPosition;
-    [SerializeField] private Vector3 onHandRotation;
-    [SerializeField] private Vector3 onHandScale;
-    
-    [Header("Transform - Aim")]
-    [SerializeField] private Vector3 onAimPosition;
-    [SerializeField] private Vector3 onAimRotation;
-    [SerializeField] private Vector3 onAimScale;
+    [SerializeField] private WeaponTransform backTf;
+
+    [Header("Transform - Hand")] 
+    [SerializeField] private WeaponTransform handTf;
+
+    [Header("Transform - Aim")] 
+    [SerializeField] private WeaponTransform aimTf;
 
     [Header("Transform - HandGrab")] 
-    [SerializeField] private List<Vector3> targetPoint;
-    [SerializeField] private List<Vector3> hintPoint;
+    [SerializeField] private WeaponTransform idleTargetPoint;
+    [SerializeField] private WeaponTransform aimTargetPoint;
+    [SerializeField] private WeaponTransform idleHintPoint;
+    [SerializeField] private WeaponTransform aimHintPoint;
 
     [Header("Object")] 
     [SerializeField] private GameObject weaponModel;
@@ -34,21 +30,14 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float fireRate;
     [SerializeField] private int magazine;
 
-    public Vector3 OnBackPosition => onBackPosition;
-    public Vector3 OnBackRotation => onBackRotation;
+    public WeaponTransform BackTf => backTf;
+    public WeaponTransform HandTf => handTf;
+    public WeaponTransform AimTf => aimTf;
 
-    public Vector3 OnBackScale => onBackScale;
-    
-    public Vector3 OnAimPosition => onAimPosition;
-    public Vector3 OnAimRotation => onAimRotation;
-    public Vector3 OnAimScale => onAimScale;
-
-    public Vector3 OnHandPosition => onHandPosition;
-    public Vector3 OnHandRotation => onHandRotation;
-    public Vector3 OnHandScale => onHandScale;
-    
-    public List<Vector3> TargetPointOnIdle => targetPoint;
-    public List<Vector3> HintPointOnIdle => hintPoint;
+    public WeaponTransform IdleTargetPoint => idleTargetPoint;
+    public WeaponTransform AimTargetPoint => aimTargetPoint;
+    public WeaponTransform IdleHintPoint => idleHintPoint;
+    public WeaponTransform AimHintPoint => aimHintPoint;
 
     public GameObject WeaponModel => weaponModel;
     public GameObject Cartridge => cartridge;
