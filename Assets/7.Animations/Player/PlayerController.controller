@@ -527,9 +527,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.24075755
-  m_TransitionOffset: 0.048668742
-  m_ExitTime: 0.0054199053
+  m_TransitionDuration: 0.12224616
+  m_TransitionOffset: 0.01302623
+  m_ExitTime: 0.0013566561
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 2
@@ -603,7 +603,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.9296398
+  m_TransitionDuration: 0.38666782
   m_TransitionOffset: 0
   m_ExitTime: 0
   m_HasExitTime: 0
@@ -709,17 +709,20 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 3
+    m_ConditionEvent: PlayerHP
+    m_EventTreshold: 30
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 767863612934823762}
   m_Solo: 0
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
-  m_TransitionOffset: 0
-  m_ExitTime: 0.97321427
-  m_HasExitTime: 1
+  m_TransitionDuration: 0.46991733
+  m_TransitionOffset: 0.017607875
+  m_ExitTime: 0.0149990795
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
@@ -766,9 +769,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.9355109
-  m_TransitionOffset: 0.15060471
-  m_ExitTime: 0.11373314
+  m_TransitionDuration: 0.09961929
+  m_TransitionOffset: 0.011289452
+  m_ExitTime: 0.0075258077
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -1365,9 +1368,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25285435
+  m_TransitionDuration: 0.1273317
   m_TransitionOffset: 0.005680676
-  m_ExitTime: 0.041820515
+  m_ExitTime: 0.04182051
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 2
