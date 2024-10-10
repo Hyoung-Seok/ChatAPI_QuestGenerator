@@ -15,11 +15,25 @@ public class GameManager : MonoBehaviour
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
+
+    public static GameManager Instance { get; private set; }
+    public CameraEffectController CameraEffect { get; private set; }
     
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
         // camera Init
         _playerCameraController = new PlayerCameraController(playerCamData);
+        CameraEffect = new CameraEffectController(playerCamData);
         
         // player Init
         playerController.Init(playerMoveData);

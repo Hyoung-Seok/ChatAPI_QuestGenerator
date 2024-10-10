@@ -49,6 +49,8 @@ public class Weapon : MonoBehaviour
             
             _canFire = false;
             _curTime = 0;
+            
+            GameManager.Instance.CameraEffect.ShakeCamera();
         }
     }
 

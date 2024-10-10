@@ -54,6 +54,7 @@ public class WeaponManager : MonoBehaviour
                 SetWeaponGrabPoint(_weaponData.IdleTargetPoint, _weaponData.IdleHintPoint);
 
                 currentWeapon.enabled = false;
+                GameManager.Instance.CameraEffect.TransitionCamera(ECameraState.IDLE);
                 break;
             
             case EWeaponState.AIM:
@@ -68,6 +69,7 @@ public class WeaponManager : MonoBehaviour
                 SetWeaponGrabPoint(_weaponData.AimTargetPoint, _weaponData.AimHintPoint);
 
                 currentWeapon.enabled = true;
+                GameManager.Instance.CameraEffect.TransitionCamera(ECameraState.AIM);
                 break;
             
             default:
