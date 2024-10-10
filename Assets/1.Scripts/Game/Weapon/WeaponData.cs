@@ -28,7 +28,9 @@ public class WeaponData : ScriptableObject
     [SerializeField] private float damage;
     [SerializeField] private float fireRate;
     [SerializeField] private int magazine;
-
+    [SerializeField, Range(0, 1)] private float recoilX;
+    [SerializeField, Range(0, 1)] private float recoilY;
+    
     public WeaponTransform BackTf => backTf;
     public WeaponTransform HandTf => handTf;
     public WeaponTransform AimTf => aimTf;
@@ -43,4 +45,6 @@ public class WeaponData : ScriptableObject
     public float Damage => damage;
     public float FireRate => fireRate;
     public int Magazine => magazine;
+    public float RecoilX => recoilX;
+    public float RecoilY => recoilY;
 }

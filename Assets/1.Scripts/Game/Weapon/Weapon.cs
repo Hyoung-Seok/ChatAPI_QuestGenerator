@@ -23,10 +23,16 @@ public class Weapon : MonoBehaviour
     private void Start()
     {
         Init();
+        GameManager.Instance.CameraController.SetRecoil(weaponData);
     }
 
     private void Update()
     {
+        if (Input.GetButtonUp("Fire1") == true)
+        {
+            GameManager.Instance.CameraController.IsRecoil = false;
+        }
+        
         if (_canFire == false)
         {
             _curTime += Time.deltaTime;
@@ -51,6 +57,7 @@ public class Weapon : MonoBehaviour
             _curTime = 0;
             
             GameManager.Instance.CameraEffect.ShakeCamera();
+            GameManager.Instance.CameraController.IsRecoil = true;
         }
     }
 

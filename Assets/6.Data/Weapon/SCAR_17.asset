@@ -40,9 +40,11 @@ MonoBehaviour:
     position: {x: 0.039, y: -0.067, z: 0.21}
     rotation: {x: -0.496, y: 0.131, z: 0.097}
     scale: {x: 1, y: 1, z: 1}
-  weaponModel: {fileID: 0}
   cartridge: {fileID: 5471510219388969344, guid: a82a352bc6c9b3e4dbfcfee1371d838f,
     type: 3}
   damage: 30
   fireRate: 0.1
   magazine: 25
+  recoilX: 0.04
+  recoilY: 0.25
+  recoveryWeight: 2

@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
+    public PlayerCameraController CameraController => _playerCameraController;
     
     private void Awake()
     {

@@ -27,7 +27,7 @@ public class Cartridge : MonoBehaviour
         var force = Random.Range(minDischargeForce, maxDischargeForce);
         var randAngle = Quaternion.Euler(0, Random.Range(-randomAngle, randomAngle), 0);
         
-        rigidBody.AddForce(randAngle * dir * force, ForceMode.Impulse);
+        rigidBody.AddForce(randAngle * dir * force, ForceMode.VelocityChange);
         
         Invoke(nameof(ReturnQueue), disableTime);
     }
