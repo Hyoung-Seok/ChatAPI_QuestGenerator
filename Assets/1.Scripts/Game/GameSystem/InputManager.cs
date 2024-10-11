@@ -3,15 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour, IEventFunction
 {
     [Header("Player Input")] 
     [SerializeField] private KeyCode equippedKey;
     [SerializeField] private KeyCode runKey;
-
-    [Header("Event")]
-    [SerializeField] private UnityEvent equippedAction;
 
     private PlayerController _controller;
     
@@ -24,12 +22,12 @@ public class InputManager : MonoBehaviour, IEventFunction
     {
         if (Input.GetKeyDown(equippedKey))
         {
-            equippedAction?.Invoke();
+            _controller.ChangePlayerInputState(EPlayerInputState.EQUIPPED);
         }
         
         if (Input.GetKeyDown(runKey))
         {
-            
+            _controller.ChangePlayerInputState(EPlayerInputState.RUN);
         }
         
         if (Input.GetButtonDown("Fire2"))

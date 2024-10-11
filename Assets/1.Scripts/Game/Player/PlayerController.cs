@@ -65,41 +65,33 @@ public class PlayerController : UnitStateController
     {
         if (_currentHp < 30)
         {
-            Animator.SetInteger(_idleAnimation, 0);
+            Animator.SetFloat(_idleAnimation, 4);
             return;
         }
         
-        var num = Random.Range(1, 4);
-        Animator.SetInteger(_idleAnimation, num);
-    }
-
-    public void EquippedWeapon()
-    {
-       if (_isEquipped == true)
-       {
-           _isEquipped = false;
-           Animator.SetBool(_equippedKey, _isEquipped);
-           Animator.SetTrigger(_quippedTriggerKey);
-           return;
-       }
-
-       _isEquipped = true;
-       Animator.SetBool(_equippedKey, _isEquipped);
-       Animator.SetTrigger(_quippedTriggerKey);
+        var num = Random.Range(1,4);
+        Animator.SetFloat(_idleAnimation, num);
     }
 
     public void ChangePlayerInputState(EPlayerInputState inputState)
     {
         switch (inputState)
         {
-            case EPlayerInputState.AIM:
-                weaponManager.ChangeWeaponState(inputState);
-                Animator.SetBool(_aimKey, true);
-                break;
-            
             case EPlayerInputState.IDLE:
                 weaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
+                break;
+            
+            case EPlayerInputState.EQUIPPED:
+                EquippedWeapon();
+                break;
+            
+            case EPlayerInputState.RUN:
+                break;
+            
+            case EPlayerInputState.AIM:
+                weaponManager.ChangeWeaponState(inputState);
+                Animator.SetBool(_aimKey, true);
                 break;
             
             default:
@@ -107,6 +99,21 @@ public class PlayerController : UnitStateController
         }
         
         CurInputState = inputState;
+    }
+    
+    private void EquippedWeapon()
+    {
+        if (_isEquipped == true)
+        {
+            _isEquipped = false;
+            Animator.SetBool(_equippedKey, _isEquipped);
+            Animator.SetTrigger(_quippedTriggerKey);
+            return;
+        }
+
+        _isEquipped = true;
+        Animator.SetBool(_equippedKey, _isEquipped);
+        Animator.SetTrigger(_quippedTriggerKey);
     }
 
     public void OnMoveValueChangeEvent(PlayerMoveData data)
