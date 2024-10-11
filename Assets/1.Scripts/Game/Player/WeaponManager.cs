@@ -5,12 +5,6 @@ using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.Serialization;
 
-public enum EWeaponState
-{
-    IDLE,
-    AIM
-}
-
 public class WeaponManager : MonoBehaviour
 {
     [Header("Component")] 
@@ -42,11 +36,11 @@ public class WeaponManager : MonoBehaviour
         currentWeapon.enabled = false;
     }
 
-    public void ChangeWeaponState(EWeaponState state)
+    public void ChangeWeaponState(EPlayerInputState state)
     {
         switch (state)
         {
-            case EWeaponState.IDLE:
+            case EPlayerInputState.IDLE:
                 aimTarget.enabled = false;
                 rightHandAim.weight = bodyAim.weight = 0;
                 
@@ -54,10 +48,10 @@ public class WeaponManager : MonoBehaviour
                 SetWeaponGrabPoint(_weaponData.IdleTargetPoint, _weaponData.IdleHintPoint);
 
                 currentWeapon.enabled = false;
-                GameManager.Instance.CameraEffect.TransitionCamera(ECameraState.IDLE);
+                GameManager.Instance.CameraEffect.TransitionCamera(EPlayerInputState.IDLE);
                 break;
             
-            case EWeaponState.AIM:
+            case EPlayerInputState.AIM:
                 SetWeaponTransform(_weaponData.AimTf);
                 SetWeaponGrabPoint(_weaponData.AimTargetPoint, _weaponData.AimHintPoint);
                 
@@ -69,7 +63,7 @@ public class WeaponManager : MonoBehaviour
                 SetWeaponGrabPoint(_weaponData.AimTargetPoint, _weaponData.AimHintPoint);
 
                 currentWeapon.enabled = true;
-                GameManager.Instance.CameraEffect.TransitionCamera(ECameraState.AIM);
+                GameManager.Instance.CameraEffect.TransitionCamera(EPlayerInputState.AIM);
                 break;
             
             default:

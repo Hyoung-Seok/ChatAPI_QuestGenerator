@@ -3344,6 +3344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedKey: 113
+  runKey: 0
   equippedAction:
     m_PersistentCalls:
       m_Calls:
@@ -3527,10 +3528,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1640bc96aa231e34f930521b9d152183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 6
+  runSpeed: 10
   rotationSpeed: 20
   acceleration: 10
   deceleration: 20
+  aimMoveSpeed: 10
 --- !u!114 &1858711788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3549,7 +3552,7 @@ MonoBehaviour:
   Animator: {fileID: 472888141}
   weaponManager: {fileID: 472888145}
   MaxHP: 100
-  CurCameraState: 0
+  CurInputState: 0
 --- !u!4 &1861463978 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2899422035419094908, guid: 498e9600291ecf840bc042d0ac43e790,

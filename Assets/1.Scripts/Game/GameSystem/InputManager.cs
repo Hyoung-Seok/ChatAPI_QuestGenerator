@@ -8,6 +8,7 @@ public class InputManager : MonoBehaviour, IEventFunction
 {
     [Header("Player Input")] 
     [SerializeField] private KeyCode equippedKey;
+    [SerializeField] private KeyCode runKey;
 
     [Header("Event")]
     [SerializeField] private UnityEvent equippedAction;
@@ -25,15 +26,20 @@ public class InputManager : MonoBehaviour, IEventFunction
         {
             equippedAction?.Invoke();
         }
-
+        
+        if (Input.GetKeyDown(runKey))
+        {
+            
+        }
+        
         if (Input.GetButtonDown("Fire2"))
         {
-            _controller.ChangeCameraState(ECameraState.AIM);
+            _controller.ChangePlayerInputState(EPlayerInputState.AIM);
         }
 
         if (Input.GetButtonUp("Fire2"))
         {
-            _controller.ChangeCameraState(ECameraState.IDLE);
+            _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
         }
     }
 

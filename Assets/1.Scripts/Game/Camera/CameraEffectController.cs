@@ -6,13 +6,11 @@ using UnityEngine;
 public class CameraEffectController
 {
     private readonly PlayerCameraData _data;
-    private CinemachineBlendDefinition _cameraBlend;
     private CinemachineImpulseSource _impulseSource;
     
     public CameraEffectController(PlayerCameraData data)
     {
         _data = data;
-        _cameraBlend = _data.MainCamera.m_DefaultBlend;
 
         if (_data.VirtualCameras[1].gameObject.TryGetComponent(out _impulseSource) == false)
         {
@@ -20,16 +18,16 @@ public class CameraEffectController
         }
     }
 
-    public void TransitionCamera(ECameraState state)
+    public void TransitionCamera(EPlayerInputState state)
     {
         switch (state)
         {
-            case ECameraState.IDLE:
-                _data.VirtualCameras[(int)ECameraState.AIM].gameObject.SetActive(false);
+            case EPlayerInputState.IDLE:
+                _data.VirtualCameras[1].gameObject.SetActive(false);
                 break;
             
-            case ECameraState.AIM:
-                _data.VirtualCameras[(int)ECameraState.AIM].gameObject.SetActive(true);
+            case EPlayerInputState.AIM:
+                _data.VirtualCameras[1].gameObject.SetActive(true);
                 break;
             
             default:

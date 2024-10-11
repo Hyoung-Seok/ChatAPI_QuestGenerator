@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
@@ -28,7 +29,7 @@ public class PlayerController : UnitStateController
     [Header("State")]
     private PlayerMoveState _moveState;
      
-    [HideInInspector] public ECameraState CurCameraState;
+    [HideInInspector] public EPlayerInputState CurInputState;
     
     private float _currentHp;
     private bool _isEquipped = false;
@@ -87,17 +88,17 @@ public class PlayerController : UnitStateController
        Animator.SetTrigger(_quippedTriggerKey);
     }
 
-    public void ChangeCameraState(ECameraState state)
+    public void ChangePlayerInputState(EPlayerInputState inputState)
     {
-        switch (state)
+        switch (inputState)
         {
-            case ECameraState.AIM:
-                weaponManager.ChangeWeaponState(EWeaponState.AIM);
+            case EPlayerInputState.AIM:
+                weaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, true);
                 break;
             
-            case ECameraState.IDLE:
-                weaponManager.ChangeWeaponState(EWeaponState.IDLE);
+            case EPlayerInputState.IDLE:
+                weaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
                 break;
             
@@ -105,17 +106,11 @@ public class PlayerController : UnitStateController
                 return;
         }
         
-        CurCameraState = state;
+        CurInputState = inputState;
     }
 
     public void OnMoveValueChangeEvent(PlayerMoveData data)
     {
         _moveState.OnValueUpdate(data);
     }
-}
-
-public enum ECameraState
-{
-    IDLE,
-    AIM
 }

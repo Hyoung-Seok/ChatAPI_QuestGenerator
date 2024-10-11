@@ -47,7 +47,7 @@ public class PlayerMoveState : PlayerBaseState
             _lookDir = _moveDir;
         }
 
-        if (Controller.CurCameraState == ECameraState.IDLE)
+        if (Controller.CurInputState == EPlayerInputState.IDLE)
         {
             _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : Controller.PlayerTransform.forward;
         }

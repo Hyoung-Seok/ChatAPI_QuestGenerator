@@ -101,9 +101,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.5329006
-  m_TransitionOffset: 0.018370192
-  m_ExitTime: 0.016511593
+  m_TransitionDuration: 0
+  m_TransitionOffset: 0.018370194
+  m_ExitTime: 0.016511597
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -860,7 +860,7 @@ AnimatorController:
   m_AnimatorParameters:
   - m_Name: PlayerHP
     m_Type: 1
-    m_DefaultFloat: 0
+    m_DefaultFloat: 100
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
@@ -1565,7 +1565,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Walk
-  m_Speed: 1
+  m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 2694679521208306353}
