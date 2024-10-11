@@ -79,6 +79,11 @@ public class PlayerMoveState : PlayerBaseState
         
     }
 
+    public void OnValueUpdate(PlayerMoveData data)
+    {
+        _moveData = data;
+    }
+
     private void InitCameraDir()
     {
         _camForward = Controller.CameraDir.forward;

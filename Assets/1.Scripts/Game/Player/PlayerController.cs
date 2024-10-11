@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
@@ -27,7 +26,7 @@ public class PlayerController : UnitStateController
     private readonly int _aimKey = Animator.StringToHash("Aim");
     
     [Header("State")]
-    private PlayerBaseState _moveState;
+    private PlayerMoveState _moveState;
      
     [HideInInspector] public ECameraState CurCameraState;
     
@@ -37,6 +36,9 @@ public class PlayerController : UnitStateController
     public void Init(PlayerMoveData data)
     {
         _moveState = new PlayerMoveState(this, data);
+        
+        data.OnValueChangeAction -= OnMoveValueChangeEvent;
+        data.OnValueChangeAction += OnMoveValueChangeEvent;
         
         _currentHp = MaxHP;
         Animator.SetFloat(_playerHpKey, _currentHp);
@@ -104,6 +106,11 @@ public class PlayerController : UnitStateController
         }
         
         CurCameraState = state;
+    }
+
+    public void OnMoveValueChangeEvent(PlayerMoveData data)
+    {
+        _moveState.OnValueUpdate(data);
     }
 }
 

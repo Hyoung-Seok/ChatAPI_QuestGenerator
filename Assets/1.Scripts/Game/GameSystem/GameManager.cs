@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
         playerController.Init(playerMoveData);
     }
 
+    #region EventFunction
+    
     private void Start()
     {
         
@@ -62,5 +64,8 @@ public class GameManager : MonoBehaviour
 
     private void LateUpdate()
     {
+
     }
+    
+    #endregion
 }
