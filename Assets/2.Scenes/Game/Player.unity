@@ -3437,7 +3437,6 @@ MonoBehaviour:
   PlayerTransform: {fileID: 472888136}
   CameraDir: {fileID: 651288415}
   Animator: {fileID: 472888141}
-  WeaponManager: {fileID: 472888145}
 --- !u!4 &1861463978 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -2899422035419094908, guid: 498e9600291ecf840bc042d0ac43e790,

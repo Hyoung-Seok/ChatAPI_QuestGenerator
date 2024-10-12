@@ -20,7 +20,6 @@ public class PlayerController : UnitStateController
     
     private float _currentHp;
     private bool _isEquipped = false;
-    private GameManager _manager;
 
     #region AnimationKey
     
@@ -47,15 +46,12 @@ public class PlayerController : UnitStateController
         status.OnValueChangeAction -= OnMoveValueChangeEvent;
         status.OnValueChangeAction += OnMoveValueChangeEvent;
             
-        Animator.SetFloat(_playerHpKey, _currentHp);
-        
         _isEquipped = false;
+        Animator.SetFloat(_playerHpKey, _currentHp);
         Animator.SetBool(_equippedKey, false);
         
         _moveState = new PlayerMoveState(this, status);
         ChangeMainState(_moveState);
-
-        _manager = GameManager.Instance;
     }
 
     public void PlayerDamaged(float dmg)
@@ -86,7 +82,7 @@ public class PlayerController : UnitStateController
         switch (inputState)
         {
             case EPlayerInputState.IDLE:
-                _manager.WeaponManager.ChangeWeaponState(inputState);
+                GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
                 
                 _moveState.ChangeMoveSpeed(inputState, _isEquipped);
@@ -103,7 +99,7 @@ public class PlayerController : UnitStateController
                 break;
             
             case EPlayerInputState.AIM:
-                _manager.WeaponManager.ChangeWeaponState(inputState);
+                GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, true);
                 
                 _moveState.ChangeMoveSpeed(inputState, _isEquipped);

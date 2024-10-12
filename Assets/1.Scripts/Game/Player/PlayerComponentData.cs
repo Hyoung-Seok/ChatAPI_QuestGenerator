@@ -7,5 +7,4 @@ public class PlayerComponentData : MonoBehaviour
     public Transform PlayerTransform;
     public Transform CameraDir;
     public Animator Animator;
-    public WeaponManager WeaponManager;
 }
