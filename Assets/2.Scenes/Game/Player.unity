@@ -3513,13 +3513,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1640bc96aa231e34f930521b9d152183, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 6
-  runSpeed: 10
+  moveSpeed: 6.5
+  runSpeed: 12
   rotationSpeed: 20
   acceleration: 10
   deceleration: 20
-  equippedMoveSpeed: 4
-  equippedRunSpeed: 8
+  equippedMoveSpeed: 5
+  equippedRunSpeed: 10
   aimMoveSpeed: 3
 --- !u!114 &1858711788
 MonoBehaviour:
