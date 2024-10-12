@@ -1,18 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [Header("Player")]
     [SerializeField] private PlayerComponentData playerComponentData;
-    [SerializeField] private PlayerMoveData playerMoveData;
+    [SerializeField] private PlayerStatus playerStatus;
+    public WeaponManager WeaponManager;
     public PlayerController Player { get; private set; }
 
     [Header("PlayerCamera")] 
     [SerializeField] private PlayerCameraData playerCamData;
-    private PlayerCameraController _playerCameraController;
+    public PlayerCameraController CameraController { get; private set; }
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
@@ -20,7 +18,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public PlayerComponentData PlayerComponent => playerComponentData;
     public CameraEffectController CameraEffect { get; private set; }
-    public PlayerCameraController CameraController => _playerCameraController;
     
     private void Awake()
     {
@@ -35,11 +32,11 @@ public class GameManager : MonoBehaviour
         }
         
         // camera Init
-        _playerCameraController = new PlayerCameraController(playerCamData);
+        CameraController = new PlayerCameraController(playerCamData);
         CameraEffect = new CameraEffectController(playerCamData);
         
         // player Init
-        Player = new PlayerController(playerMoveData, playerComponentData);
+        Player = new PlayerController(playerStatus, playerComponentData);
     }
 
     #region EventFunction
@@ -55,7 +52,7 @@ public class GameManager : MonoBehaviour
         inputManager.OnUpdate();
         
         // player
-        _playerCameraController.OnUpdate();
+        CameraController.OnUpdate();
         Player.OnUpdate();   
     }
 

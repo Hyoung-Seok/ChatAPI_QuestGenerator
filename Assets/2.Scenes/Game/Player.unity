@@ -3225,7 +3225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerComponentData: {fileID: 1858711789}
-  playerMoveData: {fileID: 1858711786}
+  playerStatus: {fileID: 1858711786}
+  WeaponManager: {fileID: 472888145}
   playerCamData: {fileID: 2137916550}
   inputManager: {fileID: 1815513540}
 --- !u!114 &1815513540
@@ -3418,6 +3419,8 @@ MonoBehaviour:
   equippedMoveSpeed: 5
   equippedRunSpeed: 10
   aimMoveSpeed: 3
+  maxHP: 100
+  level: 1
 --- !u!114 &1858711789
 MonoBehaviour:
   m_ObjectHideFlags: 0
