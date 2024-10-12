@@ -1,20 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
 {
-    [Header("Component")]
-    public Rigidbody Rigidbody;
-    public Transform PlayerTransform;
-    public Transform CameraDir;
-    public Animator Animator;
-    [SerializeField] private WeaponManager weaponManager;
-
     [Header("Stat")] 
     [SerializeField] private float MaxHP = 100.0f;
 
@@ -26,26 +14,28 @@ public class PlayerController : UnitStateController
     private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
     private readonly int _aimKey = Animator.StringToHash("Aim");
     
-    [Header("State")]
-    private PlayerMoveState _moveState;
-     
+    [Header("State And Data")]
+    private readonly PlayerMoveState _moveState;
+    public PlayerComponentData ComponentData { get; private set; }
+    
     [HideInInspector] public EPlayerInputState CurInputState;
     
     private float _currentHp;
     private bool _isEquipped = false;
     
-    public void Init(PlayerMoveData data)
+    public PlayerController(PlayerMoveData moveData, PlayerComponentData componentData)
     {
-        _moveState = new PlayerMoveState(this, data);
+        _moveState = new PlayerMoveState(this, moveData);
+        ComponentData = componentData;
         
-        data.OnValueChangeAction -= OnMoveValueChangeEvent;
-        data.OnValueChangeAction += OnMoveValueChangeEvent;
+        moveData.OnValueChangeAction -= OnMoveValueChangeEvent;
+        moveData.OnValueChangeAction += OnMoveValueChangeEvent;
         
         _currentHp = MaxHP;
-        Animator.SetFloat(_playerHpKey, _currentHp);
+        ComponentData.Animator.SetFloat(_playerHpKey, _currentHp);
 
         _isEquipped = false;
-        Animator.SetBool(_equippedKey, false);
+        ComponentData.Animator.SetBool(_equippedKey, false);
         
         ChangeMainState(_moveState);
     }
@@ -53,7 +43,7 @@ public class PlayerController : UnitStateController
     public void PlayerDamaged(float dmg)
     {
         _currentHp -= dmg;
-        Animator.SetFloat(_playerHpKey, _currentHp);
+        ComponentData.Animator.SetFloat(_playerHpKey, _currentHp);
 
         if (_currentHp <= 0)
         {
@@ -65,12 +55,12 @@ public class PlayerController : UnitStateController
     {
         if (_currentHp < 30)
         {
-            Animator.SetFloat(_idleAnimation, 4);
+            ComponentData.Animator.SetFloat(_idleAnimation, 4);
             return;
         }
         
         var num = Random.Range(1,4);
-        Animator.SetFloat(_idleAnimation, num);
+        ComponentData.Animator.SetFloat(_idleAnimation, num);
     }
 
     public void ChangePlayerInputState(EPlayerInputState inputState)
@@ -78,8 +68,8 @@ public class PlayerController : UnitStateController
         switch (inputState)
         {
             case EPlayerInputState.IDLE:
-                weaponManager.ChangeWeaponState(inputState);
-                Animator.SetBool(_aimKey, false);
+                ComponentData.WeaponManager.ChangeWeaponState(inputState);
+                ComponentData.Animator.SetBool(_aimKey, false);
                 
                 _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
@@ -95,8 +85,8 @@ public class PlayerController : UnitStateController
                 break;
             
             case EPlayerInputState.AIM:
-                weaponManager.ChangeWeaponState(inputState);
-                Animator.SetBool(_aimKey, true);
+                ComponentData.WeaponManager.ChangeWeaponState(inputState);
+                ComponentData.Animator.SetBool(_aimKey, true);
                 
                 _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
@@ -113,17 +103,17 @@ public class PlayerController : UnitStateController
         if (_isEquipped == true)
         {
             _isEquipped = false;
-            Animator.SetBool(_equippedKey, _isEquipped);
-            Animator.SetTrigger(_quippedTriggerKey);
+            ComponentData.Animator.SetBool(_equippedKey, _isEquipped);
+            ComponentData.Animator.SetTrigger(_quippedTriggerKey);
             return;
         }
 
         _isEquipped = true;
-        Animator.SetBool(_equippedKey, _isEquipped);
-        Animator.SetTrigger(_quippedTriggerKey);
+        ComponentData.Animator.SetBool(_equippedKey, _isEquipped);
+        ComponentData.Animator.SetTrigger(_quippedTriggerKey);
     }
 
-    public void OnMoveValueChangeEvent(PlayerMoveData data)
+    private void OnMoveValueChangeEvent(PlayerMoveData data)
     {
         _moveState.OnValueUpdate(data);
     }

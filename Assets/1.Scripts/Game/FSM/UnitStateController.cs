@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitStateController : MonoBehaviour, IEventFunction
+public class UnitStateController : IEventFunction
 {
     protected UnitBaseState MainState;
     protected UnitBaseState SubState;

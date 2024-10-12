@@ -17,6 +17,10 @@ public class PlayerMoveState : PlayerBaseState
     private Vector3 _prevDir = Vector3.zero;
 
     private bool _isSetIdleAnimation = false;
+    private Transform _playerTf;
+    private Transform _cameraTf;
+    private Animator _playerAnimator;
+    private Rigidbody _rig;
 
     public PlayerMoveState(PlayerController controller, PlayerMoveData data) : base(controller)
     {
@@ -47,7 +51,12 @@ public class PlayerMoveState : PlayerBaseState
     
     public override void Enter()
     {
-        _prevDir = Controller.PlayerTransform.forward;
+        _playerTf = GameManager.Instance.PlayerComponent.PlayerTransform;
+        _rig = GameManager.Instance.PlayerComponent.Rig;
+        _cameraTf = GameManager.Instance.PlayerComponent.CameraDir;
+        _playerAnimator = GameManager.Instance.PlayerComponent.Animator;
+        
+        _prevDir = _playerTf.forward;
     }
 
     public override void OnUpdate()
@@ -71,17 +80,17 @@ public class PlayerMoveState : PlayerBaseState
             _lookDir = _moveDir;
         }
 
-        if (Controller.CurInputState == EPlayerInputState.IDLE)
-        {
-            _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : Controller.PlayerTransform.forward;
-        }
-        else
+        if (Controller.CurInputState == EPlayerInputState.AIM)
         {
             _lookDir = _camForward;
         }
+        else
+        {
+            _lookDir = _curSpeed != 0.0f && _lookDir != Vector3.zero ? _lookDir : _playerTf.forward;
+        }
         
         var targetRot = Quaternion.LookRotation(_lookDir, Vector3.up);
-        Controller.PlayerTransform.rotation = Quaternion.Slerp(Controller.PlayerTransform.rotation,
+        _playerTf.rotation = Quaternion.Slerp(_playerTf.rotation,
             targetRot, _moveData.RotationSpeed * Time.deltaTime);
         
         _prevDir = _lookDir;
@@ -89,7 +98,7 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void OnFixedUpdate()
     {
-        Controller.Rigidbody.velocity = _moveDir * _curSpeed;
+        _rig.velocity = _moveDir * _curSpeed;
         _prevDir = _lookDir;
     }
 
@@ -110,11 +119,11 @@ public class PlayerMoveState : PlayerBaseState
 
     private void InitCameraDir()
     {
-        _camForward = Controller.CameraDir.forward;
+        _camForward = _cameraTf.forward;
         _camForward.y = 0;
         _camForward.Normalize();
         
-        _camRight = Controller.CameraDir.right;
+        _camRight = _cameraTf.right;
         _camRight.y = 0;
         _camRight.Normalize();
     }
@@ -133,7 +142,7 @@ public class PlayerMoveState : PlayerBaseState
 
         if (_isSetIdleAnimation == false && _curSpeed <= 0.1f) { SetIdleAnimation(); }
         
-        Controller.Animator.SetFloat(Controller.SpeedKey, _curSpeed);
+        _playerAnimator.SetFloat(Controller.SpeedKey, _curSpeed);
     }
 
     private void SetIdleAnimation()

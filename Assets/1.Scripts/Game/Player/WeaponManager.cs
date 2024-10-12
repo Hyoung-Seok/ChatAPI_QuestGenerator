@@ -11,7 +11,6 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private MultiAimConstraint bodyAim;
     [SerializeField] private MultiAimConstraint rightHandAim;
     [SerializeField] private TwoBoneIKConstraint leftHandGrab;
-    [SerializeField] private AimTarget aimTarget;
 
     [Header("Weight")] 
     [SerializeField] private float maxWeight = 0.7f;
@@ -31,8 +30,6 @@ public class WeaponManager : MonoBehaviour
     private void Start()
     {
         _weaponData = currentWeapon.WeaponData;
-        
-        aimTarget.enabled = false;
         currentWeapon.enabled = false;
     }
 
@@ -41,7 +38,6 @@ public class WeaponManager : MonoBehaviour
         switch (state)
         {
             case EPlayerInputState.IDLE:
-                aimTarget.enabled = false;
                 rightHandAim.weight = bodyAim.weight = 0;
                 
                 SetWeaponTransform(_weaponData.HandTf);
@@ -55,7 +51,6 @@ public class WeaponManager : MonoBehaviour
                 SetWeaponTransform(_weaponData.AimTf);
                 SetWeaponGrabPoint(_weaponData.AimTargetPoint, _weaponData.AimHintPoint);
                 
-                aimTarget.enabled = true;
                 bodyAim.weight = maxWeight;
                 rightHandAim.weight = 1.0f;
                 

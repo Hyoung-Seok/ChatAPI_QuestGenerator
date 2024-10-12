@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 public class InputManager : MonoBehaviour, IEventFunction
 {
@@ -15,7 +10,7 @@ public class InputManager : MonoBehaviour, IEventFunction
     
     private void Start()
     {
-        _controller = gameObject.GetComponentInChildren<PlayerController>();
+        _controller = GameManager.Instance.Player;
     }
 
     public void OnUpdate()

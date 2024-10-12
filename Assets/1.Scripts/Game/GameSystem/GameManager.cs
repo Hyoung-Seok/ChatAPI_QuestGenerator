@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Player")] 
+    [Header("Player")]
+    [SerializeField] private PlayerComponentData playerComponentData;
     [SerializeField] private PlayerMoveData playerMoveData;
-    [SerializeField] private PlayerController playerController;
+    public PlayerController Player { get; private set; }
 
     [Header("PlayerCamera")] 
     [SerializeField] private PlayerCameraData playerCamData;
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private InputManager inputManager;
 
     public static GameManager Instance { get; private set; }
+    public PlayerComponentData PlayerComponent => playerComponentData;
     public CameraEffectController CameraEffect { get; private set; }
     public PlayerCameraController CameraController => _playerCameraController;
     
@@ -37,7 +39,7 @@ public class GameManager : MonoBehaviour
         CameraEffect = new CameraEffectController(playerCamData);
         
         // player Init
-        playerController.Init(playerMoveData);
+        Player = new PlayerController(playerMoveData, playerComponentData);
     }
 
     #region EventFunction
@@ -54,12 +56,12 @@ public class GameManager : MonoBehaviour
         
         // player
         _playerCameraController.OnUpdate();
-        playerController.OnUpdate();   
+        Player.OnUpdate();   
     }
 
     private void FixedUpdate()
     {
-        playerController.OnFixedUpdate();
+        Player.OnFixedUpdate();
     }
 
     private void LateUpdate()

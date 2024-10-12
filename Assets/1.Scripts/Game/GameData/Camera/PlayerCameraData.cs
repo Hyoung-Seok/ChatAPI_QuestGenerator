@@ -14,7 +14,6 @@ public class PlayerCameraData : MonoBehaviour
     [SerializeField] private Transform targetTf;
 
     [Header("Camera List")] 
-    [SerializeField] private CinemachineBrain mainCamera;
     [SerializeField] private List<CinemachineVirtualCamera> virtualCameras;
     
     public float RotationSpeed => rotationSpeed;
@@ -22,7 +21,6 @@ public class PlayerCameraData : MonoBehaviour
     public float PitchMax => pitchMax;
     public Transform Transform => transform;
     public Transform TargetTf => targetTf;
-    public CinemachineBrain MainCamera => mainCamera;
     public List<CinemachineVirtualCamera> VirtualCameras => virtualCameras;
 }
 
