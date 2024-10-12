@@ -21,6 +21,8 @@ public class PlayerCameraController : IEventFunction
         _rotationSpeed = data.RotationSpeed;
         _pitchMin = data.PitchMin;
         _pitchMax = data.PitchMax;
+        _transform = data.Transform;
+        _targetTf = data.TargetTf;
     }
     
     public void OnUpdate()

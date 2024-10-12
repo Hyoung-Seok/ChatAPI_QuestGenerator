@@ -5,14 +5,16 @@ using UnityEngine;
 
 public class CameraEffectController
 {
-    private readonly PlayerCameraData _data;
+    private CinemachineVirtualCamera _idleCam;
+    private CinemachineVirtualCamera _aimCam;
     private CinemachineImpulseSource _impulseSource;
     
     public CameraEffectController(PlayerCameraData data)
     {
-        _data = data;
+        _idleCam = data.VirtualCameras[0];
+        _aimCam = data.VirtualCameras[1];
 
-        if (_data.VirtualCameras[1].gameObject.TryGetComponent(out _impulseSource) == false)
+        if (_aimCam.gameObject.TryGetComponent(out _impulseSource) == false)
         {
             Debug.Log("ImpulseSource Get Failed!");   
         }
@@ -23,11 +25,11 @@ public class CameraEffectController
         switch (state)
         {
             case EPlayerInputState.IDLE:
-                _data.VirtualCameras[1].gameObject.SetActive(false);
+                _aimCam.gameObject.SetActive(false);
                 break;
             
             case EPlayerInputState.AIM:
-                _data.VirtualCameras[1].gameObject.SetActive(true);
+                _aimCam.gameObject.SetActive(true);
                 break;
             
             default:
