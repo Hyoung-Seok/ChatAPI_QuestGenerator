@@ -53,9 +53,6 @@ public class WeaponManager : MonoBehaviour
                 
                 bodyAim.weight = maxWeight;
                 rightHandAim.weight = 1.0f;
-                
-                SetWeaponTransform(_weaponData.AimTf);
-                SetWeaponGrabPoint(_weaponData.AimTargetPoint, _weaponData.AimHintPoint);
 
                 currentWeapon.enabled = true;
                 GameManager.Instance.CameraEffect.TransitionCamera(EPlayerInputState.AIM);
