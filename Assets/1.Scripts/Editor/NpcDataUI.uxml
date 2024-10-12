@@ -8,7 +8,7 @@
             <ui:DropdownField label="NpcName" name="NpcNameDropdown" style="-unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;); font-size: 16px; margin-top: 5px; margin-bottom: 5px;" />
             <ui:TextField picking-mode="Ignore" label="Name Search" name="NpcNameSearch" style="margin-top: 5px; margin-bottom: 5px;" />
             <ui:EnumField label="QuestType" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" value="Center" name="QuestType" style="margin-top: 5px; margin-bottom: 5px;" />
-            <ui:TextField picking-mode="Ignore" label="Npc Notice" name="NpcNotice" style="align-items: center; justify-content: flex-start; flex-direction: column; height: 200px; -unity-text-align: upper-center; margin-top: 5px; margin-bottom: 5px;" />
+            <ui:TextField picking-mode="Ignore" label="Npc Notice" name="NpcNotice" multiline="true" style="align-items: center; justify-content: flex-start; flex-direction: column; height: 200px; -unity-text-align: upper-center; margin-top: 5px; margin-bottom: 5px;" />
         </ui:VisualElement>
         <ui:VisualElement name="Right" style="flex-grow: 1; max-width: 30%; min-width: 30%; align-items: stretch; justify-content: space-between;">
             <ui:Button text="Init" parse-escape-sequences="true" display-tooltip-when-elided="true" name="InitButton" style="font-size: 16px; -unity-font: url(&quot;project://database/Assets/TextMesh%20Pro/Fonts/SCDream4.otf?fileID=12800000&amp;guid=1e7f569ab5f746548adfa06f9cc9d8bb&amp;type=3#SCDream4&quot;);" />
