@@ -3344,22 +3344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedKey: 113
-  runKey: 0
-  equippedAction:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1858711788}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: EquippedWeapon
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+  runKey: 304
 --- !u!4 &1821954661 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6768225281626788248, guid: 498e9600291ecf840bc042d0ac43e790,
@@ -3533,7 +3518,9 @@ MonoBehaviour:
   rotationSpeed: 20
   acceleration: 10
   deceleration: 20
-  aimMoveSpeed: 10
+  equippedMoveSpeed: 4
+  equippedRunSpeed: 8
+  aimMoveSpeed: 3
 --- !u!114 &1858711788
 MonoBehaviour:
   m_ObjectHideFlags: 0

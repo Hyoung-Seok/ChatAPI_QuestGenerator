@@ -1,7 +1,8 @@
 public enum EPlayerInputState
 {
     IDLE,
-    EQUIPPED,
+    WALK,
     RUN,
+    EQUIPPED,
     AIM
 }

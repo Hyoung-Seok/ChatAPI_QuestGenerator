@@ -80,18 +80,25 @@ public class PlayerController : UnitStateController
             case EPlayerInputState.IDLE:
                 weaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
+                
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                break;
+            
+            case EPlayerInputState.WALK:
+            case EPlayerInputState.RUN:
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
             
             case EPlayerInputState.EQUIPPED:
                 EquippedWeapon();
-                break;
-            
-            case EPlayerInputState.RUN:
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
             
             case EPlayerInputState.AIM:
                 weaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, true);
+                
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
             
             default:

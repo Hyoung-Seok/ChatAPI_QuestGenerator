@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour, IEventFunction
 {
     [Header("Player Input")] 
     [SerializeField] private KeyCode equippedKey;
-    [SerializeField] private KeyCode runKey;
+    [SerializeField] private KeyCode runKey = KeyCode.LeftShift;
 
     private PlayerController _controller;
     
@@ -28,6 +28,11 @@ public class InputManager : MonoBehaviour, IEventFunction
         if (Input.GetKeyDown(runKey))
         {
             _controller.ChangePlayerInputState(EPlayerInputState.RUN);
+        }
+        
+        if (Input.GetKeyUp(runKey))
+        {
+            _controller.ChangePlayerInputState(EPlayerInputState.WALK);
         }
         
         if (Input.GetButtonDown("Fire2"))

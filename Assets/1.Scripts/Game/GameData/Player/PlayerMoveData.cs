@@ -10,7 +10,9 @@ public class PlayerMoveData : MonoBehaviour
     [SerializeField] private float acceleration = 20.0f;
     [SerializeField] private float deceleration = 40.0f;
 
-    [Header("Aim State")]
+    [Header("Equipped State")] 
+    [SerializeField] private float equippedMoveSpeed = 10.0f;
+    [SerializeField] private float equippedRunSpeed = 10.0f;
     [SerializeField] private float aimMoveSpeed = 10.0f;
 
     public Action<PlayerMoveData> OnValueChangeAction;
@@ -20,6 +22,9 @@ public class PlayerMoveData : MonoBehaviour
     public float RotationSpeed => rotationSpeed;
     public float Acceleration => acceleration;
     public float Deceleration => deceleration;
+    public float EquippedMoveSpeed => equippedMoveSpeed;
+    public float EquippedRunSpeed => equippedRunSpeed;
+
     public float AimMoveSpeed => aimMoveSpeed;
 
     private void OnValidate()

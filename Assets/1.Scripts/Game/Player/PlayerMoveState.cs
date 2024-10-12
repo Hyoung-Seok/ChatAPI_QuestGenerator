@@ -6,6 +6,8 @@ public class PlayerMoveState : PlayerBaseState
     
     private float _horizontal;
     private float _vertical;
+    private float _maxMoveSpeed;
+    
     private float _curSpeed = 0.0f;
     
     private Vector3 _camForward = Vector3.zero;
@@ -19,6 +21,28 @@ public class PlayerMoveState : PlayerBaseState
     public PlayerMoveState(PlayerController controller, PlayerMoveData data) : base(controller)
     {
         _moveData = data;
+        _maxMoveSpeed = _moveData.MoveSpeed;
+    }
+
+    public void ChangeMoveSpeed(EPlayerInputState state, bool isEquipped)
+    {
+        _maxMoveSpeed = state switch
+        {
+            EPlayerInputState.AIM => _moveData.AimMoveSpeed,
+            
+            EPlayerInputState.IDLE when (isEquipped == false) => _moveData.MoveSpeed,
+            EPlayerInputState.IDLE => _moveData.EquippedMoveSpeed,
+            
+            EPlayerInputState.WALK when (isEquipped == false) => _moveData.MoveSpeed,
+            EPlayerInputState.WALK => _moveData.EquippedMoveSpeed,
+            
+            EPlayerInputState.RUN when (isEquipped == false) => _moveData.RunSpeed,
+            EPlayerInputState.RUN => _moveData.EquippedRunSpeed,
+            
+            EPlayerInputState.EQUIPPED => _moveData.EquippedMoveSpeed,
+            
+            _ => _moveData.MoveSpeed
+        };
     }
     
     public override void Enter()
@@ -99,7 +123,7 @@ public class PlayerMoveState : PlayerBaseState
     {
         if (_horizontal != 0 || _vertical != 0)
         {
-            _curSpeed = Mathf.MoveTowards(_curSpeed, _moveData.MoveSpeed, _moveData.Acceleration * Time.deltaTime);
+            _curSpeed = Mathf.MoveTowards(_curSpeed, _maxMoveSpeed, _moveData.Acceleration * Time.deltaTime);
             _isSetIdleAnimation = false;
         }
         else
