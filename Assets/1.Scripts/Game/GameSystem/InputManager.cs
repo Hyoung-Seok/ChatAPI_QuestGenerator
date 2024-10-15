@@ -1,39 +1,43 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class InputManager : MonoBehaviour, IEventFunction
 {
     [Header("Player Input")] 
     [SerializeField] private KeyCode equippedKey;
-
-    [Header("Event")]
-    [SerializeField] private UnityEvent equippedAction;
+    [SerializeField] private KeyCode runKey = KeyCode.LeftShift;
 
     private PlayerController _controller;
     
     private void Start()
     {
-        _controller = gameObject.GetComponentInChildren<PlayerController>();
+        _controller = GameManager.Instance.Player;
     }
 
     public void OnUpdate()
     {
         if (Input.GetKeyDown(equippedKey))
         {
-            equippedAction?.Invoke();
+            _controller.ChangePlayerInputState(EPlayerInputState.EQUIPPED);
         }
-
+        
+        if (Input.GetKeyDown(runKey))
+        {
+            _controller.ChangePlayerInputState(EPlayerInputState.RUN);
+        }
+        
+        if (Input.GetKeyUp(runKey))
+        {
+            _controller.ChangePlayerInputState(EPlayerInputState.WALK);
+        }
+        
         if (Input.GetButtonDown("Fire2"))
         {
-            _controller.ChangeCameraState(ECameraState.AIM);
+            _controller.ChangePlayerInputState(EPlayerInputState.AIM);
         }
 
         if (Input.GetButtonUp("Fire2"))
         {
-            _controller.ChangeCameraState(ECameraState.IDLE);
+            _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
         }
     }
 

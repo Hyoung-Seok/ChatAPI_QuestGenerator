@@ -1,30 +1,46 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Player")] 
-    [SerializeField] private PlayerMoveData playerMoveData;
-    [SerializeField] private PlayerController playerController;
+    [Header("Player")]
+    [SerializeField] private PlayerComponentData playerComponentData;
+    [SerializeField] private PlayerStatus playerStatus;
+    public WeaponManager WeaponManager;
+    public PlayerController Player { get; private set; }
 
     [Header("PlayerCamera")] 
     [SerializeField] private PlayerCameraData playerCamData;
-    private PlayerCameraController _playerCameraController;
+    public PlayerCameraController CameraController { get; private set; }
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
+
+    public static GameManager Instance { get; private set; }
+    public PlayerComponentData PlayerComponent => playerComponentData;
+    public CameraEffectController CameraEffect { get; private set; }
     
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        
         // camera Init
-        _playerCameraController = new PlayerCameraController(playerCamData);
+        CameraController = new PlayerCameraController(playerCamData);
+        CameraEffect = new CameraEffectController(playerCamData);
         
         // player Init
-        playerController.Init(playerMoveData);
+        Player = new PlayerController(playerStatus, playerComponentData);
     }
 
+    #region EventFunction
+    
     private void Start()
     {
         
@@ -36,16 +52,19 @@ public class GameManager : MonoBehaviour
         inputManager.OnUpdate();
         
         // player
-        _playerCameraController.OnUpdate();
-        playerController.OnUpdate();   
+        CameraController.OnUpdate();
+        Player.OnUpdate();   
     }
 
     private void FixedUpdate()
     {
-        playerController.OnFixedUpdate();
+        Player.OnFixedUpdate();
     }
 
     private void LateUpdate()
     {
+
     }
+    
+    #endregion
 }

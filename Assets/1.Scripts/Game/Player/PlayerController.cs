@@ -1,22 +1,28 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Cinemachine;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
 {
-    [Header("Component")]
-    public Rigidbody Rigidbody;
-    public Transform PlayerTransform;
-    public Transform CameraDir;
-    public Animator Animator;
-    [SerializeField] private RigController rigController;
+    [HideInInspector] public EPlayerInputState CurInputState;
+    
+    // Component
+    public Rigidbody PlayerRig { get; private set; }
+    public Animator Animator { get; private set; }
+    public Transform Transform { get; private set; }
+    public Transform CameraDir { get; private set; }
+    
+    [Header("Status")] 
+    private float _lv;
+    public float PlayerMaxHp { get; private set; }
+    
+    [Header("Player State")]
+    private readonly PlayerMoveState _moveState;
+    
+    private float _currentHp;
+    private bool _isEquipped = false;
 
-    [Header("Stat")] 
-    [SerializeField] private float MaxHP = 100.0f;
-
+    #region AnimationKey
+    
     [Header("Animation Hash")]
     public readonly int SpeedKey = Animator.StringToHash("Speed");
     private readonly int _idleAnimation = Animator.StringToHash("IdleMotions");
@@ -25,23 +31,26 @@ public class PlayerController : UnitStateController
     private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
     private readonly int _aimKey = Animator.StringToHash("Aim");
     
-    [Header("State")]
-    private PlayerBaseState _moveState;
-     
-    [HideInInspector] public ECameraState CurCameraState;
+    #endregion
     
-    private float _currentHp;
-    private bool _isEquipped = false;
-    
-    public void Init(PlayerMoveData data)
+    public PlayerController(PlayerStatus status, PlayerComponentData componentData)
     {
-        _moveState = new PlayerMoveState(this, data);
-        
-        _currentHp = MaxHP;
-        Animator.SetFloat(_playerHpKey, _currentHp);
+        PlayerRig = componentData.Rig;
+        Animator = componentData.Animator;
+        Transform = componentData.PlayerTransform;
+        CameraDir = componentData.CameraDir;
 
-        _isEquipped = false;
+        _currentHp = PlayerMaxHp = status.MaxHp;
+        _lv = status.Level;
         
+        status.OnValueChangeAction -= OnMoveValueChangeEvent;
+        status.OnValueChangeAction += OnMoveValueChangeEvent;
+            
+        _isEquipped = false;
+        Animator.SetFloat(_playerHpKey, _currentHp);
+        Animator.SetBool(_equippedKey, false);
+        
+        _moveState = new PlayerMoveState(this, status);
         ChangeMainState(_moveState);
     }
 
@@ -60,54 +69,66 @@ public class PlayerController : UnitStateController
     {
         if (_currentHp < 30)
         {
-            Animator.SetInteger(_idleAnimation, 0);
+            Animator.SetFloat(_idleAnimation, 4);
             return;
         }
         
-        var num = Random.Range(1, 4);
-        Animator.SetInteger(_idleAnimation, num);
+        var num = Random.Range(1,4);
+        Animator.SetFloat(_idleAnimation, num);
     }
 
-    public void EquippedWeapon()
+    public void ChangePlayerInputState(EPlayerInputState inputState)
     {
-        Animator.SetTrigger(_quippedTriggerKey);
-
-        if (_isEquipped == true)
+        switch (inputState)
         {
-            Animator.SetBool(_equippedKey, true);
-            _isEquipped = false;
-            
-            return;
-        }
-
-        Animator.SetBool(_equippedKey, false);
-        _isEquipped = true;
-    }
-
-    public void ChangeCameraState(ECameraState state)
-    {
-        switch (state)
-        {
-            case ECameraState.AIM:
-                rigController.StartAim();
-                Animator.SetBool(_aimKey, true);
+            case EPlayerInputState.IDLE:
+                GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
+                Animator.SetBool(_aimKey, false);
+                
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
             
-            case ECameraState.IDLE:
-                rigController.StopAim();
-                Animator.SetBool(_aimKey, false);
+            case EPlayerInputState.WALK:
+            case EPlayerInputState.RUN:
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                break;
+            
+            case EPlayerInputState.EQUIPPED:
+                EquippedWeapon();
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                break;
+            
+            case EPlayerInputState.AIM:
+                GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
+                Animator.SetBool(_aimKey, true);
+                
+                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
             
             default:
                 return;
         }
         
-        CurCameraState = state;
+        CurInputState = inputState;
     }
-}
+    
+    private void EquippedWeapon()
+    {
+        if (_isEquipped == true)
+        {
+            _isEquipped = false;
+            Animator.SetBool(_equippedKey, _isEquipped);
+            Animator.SetTrigger(_quippedTriggerKey);
+            return;
+        }
 
-public enum ECameraState
-{
-    IDLE,
-    AIM
+        _isEquipped = true;
+        Animator.SetBool(_equippedKey, _isEquipped);
+        Animator.SetTrigger(_quippedTriggerKey);
+    }
+
+    private void OnMoveValueChangeEvent(PlayerStatus data)
+    {
+        _moveState.OnValueUpdate(data);
+    }
 }
