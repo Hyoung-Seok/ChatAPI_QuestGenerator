@@ -26,6 +26,7 @@ MonoBehaviour:
   runSpeed: 8
   rotationSpeed: 350
   attackRange: 1.5
+  attackDelay: 2
   damage: 10
   agonizingChance: 30
-  screamChance: 25
+  screamChance: 40
