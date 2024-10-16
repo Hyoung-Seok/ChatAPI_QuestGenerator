@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   defense: 10
-  damage: 10
   detectRange: 20
   detectAngle: 20
+  returnDistance: 15
   fireHearingRange: 40
   footStepHearingRange: 5
   idleStateMinTime: 10
@@ -25,5 +25,7 @@ MonoBehaviour:
   moveSpeed: 0.6
   runSpeed: 8
   rotationSpeed: 350
+  attackRange: 1.5
+  damage: 10
   agonizingChance: 30
   screamChance: 25

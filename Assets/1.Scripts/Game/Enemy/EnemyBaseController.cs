@@ -32,6 +32,11 @@ public class EnemyBaseController : UnitStateController
 
     public bool DetectTarget()
     {
+        if(Vector3.Distance(TargetTf.position, Tf.position) > DetectDistance)
+        {
+            return false;
+        }
+        
         _position = Tf.position;
         _forward = Tf.forward;
         

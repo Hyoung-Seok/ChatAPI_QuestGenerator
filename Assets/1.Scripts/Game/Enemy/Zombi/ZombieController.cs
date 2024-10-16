@@ -5,13 +5,14 @@ public class ZombieController : EnemyBaseController
     // state
     public ZombieIdleState ZombieIdleState { get; private set; }
     public ZombiePatrolState ZombiePatrolState { get; private set; }
+    public ZombieChaseState ZombieChaseState { get; private set; }
 
     // status
     private readonly float _moveSpeed = 0.0f;
     private readonly float _runSpeed = 0.0f;
 
     // HashKey
-    public readonly int RunKey = Animator.StringToHash("IsWalk"); 
+    public readonly int RunKey = Animator.StringToHash("IsRun"); 
 
     public ZombieController(EnemyComponent component, ZombieStatus status) : base(component)
     {
@@ -28,6 +29,7 @@ public class ZombieController : EnemyBaseController
 
         ZombieIdleState = new ZombieIdleState(this, status);
         ZombiePatrolState = new ZombiePatrolState(this, status);
+        ZombieChaseState = new ZombieChaseState(this, status);
         
         ChangeMainState(ZombieIdleState);
     }

@@ -33,7 +33,7 @@ public class ZombiePatrolState : ZombieBaseState
     {
         if (Controller.DetectTarget() == true)
         {
-            
+            Controller.ChangeMainState(Controller.ZombieChaseState);
         }
         
         if (Controller.NavMeshAgent.remainingDistance <= 1.0f)

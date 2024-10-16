@@ -37,7 +37,7 @@ public class ZombieIdleState : ZombieBaseState
     {
         if (Controller.DetectTarget() == true)
         {
-            
+            Controller.ChangeMainState(Controller.ZombieChaseState);
         }
         
         _curTime += Time.deltaTime;

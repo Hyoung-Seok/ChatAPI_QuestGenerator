@@ -6,9 +6,9 @@ public class ZombieStatus : ScriptableObject
     [Header("Status")] 
     [SerializeField] private float maxHp;
     [SerializeField] private float defense;
-    [SerializeField] private float damage;
     [SerializeField] private float detectRange;
     [SerializeField] private float detectAngle;
+    [SerializeField] private float returnDistance;
     [SerializeField] private float fireHearingRange;
     [SerializeField] private float footStepHearingRange;
 
@@ -24,6 +24,10 @@ public class ZombieStatus : ScriptableObject
     [SerializeField] private float runSpeed;
     [SerializeField] private float rotationSpeed;
 
+    [Header("State - Attack")] 
+    [SerializeField] private float attackRange;
+    [SerializeField] private float damage;
+
     [Header("Chance")] 
     [SerializeField, Range(1,100)] private int agonizingChance;
     [SerializeField, Range(1,100)] private int screamChance;
@@ -31,8 +35,10 @@ public class ZombieStatus : ScriptableObject
     public float MaxHp => maxHp;
     public float Defense => defense;
     public float Damage => damage;
+    public float AttackRange => attackRange;
     public float DetectRange => detectRange;
     public float DetectAngle => detectAngle;
+    public float ReturnDistance => returnDistance;
     public float FireHearingRange => fireHearingRange;
     public float FootStepHearingRange => footStepHearingRange;
     public float IdleStateMinTime => idleStateMinTime;
