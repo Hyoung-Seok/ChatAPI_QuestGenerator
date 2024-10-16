@@ -21,7 +21,9 @@ MonoBehaviour:
   footStepHearingRange: 5
   idleStateMinTime: 10
   idleStateMaxTime: 20
-  patrolRange: 10
-  moveSpeed: 5
+  patrolRange: 4
+  moveSpeed: 0.6
   runSpeed: 8
-  rotationSpeed: 40
+  rotationSpeed: 350
+  agonizingChance: 30
+  screamChance: 25
