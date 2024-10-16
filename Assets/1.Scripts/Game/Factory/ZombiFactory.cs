@@ -28,18 +28,11 @@ public class ZombiFactory : EnemyFactory
         return new ZombieController(enemyComponent, normalZombieStatus);
     }
 
-    private List<EnemyBaseController> _controllers;
-
-    private void Start()
-    {
-        _controllers = new List<EnemyBaseController>();
-    }
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            _controllers.Add(CreateEnemy());
+            TestManager.Instance.ZombieControllers.Add(CreateEnemy());
         }
     }
 }
