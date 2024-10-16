@@ -59,7 +59,7 @@ public class ZombieAttackState : ZombieBaseState
             return;
         }
         
-        // Controller.ChangeMainState(Controller.ZombieChaseState);
+        Controller.ChangeMainState(Controller.ZombieReturnState);
     }
 
     public override void OnFixedUpdate()

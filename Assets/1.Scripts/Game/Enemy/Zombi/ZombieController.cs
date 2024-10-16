@@ -7,13 +7,18 @@ public class ZombieController : EnemyBaseController
     public ZombiePatrolState ZombiePatrolState { get; private set; }
     public ZombieChaseState ZombieChaseState { get; private set; }
     public ZombieAttackState ZombieAttackState { get; private set; }
+    public ZombieReturnState ZombieReturnState { get; private set; }
 
     // status
     private readonly float _moveSpeed = 0.0f;
     private readonly float _runSpeed = 0.0f;
 
     // HashKey
-    public readonly int RunKey = Animator.StringToHash("IsRun"); 
+    public readonly int RunKey = Animator.StringToHash("IsRun");
+    
+    // Property
+    public float OriginStopDistance { get; private set; }
+    public Vector3 OriginPosition { get; private set; }
 
     public ZombieController(EnemyComponent component, ZombieStatus status) : base(component)
     {
@@ -24,7 +29,10 @@ public class ZombieController : EnemyBaseController
         
         _moveSpeed = status.MoveSpeed;
         _runSpeed = status.RunSpeed;
-        NavMeshAgent.angularSpeed  = status.RotationSpeed;
+        NavMeshAgent.angularSpeed = status.RotationSpeed;
+
+        OriginStopDistance = NavMeshAgent.stoppingDistance;
+        OriginPosition = Tf.position;
         
         ChangeSpeed(false);
 
@@ -32,6 +40,7 @@ public class ZombieController : EnemyBaseController
         ZombiePatrolState = new ZombiePatrolState(this, status);
         ZombieChaseState = new ZombieChaseState(this, status);
         ZombieAttackState = new ZombieAttackState(this, status);
+        ZombieReturnState = new ZombieReturnState(this);
         
         ChangeMainState(ZombieIdleState);
     }

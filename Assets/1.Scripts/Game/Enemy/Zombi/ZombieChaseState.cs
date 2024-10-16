@@ -12,7 +12,7 @@ public class ZombieChaseState : ZombieBaseState
     private readonly int _screamKey = Animator.StringToHash("IsScream");
     
     private float _curTime = 0;
-    private float _waitingTime = 0; 
+    private float _waitingTime = 0;
     
     public ZombieChaseState(ZombieController controller, ZombieStatus status) : base(controller)
     {
@@ -62,7 +62,7 @@ public class ZombieChaseState : ZombieBaseState
 
         if (curDistance >= _returnDistance)
         {
-            Debug.Log("Return");
+            Controller.ChangeMainState(Controller.ZombieReturnState);
         }
     }
 
@@ -80,6 +80,7 @@ public class ZombieChaseState : ZombieBaseState
     {
         Controller.Animator.SetBool(Controller.RunKey, false);
         Controller.NavMeshAgent.autoBraking = true;
+        Controller.NavMeshAgent.stoppingDistance = Controller.OriginStopDistance;
         _curTime = 0;
     }
 
