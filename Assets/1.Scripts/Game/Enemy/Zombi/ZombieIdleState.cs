@@ -35,8 +35,13 @@ public class ZombieIdleState : ZombieBaseState
 
     public override void OnUpdate()
     {
+        if (Controller.DetectTarget() == true)
+        {
+            
+        }
+        
         _curTime += Time.deltaTime;
-
+        
         if (_curTime >= _transitionTime)
         {
             Controller.ChangeMainState(Controller.ZombiePatrolState);

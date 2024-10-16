@@ -31,6 +31,11 @@ public class ZombiePatrolState : ZombieBaseState
 
     public override void OnUpdate()
     {
+        if (Controller.DetectTarget() == true)
+        {
+            
+        }
+        
         if (Controller.NavMeshAgent.remainingDistance <= 1.0f)
         {
             Controller.ChangeMainState(Controller.ZombieIdleState);

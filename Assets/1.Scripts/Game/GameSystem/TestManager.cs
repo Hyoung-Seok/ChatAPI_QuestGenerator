@@ -5,8 +5,12 @@ using UnityEngine;
 
 public class TestManager : MonoBehaviour
 {
+    [Header("Debug")] 
+    public bool IsDebug = false;
+    
     public static TestManager Instance { get; private set; }
     public List<EnemyBaseController> ZombieControllers { get; private set; }
+    public Transform Target;
     
     private void Awake()
     {
