@@ -6,6 +6,7 @@ public class ZombieController : EnemyBaseController
     public ZombieIdleState ZombieIdleState { get; private set; }
     public ZombiePatrolState ZombiePatrolState { get; private set; }
     public ZombieChaseState ZombieChaseState { get; private set; }
+    public ZombieAttackState ZombieAttackState { get; private set; }
 
     // status
     private readonly float _moveSpeed = 0.0f;
@@ -30,6 +31,7 @@ public class ZombieController : EnemyBaseController
         ZombieIdleState = new ZombieIdleState(this, status);
         ZombiePatrolState = new ZombiePatrolState(this, status);
         ZombieChaseState = new ZombieChaseState(this, status);
+        ZombieAttackState = new ZombieAttackState(this, status);
         
         ChangeMainState(ZombieIdleState);
     }

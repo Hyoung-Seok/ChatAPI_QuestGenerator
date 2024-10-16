@@ -27,6 +27,7 @@ public class ZombieChaseState : ZombieBaseState
     {
         Controller.NavMeshAgent.stoppingDistance = 0.8f;
         Controller.NavMeshAgent.autoBraking = false;
+        _curTime = 0;
 
         if (Controller.TryExecuteAction(_screamChance) == true)
         {
@@ -56,7 +57,7 @@ public class ZombieChaseState : ZombieBaseState
 
         if (curDistance <= _attackRange)
         {
-            Debug.Log("Attack!!");
+            Controller.ChangeMainState(Controller.ZombieAttackState);
         }
 
         if (curDistance >= _returnDistance)

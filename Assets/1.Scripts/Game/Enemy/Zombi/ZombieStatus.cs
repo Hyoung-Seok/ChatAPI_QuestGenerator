@@ -26,6 +26,7 @@ public class ZombieStatus : ScriptableObject
 
     [Header("State - Attack")] 
     [SerializeField] private float attackRange;
+    [SerializeField] private float attackDelay;
     [SerializeField] private float damage;
 
     [Header("Chance")] 
@@ -36,6 +37,7 @@ public class ZombieStatus : ScriptableObject
     public float Defense => defense;
     public float Damage => damage;
     public float AttackRange => attackRange;
+    public float AttackDelay => attackDelay;
     public float DetectRange => detectRange;
     public float DetectAngle => detectAngle;
     public float ReturnDistance => returnDistance;
