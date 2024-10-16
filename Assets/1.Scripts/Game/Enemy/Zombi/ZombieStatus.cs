@@ -12,7 +12,14 @@ public class ZombieStatus : ScriptableObject
     [SerializeField] private float fireHearingRange;
     [SerializeField] private float footStepHearingRange;
 
-    [Header("Status - Move")] 
+    [Header("State - idle")] 
+    [SerializeField] private float idleStateMinTime;
+    [SerializeField] private float idleStateMaxTime;
+
+    [Header("State - Patrol")] 
+    [SerializeField] private float patrolRange;
+    
+    [Header("State - Move")] 
     [SerializeField] private float moveSpeed;
     [SerializeField] private float runSpeed;
     [SerializeField] private float rotationSpeed;
@@ -24,6 +31,9 @@ public class ZombieStatus : ScriptableObject
     public float DetectAngle => detectAngle;
     public float FireHearingRange => fireHearingRange;
     public float FootStepHearingRange => footStepHearingRange;
+    public float IdleStateMinTime => idleStateMinTime;
+    public float IdleStateMaxTime => idleStateMaxTime;
+    public float PatrolRange => patrolRange;
     public float MoveSpeed => moveSpeed;
     public float RunSpeed => runSpeed;
     public float RotationSpeed => rotationSpeed;
