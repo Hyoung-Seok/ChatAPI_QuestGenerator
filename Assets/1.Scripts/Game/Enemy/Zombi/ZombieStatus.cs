@@ -24,6 +24,10 @@ public class ZombieStatus : ScriptableObject
     [SerializeField] private float runSpeed;
     [SerializeField] private float rotationSpeed;
 
+    [Header("Chance")] 
+    [SerializeField, Range(1,100)] private int agonizingChance;
+    [SerializeField, Range(1,100)] private int screamChance;
+
     public float MaxHp => maxHp;
     public float Defense => defense;
     public float Damage => damage;
@@ -37,4 +41,6 @@ public class ZombieStatus : ScriptableObject
     public float MoveSpeed => moveSpeed;
     public float RunSpeed => runSpeed;
     public float RotationSpeed => rotationSpeed;
+    public int AgonizingChance => agonizingChance;
+    public int ScreamChance => screamChance;
 }

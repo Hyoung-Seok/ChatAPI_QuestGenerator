@@ -5,12 +5,15 @@ using UnityEngine.AI;
 
 public class ZombiePatrolState : ZombieBaseState
 {
-    private float _patrolRange = 0.0f;
+    private readonly int _walkKey = Animator.StringToHash("IsWalk");
+    
+    private readonly float _patrolRange = 0.0f;
     private Vector3 _targetPos = Vector3.zero;
     
     public ZombiePatrolState(ZombieController controller, ZombieStatus status) : base(controller)
     {
         _patrolRange = status.PatrolRange;
+        Controller.ChangeSpeed(false);
     }
     
     public override void Enter()
@@ -23,11 +26,15 @@ public class ZombiePatrolState : ZombieBaseState
         }
 
         Controller.NavMeshAgent.SetDestination(_targetPos);
+        Controller.Animator.SetBool(_walkKey, true);
     }
 
     public override void OnUpdate()
     {
-
+        if (Controller.NavMeshAgent.remainingDistance <= 1.0f)
+        {
+            Controller.ChangeMainState(Controller.ZombieIdleState);
+        }
     }
 
     public override void OnFixedUpdate()
@@ -42,7 +49,7 @@ public class ZombiePatrolState : ZombieBaseState
 
     public override void Exit()
     {
-
+        Controller.Animator.SetBool(_walkKey, false);
     }
 
     private Vector3 GetRandomPatrolPos()

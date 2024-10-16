@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class ZombieIdleState : ZombieBaseState
 {
+    private readonly int _isAgonizing = Animator.StringToHash("IsAgonizing"); 
+    
     private readonly float _minTime = 0;
     private readonly float _maxTime = 0;
+    private readonly int _agonizingChance = 0;
     
     private float _curTime = 0;
     private float _transitionTime = 0;
@@ -14,12 +17,18 @@ public class ZombieIdleState : ZombieBaseState
     {
         _minTime = status.IdleStateMinTime;
         _maxTime = status.IdleStateMaxTime;
+        _agonizingChance = status.AgonizingChance;
     }
     
     public override void Enter()
     {
         _curTime = 0;
         _transitionTime = Random.Range(_minTime, _maxTime);
+
+        if (Controller.TryExecuteAction(_agonizingChance) == true)
+        {
+            Controller.Animator.SetTrigger(_isAgonizing);
+        }
         
         Debug.Log($"Time : {_transitionTime}");
     }

@@ -8,7 +8,7 @@ public class EnemyBaseController : UnitStateController
     public Transform Tf { get; private set; }
     public Animator Animator { get; private set; }
 
-    public EnemyBaseController(EnemyComponent component)
+    protected EnemyBaseController(EnemyComponent component)
     {
         NavMeshAgent = component.NavMeshAgent;
         Rig = component.Rig;

@@ -8,6 +8,9 @@ public class ZombieController : EnemyBaseController
 
     private readonly float _moveSpeed = 0.0f;
     private readonly float _runSpeed = 0.0f;
+    
+    // HashKey
+    public readonly int RunKey = Animator.StringToHash("IsWalk"); 
 
     public ZombieController(EnemyComponent component, ZombieStatus status) : base(component)
     {
@@ -26,5 +29,10 @@ public class ZombieController : EnemyBaseController
     public void ChangeSpeed(bool isChase)
     {
         NavMeshAgent.speed = isChase ? _runSpeed : _moveSpeed;
+    }
+
+    public bool TryExecuteAction(int chance)
+    {
+        return Random.Range(1, 101) < chance;
     }
 }
