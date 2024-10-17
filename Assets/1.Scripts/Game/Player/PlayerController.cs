@@ -98,7 +98,7 @@ public class PlayerController : UnitStateController
                 _moveState.ChangeMoveSpeed(inputState, _isEquipped);
                 break;
             
-            case EPlayerInputState.AIM:
+            case EPlayerInputState.AIM when (_isEquipped == true) : 
                 GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, true);
                 

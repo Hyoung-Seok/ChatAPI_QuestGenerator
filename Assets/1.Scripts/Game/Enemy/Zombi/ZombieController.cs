@@ -25,7 +25,6 @@ public class ZombieController : EnemyBaseController
 
     public ZombieController(GameObject obj, ZombieStatus status) : base(obj)
     {
-        Debug.Log(obj.transform.GetChild(2).name);
         Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
         
         DetectDistance = status.DetectRange;

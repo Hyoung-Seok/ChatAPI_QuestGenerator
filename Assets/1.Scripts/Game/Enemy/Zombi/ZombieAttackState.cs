@@ -29,8 +29,8 @@ public class ZombieAttackState : ZombieBaseState
         _curTime = 0;
         Controller.NavMeshAgent.ResetPath();
         Controller.NavMeshAgent.autoBraking = false;
-        Controller.Animator.SetBool(Controller.RunKey, false);
         
+        Controller.Animator.SetBool(Controller.RunKey, false);
         Controller.Animator.SetInteger(_attackAni, Random.Range(0,2));
         Controller.Animator.SetTrigger(_attackTrigger);
         
