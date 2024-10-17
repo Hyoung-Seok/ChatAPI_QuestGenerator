@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class ZombieChaseState : ZombieBaseState
 {
     private readonly Transform _targetTf;
+    private readonly NavMeshAgent _navMeshAgent;
     private readonly float _returnDistance;
     private readonly int _screamChance;
     private readonly float _attackRange;
@@ -17,6 +19,7 @@ public class ZombieChaseState : ZombieBaseState
     public ZombieChaseState(ZombieController controller, ZombieStatus status) : base(controller)
     {
         _targetTf = Controller.TargetTf;
+        _navMeshAgent = Controller.NavMeshAgent;
         
         _returnDistance = status.ReturnDistance;
         _screamChance = status.ScreamChance;
@@ -25,8 +28,8 @@ public class ZombieChaseState : ZombieBaseState
     
     public override void Enter()
     {
-        Controller.NavMeshAgent.stoppingDistance = 0.8f;
-        Controller.NavMeshAgent.autoBraking = false;
+        _navMeshAgent.stoppingDistance = 0.8f;
+        _navMeshAgent.autoBraking = false;
         _curTime = 0;
 
         if (Controller.TryExecuteAction(_screamChance) == true)
@@ -52,7 +55,7 @@ public class ZombieChaseState : ZombieBaseState
             return;
         }
         
-        Controller.NavMeshAgent.SetDestination(_targetTf.position);
+        _navMeshAgent.SetDestination(_targetTf.position);
         var curDistance = Vector3.Distance(_targetTf.position, Controller.Tf.position);
 
         if (curDistance <= _attackRange)
@@ -79,8 +82,8 @@ public class ZombieChaseState : ZombieBaseState
     public override void Exit()
     {
         Controller.Animator.SetBool(Controller.RunKey, false);
-        Controller.NavMeshAgent.autoBraking = true;
-        Controller.NavMeshAgent.stoppingDistance = Controller.OriginStopDistance;
+        _navMeshAgent.autoBraking = true;
+        _navMeshAgent.stoppingDistance = Controller.OriginStopDistance;
         _curTime = 0;
     }
 
