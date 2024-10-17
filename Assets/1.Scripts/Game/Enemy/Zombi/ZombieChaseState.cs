@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class ZombieChaseState : ZombieBaseState
 {
     private readonly Transform _targetTf;
+    private readonly Transform _tf;
     private readonly NavMeshAgent _navMeshAgent;
     private readonly float _returnDistance;
     private readonly int _screamChance;
@@ -15,6 +16,7 @@ public class ZombieChaseState : ZombieBaseState
     
     private float _curTime = 0;
     private float _waitingTime = 0;
+    private Vector3 _velocity = Vector3.zero;
     
     public ZombieChaseState(ZombieController controller, ZombieStatus status) : base(controller)
     {
@@ -24,6 +26,8 @@ public class ZombieChaseState : ZombieBaseState
         _returnDistance = status.ReturnDistance;
         _screamChance = status.ScreamChance;
         _attackRange = status.AttackRange;
+
+        _tf = Controller.GameObject.transform;
     }
     
     public override void Enter()
@@ -44,6 +48,8 @@ public class ZombieChaseState : ZombieBaseState
             Controller.Animator.SetBool(Controller.RunKey, true);
             Controller.ChangeSpeed(true);
         }
+        
+        Controller.Tmp.text = "CurrentState : Chase";
     }
 
     public override void OnUpdate()
@@ -56,6 +62,7 @@ public class ZombieChaseState : ZombieBaseState
         }
         
         _navMeshAgent.SetDestination(_targetTf.position);
+        _tf.position = Vector3.SmoothDamp(_tf.position, _navMeshAgent.nextPosition, ref _velocity, 0.1f );
         var curDistance = Vector3.Distance(_targetTf.position, Controller.GameObject.transform.position);
 
         if (curDistance <= _attackRange)

@@ -31,6 +31,8 @@ public class ZombieAttackState : ZombieBaseState
         
         Controller.Animator.SetInteger(_attackAni, Random.Range(0,2));
         Controller.Animator.SetTrigger(_attackTrigger);
+        
+        Controller.Tmp.text = "CurrentState : Attack";
     }
 
     public override void OnUpdate()
@@ -75,5 +77,6 @@ public class ZombieAttackState : ZombieBaseState
     public override void Exit()
     {
         _curTime = 0;
+        Controller.Animator.ResetTrigger(_attackTrigger);
     }
 }

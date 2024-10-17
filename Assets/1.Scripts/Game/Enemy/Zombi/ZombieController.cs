@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class ZombieController : EnemyBaseController
@@ -8,6 +9,8 @@ public class ZombieController : EnemyBaseController
     public ZombieChaseState ZombieChaseState { get; private set; }
     public ZombieAttackState ZombieAttackState { get; private set; }
     public ZombieReturnState ZombieReturnState { get; private set; }
+
+    public TextMeshPro Tmp;
 
     // status
     private readonly float _moveSpeed = 0.0f;
@@ -22,7 +25,10 @@ public class ZombieController : EnemyBaseController
 
     public ZombieController(GameObject obj, ZombieStatus status) : base(obj)
     {
-        TargetTf = GameManager.Instance.Player.Transform;
+        Debug.Log(obj.transform.GetChild(2).name);
+        Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
+        
+        TargetTf = GameManager.Instance.PlayerComponent.PlayerTransform;
         DetectDistance = status.DetectRange;
         DetectAngle = status.DetectAngle;
         

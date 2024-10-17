@@ -27,6 +27,7 @@ public class EnemyBaseController : UnitStateController
         Rig = obj.GetComponent<Rigidbody>();
         Animator = obj.GetComponent<Animator>();
         GameObject = obj;
+        TargetTf = GameManager.Instance.PlayerComponent.PlayerTransform;
         
         _layerMask = LayerMask.GetMask("Enemy");
     }

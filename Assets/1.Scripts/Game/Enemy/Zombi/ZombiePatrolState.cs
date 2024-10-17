@@ -27,6 +27,8 @@ public class ZombiePatrolState : ZombieBaseState
 
         Controller.NavMeshAgent.SetDestination(_targetPos);
         Controller.Animator.SetBool(_walkKey, true);
+        
+        Controller.Tmp.text = "CurrentState : Patrol";
     }
 
     public override void OnUpdate()

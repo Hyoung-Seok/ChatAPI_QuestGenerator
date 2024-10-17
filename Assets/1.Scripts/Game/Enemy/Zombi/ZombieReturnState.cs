@@ -12,6 +12,8 @@ public class ZombieReturnState : ZombieBaseState
         Controller.Animator.SetBool(_walkKey, true);
 
         Controller.NavMeshAgent.SetDestination(Controller.OriginPosition);
+        
+        Controller.Tmp.text = "CurrentState : Return";
     }
 
     public override void OnUpdate()
