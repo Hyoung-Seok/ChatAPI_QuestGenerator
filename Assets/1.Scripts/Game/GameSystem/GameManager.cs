@@ -1,7 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Debug")] 
+    public bool IsDebug = false;
+    
     [Header("Player")]
     [SerializeField] private PlayerComponentData playerComponentData;
     [SerializeField] private PlayerStatus playerStatus;
@@ -53,7 +57,7 @@ public class GameManager : MonoBehaviour
         
         // player
         CameraController.OnUpdate();
-        Player.OnUpdate();   
+        Player.OnUpdate();
     }
 
     private void FixedUpdate()

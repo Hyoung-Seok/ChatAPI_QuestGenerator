@@ -21,7 +21,7 @@ public class ZombieAttackState : ZombieBaseState
         _detectedRange = status.DetectRange;
 
         _targetTf = Controller.TargetTf;
-        _tf = Controller.Tf;
+        _tf = Controller.GameObject.transform;
     }
     
     public override void Enter()

@@ -5,8 +5,8 @@ public class EnemyBaseController : UnitStateController
 {
     public NavMeshAgent NavMeshAgent { get; private set; }
     public Rigidbody Rig { get; private set; }
-    public Transform Tf { get; private set; }
     public Animator Animator { get; private set; }
+    public GameObject GameObject { get; private set; }
     
     // Detect member
     public Transform TargetTf { get; protected set; }
@@ -18,29 +18,30 @@ public class EnemyBaseController : UnitStateController
     private Vector3 _targetDir = Vector3.zero;
     private float _targetDot = 0;
     private readonly LayerMask _layerMask;
-    
 
-    protected EnemyBaseController(EnemyComponent component)
+    public virtual void ResetEnemy(Vector3 pos) {}
+    
+    protected EnemyBaseController(GameObject obj)
     {
-        NavMeshAgent = component.NavMeshAgent;
-        Rig = component.Rig;
-        Tf = component.Tf;
-        Animator = component.Animator;
+        NavMeshAgent = obj.GetComponent<NavMeshAgent>();
+        Rig = obj.GetComponent<Rigidbody>();
+        Animator = obj.GetComponent<Animator>();
+        GameObject = obj;
         
         _layerMask = LayerMask.GetMask("Enemy");
     }
 
     public bool DetectTarget()
     {
-        if(Vector3.Distance(TargetTf.position, Tf.position) > DetectDistance)
+        if(Vector3.Distance(TargetTf.position, GameObject.transform.position) > DetectDistance)
         {
             return false;
         }
         
-        _position = Tf.position;
-        _forward = Tf.forward;
+        _position = GameObject.transform.position;
+        _forward = GameObject.transform.forward;
         
-        if(TestManager.Instance.IsDebug) DrawView();
+        if(GameManager.Instance.IsDebug) DrawView();
 
         _targetDir = (TargetTf.position - _position).normalized;
         _targetDot = Vector3.Dot(_forward, _targetDir);

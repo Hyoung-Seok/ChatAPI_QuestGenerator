@@ -60,7 +60,7 @@ public class ZombiePatrolState : ZombieBaseState
     private Vector3 GetRandomPatrolPos()
     {
         var randDir = Random.insideUnitSphere * _patrolRange;
-        randDir += Controller.Tf.position;
+        randDir += Controller.GameObject.transform.position;
 
         return NavMesh.SamplePosition(randDir, out var hit, _patrolRange, NavMesh.AllAreas)
             ? hit.position

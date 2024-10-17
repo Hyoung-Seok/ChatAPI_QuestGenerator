@@ -20,10 +20,9 @@ public class ZombieController : EnemyBaseController
     public float OriginStopDistance { get; private set; }
     public Vector3 OriginPosition { get; private set; }
 
-    public ZombieController(EnemyComponent component, ZombieStatus status) : base(component)
+    public ZombieController(GameObject obj, ZombieStatus status) : base(obj)
     {
-        //TODO : 추후 플레이어로 변경
-        TargetTf = TestManager.Instance.Target;
+        TargetTf = GameManager.Instance.Player.Transform;
         DetectDistance = status.DetectRange;
         DetectAngle = status.DetectAngle;
         
@@ -32,7 +31,7 @@ public class ZombieController : EnemyBaseController
         NavMeshAgent.angularSpeed = status.RotationSpeed;
 
         OriginStopDistance = NavMeshAgent.stoppingDistance;
-        OriginPosition = Tf.position;
+        OriginPosition = obj.transform.position;
         
         ChangeSpeed(false);
 
@@ -43,6 +42,15 @@ public class ZombieController : EnemyBaseController
         ZombieReturnState = new ZombieReturnState(this);
         
         ChangeMainState(ZombieIdleState);
+    }
+
+    public override void ResetEnemy(Vector3 pos)
+    {
+        NavMeshAgent.stoppingDistance = OriginStopDistance;
+        OriginPosition = pos;
+        GameObject.transform.position = pos;
+        
+        Animator.SetBool(RunKey, false);
     }
 
     public void ChangeSpeed(bool isChase)
