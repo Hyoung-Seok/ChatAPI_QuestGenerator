@@ -62,7 +62,7 @@ public class ZombieChaseState : ZombieBaseState
         }
         
         _navMeshAgent.SetDestination(_targetTf.position);
-        _tf.position = Vector3.SmoothDamp(_tf.position, _navMeshAgent.nextPosition, ref _velocity, 0.1f );
+        _tf.position = Vector3.SmoothDamp(_tf.position, _navMeshAgent.nextPosition, ref _velocity, 0.1f);
         var curDistance = Vector3.Distance(_targetTf.position, Controller.GameObject.transform.position);
 
         if (curDistance <= _attackRange)
