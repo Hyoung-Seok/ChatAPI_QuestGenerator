@@ -28,7 +28,6 @@ public class ZombieController : EnemyBaseController
         Debug.Log(obj.transform.GetChild(2).name);
         Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
         
-        TargetTf = GameManager.Instance.PlayerComponent.PlayerTransform;
         DetectDistance = status.DetectRange;
         DetectAngle = status.DetectAngle;
         
