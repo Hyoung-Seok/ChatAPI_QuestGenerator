@@ -9,19 +9,24 @@ public class GameManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private PlayerComponentData playerComponentData;
     [SerializeField] private PlayerStatus playerStatus;
-    public WeaponManager WeaponManager;
-    public PlayerController Player { get; private set; }
+    [SerializeField] private WeaponManager weaponManager;
 
     [Header("PlayerCamera")] 
     [SerializeField] private PlayerCameraData playerCamData;
-    public PlayerCameraController CameraController { get; private set; }
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
 
+    #region Property
+    
     public static GameManager Instance { get; private set; }
     public PlayerComponentData PlayerComponent => playerComponentData;
+    public WeaponManager WeaponManager => weaponManager;
+    public PlayerController Player { get; private set; }
+    public PlayerCameraController CameraController { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
+    
+    #endregion
     
     private void Awake()
     {
