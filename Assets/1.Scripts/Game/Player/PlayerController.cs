@@ -10,6 +10,7 @@ public class PlayerController : UnitStateController
     public Animator Animator { get; private set; }
     public Transform Transform { get; private set; }
     public Transform CameraDir { get; private set; }
+    public bool IsEquipped { get; private set; }
     
     [Header("Status")] 
     private float _lv;
@@ -19,7 +20,6 @@ public class PlayerController : UnitStateController
     private readonly PlayerMoveState _moveState;
     
     private float _currentHp;
-    private bool _isEquipped = false;
 
     #region AnimationKey
     
@@ -46,7 +46,7 @@ public class PlayerController : UnitStateController
         status.OnValueChangeAction -= OnMoveValueChangeEvent;
         status.OnValueChangeAction += OnMoveValueChangeEvent;
             
-        _isEquipped = false;
+        IsEquipped = false;
         Animator.SetFloat(_playerHpKey, _currentHp);
         Animator.SetBool(_equippedKey, false);
         
@@ -85,24 +85,24 @@ public class PlayerController : UnitStateController
                 GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
                 
-                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
             case EPlayerInputState.WALK:
             case EPlayerInputState.RUN:
-                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
             case EPlayerInputState.EQUIPPED:
                 EquippedWeapon();
-                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
-            case EPlayerInputState.AIM when (_isEquipped == true) : 
+            case EPlayerInputState.AIM when (IsEquipped == true) : 
                 GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, true);
                 
-                _moveState.ChangeMoveSpeed(inputState, _isEquipped);
+                _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
             default:
@@ -114,16 +114,16 @@ public class PlayerController : UnitStateController
     
     private void EquippedWeapon()
     {
-        if (_isEquipped == true)
+        if (IsEquipped == true)
         {
-            _isEquipped = false;
-            Animator.SetBool(_equippedKey, _isEquipped);
+            IsEquipped = false;
+            Animator.SetBool(_equippedKey, IsEquipped);
             Animator.SetTrigger(_quippedTriggerKey);
             return;
         }
 
-        _isEquipped = true;
-        Animator.SetBool(_equippedKey, _isEquipped);
+        IsEquipped = true;
+        Animator.SetBool(_equippedKey, IsEquipped);
         Animator.SetTrigger(_quippedTriggerKey);
     }
 

@@ -30,12 +30,12 @@ public class InputManager : MonoBehaviour, IEventFunction
             _controller.ChangePlayerInputState(EPlayerInputState.WALK);
         }
         
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire2") && _controller.IsEquipped == true)
         {
             _controller.ChangePlayerInputState(EPlayerInputState.AIM);
         }
 
-        if (Input.GetButtonUp("Fire2"))
+        if (Input.GetButtonUp("Fire2") && _controller.IsEquipped == true)
         {
             _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
         }

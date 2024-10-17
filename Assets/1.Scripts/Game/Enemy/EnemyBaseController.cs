@@ -10,8 +10,8 @@ public class EnemyBaseController : UnitStateController
     
     // Detect member
     public Transform TargetTf { get; protected set; }
-    public float DetectDistance { get; protected set; }
-    public float DetectAngle { get; protected set; }
+    protected float DetectDistance { get; set; }
+    protected float DetectAngle { get; set; }
     
     private Vector3 _forward = Vector3.zero;
     private Vector3 _position = Vector3.zero;
