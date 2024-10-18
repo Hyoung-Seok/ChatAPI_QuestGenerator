@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Weapon : MonoBehaviour
 {
@@ -16,8 +17,7 @@ public class Weapon : MonoBehaviour
 
     public WeaponData WeaponData => weaponData;
     
-    private Queue<Cartridge> _shells;
-    
+    private IObjectPool<ObjectPool> _pool;
     private bool _canFire = true;
     private float _curTime = 0;
     private Vector2 _screenCenter;
@@ -54,8 +54,7 @@ public class Weapon : MonoBehaviour
         
         if (Input.GetButton("Fire1") == true && _canFire == true)
         {
-            var cartridge = GetCartridge();
-            cartridge.StartCellDischarge(cartridgeOutPos.forward);
+            _pool.Get();
             
             muzzleEffect.Play();
             sound.PlayFireSound();
@@ -72,10 +71,10 @@ public class Weapon : MonoBehaviour
 
     public void Init()
     {
-        _shells = new Queue<Cartridge>();
+        _pool = new ObjectPool<ObjectPool>(CreateObjectPool, GetObject, ReturnObject,
+            OnDestroyPoolObject, maxSize: weaponData.Magazine + 10);
         _hitPoint = new HitPoint();
         
-        CreateCartridge();
         muzzleEffect.Stop();
     }
     
@@ -107,41 +106,35 @@ public class Weapon : MonoBehaviour
             GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
         }
     }
+
+    #region ObjectPool
+
+    private ObjectPool CreateObjectPool()
+    {
+        var obj = Instantiate(weaponData.Cartridge, cartridgeOutPos).GetComponent<Cartridge>();
+        obj.SetManagedPool(_pool);
+
+        return obj;
+    }
     
-    private void CreateCartridge(int count = 0)
+    private void GetObject(ObjectPool obj)
     {
-        var creatCount = (count == 0) ? weaponData.Magazine + 10 : count;
-
-        for (var i = 0; i < creatCount; ++i)
-        {
-            var cartridge = Instantiate(weaponData.Cartridge, cartridgeOutPos).GetComponent<Cartridge>();
-
-            cartridge.ReturnAction = ReturnCartridge;
-            cartridge.gameObject.SetActive(false);
-            
-            _shells.Enqueue(cartridge);
-        }
-    }
-
-    private Cartridge GetCartridge()
-    {
-        if (_shells.Count <= 0)
-        {
-            CreateCartridge();
-        }
-
-        var shell = _shells.Dequeue();
-
-        shell.gameObject.transform.SetPositionAndRotation(cartridgeOutPos.position,
+        obj.gameObject.SetActive(true);
+        
+        obj.gameObject.transform.SetPositionAndRotation(cartridgeOutPos.position,
             weaponData.Cartridge.transform.rotation);
-        shell.gameObject.SetActive(true);
-
-        return shell;
+        obj.OnEnableEvent(cartridgeOutPos.forward);
     }
 
-    private void ReturnCartridge(Cartridge cartridge)
+    private void ReturnObject(ObjectPool obj)
     {
-        cartridge.gameObject.SetActive(false);
-        _shells.Enqueue(cartridge);
+        obj.gameObject.SetActive(false);
     }
+
+    private void OnDestroyPoolObject(ObjectPool obj)
+    {
+        Destroy(obj.gameObject);
+    }
+
+    #endregion
 }

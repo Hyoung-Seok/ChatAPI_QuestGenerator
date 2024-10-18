@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions.Must;
 using Random = UnityEngine.Random;
 
-public class Cartridge : MonoBehaviour
+public class Cartridge : ObjectPool
 {
     [Header("Force")]
     [SerializeField] private float minDischargeForce;
@@ -13,27 +13,24 @@ public class Cartridge : MonoBehaviour
 
     [Header("Angle")]
     [SerializeField] private float randomAngle = 10;
-
-    [Header("Time")] 
-    [SerializeField] private float disableTime;
     
     [Header("Component")]
     [SerializeField] private Rigidbody rigidBody;
-
-    public Action<Cartridge> ReturnAction;
     
-    public void StartCellDischarge(Vector3 dir)
+    public override void OnEnableEvent(Vector3 dir)
     {
         var force = Random.Range(minDischargeForce, maxDischargeForce);
         var randAngle = Quaternion.Euler(0, Random.Range(-randomAngle, randomAngle), 0);
         
         rigidBody.AddForce(randAngle * dir * force, ForceMode.VelocityChange);
-        
-        Invoke(nameof(ReturnQueue), disableTime);
     }
 
-    private void ReturnQueue()
+    protected override void OnDisable()
     {
-        ReturnAction?.Invoke(this);
+        base.OnDisable();
+
+        rigidBody.velocity = Vector3.zero;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
     }
 }

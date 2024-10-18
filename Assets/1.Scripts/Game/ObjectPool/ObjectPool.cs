@@ -10,12 +10,17 @@ public class ObjectPool : MonoBehaviour
 
     private float _curTime = 0.0f;
     private IObjectPool<ObjectPool> _managedPool;
-
+    
     public void SetManagedPool(IObjectPool<ObjectPool> pool)
     {
         _managedPool = pool;
     }
 
+    public virtual void OnEnableEvent(Vector3 dir)
+    {
+        
+    }
+    
     private void OnEnable()
     {
         _curTime = 0;
@@ -33,7 +38,7 @@ public class ObjectPool : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         _managedPool.Release(this);
     }
