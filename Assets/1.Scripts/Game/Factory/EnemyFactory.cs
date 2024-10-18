@@ -72,7 +72,12 @@ public abstract class EnemyFactory : MonoBehaviour
             var randDir = Random.insideUnitCircle * spawnRange;
             var dir = new Vector3(randDir.x, 0, randDir.y) + transform.position;
 
-            if (NavMesh.SamplePosition(dir, out var hit, spawnRange, NavMesh.AllAreas) == true)
+            if (NavMesh.SamplePosition(dir, out var hit, 0.1f, NavMesh.AllAreas) == false)
+            {
+                continue;
+            }
+            
+            if (Physics.CheckSphere(hit.position + Vector3.up * 0.5f, 0.5f) == false)
             {
                 return hit.position;
             }
@@ -85,7 +90,7 @@ public abstract class EnemyFactory : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, spawnRange * 0.5f);
+        Gizmos.DrawWireSphere(transform.position, spawnRange);
     }
 #endif
 }
