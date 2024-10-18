@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ZombiFactory : EnemyFactory
+public class ZombieFactory : EnemyFactory
 {
     [Header("Data")]
     [SerializeField] private ZombieStatus normalZombieStatus;
