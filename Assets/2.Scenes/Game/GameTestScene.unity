@@ -1564,7 +1564,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.16666667
+  m_VoxelSize: 0.26666668
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 09e6abd87d0ac5f459e4588358f6025d, type: 2}
   m_BuildHeightMesh: 0
@@ -3145,7 +3145,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 6827857666732831365, guid: fac32e1faf0541544967d28e0e5f24cb,
     type: 3}
   spawnRange: 30
-  firstCreateCount: 10
+  firstCreateCount: 5
   firstSpawnCount: 3
   maxTryCount: 10
   normalZombieStatus: {fileID: 11400000, guid: 4fe0aa154c0cd5648945d0416b4f1f99, type: 2}

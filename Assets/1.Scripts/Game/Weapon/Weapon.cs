@@ -85,9 +85,18 @@ public class Weapon : MonoBehaviour
     {
         var ray = _mainCam.ScreenPointToRay(_screenCenter);
 
-        if (Physics.Raycast(ray, out var hit, 100.0f) == true)
+        if (Physics.Raycast(ray, out var hit, 100.0f) == false)
         {
-            Debug.Log($"Hit : {hit.collider.name}");
+            return;
+        }
+
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage);
+        }
+        else if (hit.collider.CompareTag("Head"))
+        {
+            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f);
         }
     }
     

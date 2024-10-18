@@ -21,7 +21,9 @@ public abstract class EnemyFactory : MonoBehaviour
 
     private void ReturnObjectToPool(EnemyBaseController obj)
     {
-        obj.ResetEnemy();
+        obj.GameObject.SetActive(false);
+        
+        _spawnEnemyContainer.Remove(obj);
         _createEnemyContainer.Enqueue(obj);
     }
 
@@ -63,14 +65,19 @@ public abstract class EnemyFactory : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            SpawnEnemy(1);
+        }
+        
         if (_spawnEnemyContainer.Count <= 0)
         {
             return;
         }
 
-        foreach (var enemy in _spawnEnemyContainer)
+        for (var i = 0; i < _spawnEnemyContainer.Count; ++i)
         {
-            enemy.OnUpdate();
+            _spawnEnemyContainer[i].OnUpdate();
         }
     }
 
