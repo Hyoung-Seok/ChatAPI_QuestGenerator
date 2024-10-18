@@ -1,19 +1,21 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class UIContainer : MonoBehaviour
 {
     [Header("CrossHair")] 
     [SerializeField] private GameObject crossHair;
-    [SerializeField] private GameObject headShotCrossHair;
 
+    [Header("Animation Clip")] 
+    [SerializeField] private Animator crossHairAnimation;
+
+    private readonly int _enableKey = Animator.StringToHash("Enable");
+    
     public void SetActiveCrossHair(bool enable, bool isHeadshot = false)
     {
         if (isHeadshot == true)
         {
-            headShotCrossHair.SetActive(enable);
+            crossHairAnimation.SetTrigger(_enableKey);
         }
         else
         {
