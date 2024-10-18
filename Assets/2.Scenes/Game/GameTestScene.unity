@@ -664,7 +664,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   crossHair: {fileID: 603049028}
-  headShotCrossHair: {fileID: 30834237}
   crossHairAnimation: {fileID: 936296922}
 --- !u!1 &301638556
 GameObject:
