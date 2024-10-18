@@ -11,8 +11,8 @@ public class EnemyBaseController : UnitStateController
     public GameObject GameObject { get; private set; }
     
     // Origin
-    public float OriginStopDistance { get; protected set; }
-    public Vector3 OriginPosition { get; protected set; }
+    public float OriginStopDistance { get; private set; }
+    public Vector3 OriginPosition { get; private set; }
     
     // status
     protected readonly float MoveSpeed;
