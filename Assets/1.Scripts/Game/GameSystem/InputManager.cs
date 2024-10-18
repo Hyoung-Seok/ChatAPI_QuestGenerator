@@ -7,10 +7,14 @@ public class InputManager : MonoBehaviour, IEventFunction
     [SerializeField] private KeyCode runKey = KeyCode.LeftShift;
 
     private PlayerController _controller;
+    private bool _isLockMouse = false;
     
     private void Start()
     {
         _controller = GameManager.Instance.Player;
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        _isLockMouse = true;
     }
 
     public void OnUpdate()
@@ -38,6 +42,12 @@ public class InputManager : MonoBehaviour, IEventFunction
         if (Input.GetButtonUp("Fire2") && _controller.IsEquipped == true)
         {
             _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
+        }
+
+        if (Input.GetButtonDown("Cancel") == true)
+        {
+            _isLockMouse = !_isLockMouse;
+            Cursor.lockState = (_isLockMouse) ? CursorLockMode.Locked : CursorLockMode.None;
         }
     }
 
