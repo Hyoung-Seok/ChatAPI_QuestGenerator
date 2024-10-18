@@ -32,12 +32,15 @@ public class EnemyBaseController : UnitStateController
     
     // Action
     public Action<EnemyBaseController> ReturnAction;
+    protected readonly Func<ObjectPool> GetHitEffect;
     
     public virtual void ResetEnemy() {}
-    public virtual void HitEvent(float dmg) {}
+    public virtual void HitEvent(float dmg, HitPoint hitPoint) {}
     
-    protected EnemyBaseController(GameObject obj, ZombieStatus status)
+    protected EnemyBaseController(GameObject obj, ZombieStatus status, Func<ObjectPool> hitEvent = null)
     {
+        GetHitEffect = hitEvent;
+        
         NavMeshAgent = obj.GetComponent<NavMeshAgent>();
         Rig = obj.GetComponent<Rigidbody>();
         Animator = obj.GetComponent<Animator>();

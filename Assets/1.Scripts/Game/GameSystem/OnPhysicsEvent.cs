@@ -5,5 +5,5 @@ using UnityEngine;
 
 public class OnPhysicsEvent : MonoBehaviour
 {
-    public Action<float> OnHitFunc;
+    public Action<float, HitPoint> OnHitFunc;
 }

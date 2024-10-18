@@ -12,6 +12,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Effect")] 
     [SerializeField] private ParticleSystem muzzleEffect;
+    private HitPoint _hitPoint;
 
     public WeaponData WeaponData => weaponData;
     
@@ -26,6 +27,7 @@ public class Weapon : MonoBehaviour
     {
         Init();
         GameManager.Instance.CameraController.SetRecoil(weaponData);
+        
         
         _mainCam = Camera.main;
         _screenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
@@ -71,8 +73,9 @@ public class Weapon : MonoBehaviour
     public void Init()
     {
         _shells = new Queue<Cartridge>();
+        _hitPoint = new HitPoint();
+        
         CreateCartridge();
-
         muzzleEffect.Stop();
     }
     
@@ -92,11 +95,14 @@ public class Weapon : MonoBehaviour
 
         if (hit.collider.CompareTag("Enemy"))
         {
-            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage);
+            _hitPoint.Init(hit);
+            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage, _hitPoint);
         }
         else if (hit.collider.CompareTag("Head"))
         {
-            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f);
+            _hitPoint.Init(hit);
+            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f, _hitPoint);
+            
             sound.PlayHeadShotSound();
             GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
         }
@@ -137,5 +143,17 @@ public class Weapon : MonoBehaviour
     {
         cartridge.gameObject.SetActive(false);
         _shells.Enqueue(cartridge);
+    }
+}
+
+public class HitPoint
+{
+    public Vector3 HitPosition = Vector3.zero;
+    public Vector3 HitNormal = Vector3.zero;
+
+    public void Init(RaycastHit hit)
+    {
+        HitPosition = hit.point;
+        HitNormal = hit.normal;
     }
 }

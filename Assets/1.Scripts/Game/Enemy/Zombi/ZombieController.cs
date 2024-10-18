@@ -1,5 +1,7 @@
+using System;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ZombieController : EnemyBaseController
 {
@@ -17,7 +19,7 @@ public class ZombieController : EnemyBaseController
     public readonly int RunKey = Animator.StringToHash("IsRun");
     public readonly int DeadKey = Animator.StringToHash("IsDead");
     
-    public ZombieController(GameObject obj, ZombieStatus status) : base(obj, status)
+    public ZombieController(GameObject obj, ZombieStatus status, Func<ObjectPool> getEffect = null) : base(obj, status, getEffect)
     {
         Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
         var hitEvent = obj.GetComponent<OnPhysicsEvent>();
@@ -37,10 +39,18 @@ public class ZombieController : EnemyBaseController
         ChangeMainState(ZombieIdleState);
     }
 
-    public override void HitEvent(float dmg)
+    public override void HitEvent(float dmg, HitPoint hitPoint)
     {
         CurrentHp -= dmg;
         Debug.Log($"Cur HP : {CurrentHp}");
+
+        var effect = GetHitEffect?.Invoke();
+
+        if (effect is not null)
+        {
+            effect.transform.position = hitPoint.HitPosition;
+            effect.transform.rotation = Quaternion.LookRotation(hitPoint.HitNormal);   
+        }
 
         if (CurrentHp <= 0 && MainState != ZombieDeadState)
         {
