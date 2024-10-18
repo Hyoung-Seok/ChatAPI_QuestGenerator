@@ -36,11 +36,13 @@ public class InputManager : MonoBehaviour, IEventFunction
         
         if (Input.GetButtonDown("Fire2") && _controller.IsEquipped == true)
         {
+            GameManager.Instance.UIContainer.SetActiveCrossHair(true);
             _controller.ChangePlayerInputState(EPlayerInputState.AIM);
         }
 
         if (Input.GetButtonUp("Fire2") && _controller.IsEquipped == true)
         {
+            GameManager.Instance.UIContainer.SetActiveCrossHair(false);
             _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
         }
 

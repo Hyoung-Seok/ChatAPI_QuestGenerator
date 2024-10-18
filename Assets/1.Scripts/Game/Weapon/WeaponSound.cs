@@ -1,17 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class WeaponSound : MonoBehaviour
 {
-    [SerializeField] private AudioSource audioSource;
+    [Header("AudioSource")] 
+    [SerializeField] private AudioSource gunSoundSource;
+    [SerializeField] private AudioSource headShotSoundSource;
     
     [Header("Sound List")] 
     [SerializeField] private List<AudioClip> fireSound;
+    [SerializeField] private List<AudioClip> headShotSound;
+    
 
     public void PlayFireSound()
     {
-        audioSource.clip = fireSound[Random.Range(0, fireSound.Count)];
-        audioSource.Play();
+        gunSoundSource.clip = fireSound[Random.Range(0, fireSound.Count)];
+        gunSoundSource.Play();
+    }
+    
+    public void PlayHeadShotSound()
+    {
+        headShotSoundSource.clip = headShotSound[Random.Range(0, headShotSound.Count)];
+        headShotSoundSource.Play();
     }
 }

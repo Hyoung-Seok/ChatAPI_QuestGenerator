@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private UIContainer uiContainer;
 
     #region Property
     
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
     public PlayerController Player { get; private set; }
     public PlayerCameraController CameraController { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
-    
+    public UIContainer UIContainer => uiContainer;
     #endregion
     
     private void Awake()

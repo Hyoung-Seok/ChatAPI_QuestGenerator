@@ -97,6 +97,7 @@ public class Weapon : MonoBehaviour
         else if (hit.collider.CompareTag("Head"))
         {
             hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f);
+            sound.PlayHeadShotSound();
         }
     }
     
