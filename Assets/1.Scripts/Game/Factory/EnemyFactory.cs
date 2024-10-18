@@ -19,6 +19,12 @@ public abstract class EnemyFactory : MonoBehaviour
     private List<EnemyBaseController> _spawnEnemyContainer;
     protected abstract EnemyBaseController CreateEnemy();
 
+    private void ReturnObjectToPool(EnemyBaseController obj)
+    {
+        obj.ResetEnemy();
+        _createEnemyContainer.Enqueue(obj);
+    }
+
     private void SpawnEnemy(int count)
     {
         if (_createEnemyContainer.Count < count)
@@ -32,9 +38,12 @@ public abstract class EnemyFactory : MonoBehaviour
         for (var i = 0; i < count; ++i)
         {
             var obj = _createEnemyContainer.Dequeue();
-            obj.ResetEnemy(GetRandomPosition());
-            obj.GameObject.SetActive(true);
+            obj.SetPosition(GetRandomPosition());
+
+            obj.ReturnAction -= ReturnObjectToPool;
+            obj.ReturnAction += ReturnObjectToPool;
             
+            obj.GameObject.SetActive(true);
             _spawnEnemyContainer.Add(obj);
         }
     }

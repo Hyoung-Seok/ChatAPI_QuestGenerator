@@ -12,30 +12,16 @@ public class ZombieController : EnemyBaseController
 
     public TextMeshPro Tmp;
 
-    // status
-    private readonly float _moveSpeed = 0.0f;
-    private readonly float _runSpeed = 0.0f;
-
     // HashKey
     public readonly int RunKey = Animator.StringToHash("IsRun");
     
-    // Property
-    public float OriginStopDistance { get; private set; }
-    public Vector3 OriginPosition { get; private set; }
-
-    public ZombieController(GameObject obj, ZombieStatus status) : base(obj)
+    public ZombieController(GameObject obj, ZombieStatus status) : base(obj, status)
     {
         Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
-        
-        DetectDistance = status.DetectRange;
-        DetectAngle = status.DetectAngle;
-        
-        _moveSpeed = status.MoveSpeed;
-        _runSpeed = status.RunSpeed;
-        NavMeshAgent.angularSpeed = status.RotationSpeed;
+        var hitEvent = obj.GetComponent<OnPhysicsEvent>();
 
-        OriginStopDistance = NavMeshAgent.stoppingDistance;
-        OriginPosition = obj.transform.position;
+        hitEvent.OnHitFunc -= HitEvent;
+        hitEvent.OnHitFunc += HitEvent;
         
         ChangeSpeed(false);
 
@@ -48,18 +34,27 @@ public class ZombieController : EnemyBaseController
         ChangeMainState(ZombieIdleState);
     }
 
-    public override void ResetEnemy(Vector3 pos)
+    public override void HitEvent(float dmg)
+    {
+        CurrentHp -= dmg;
+
+        if (CurrentHp <= 0)
+        {
+            
+        }
+    }
+
+    public override void ResetEnemy()
     {
         NavMeshAgent.stoppingDistance = OriginStopDistance;
-        OriginPosition = pos;
-        GameObject.transform.position = pos;
         
         Animator.SetBool(RunKey, false);
+        ChangeMainState(ZombieIdleState);
     }
 
     public void ChangeSpeed(bool isChase)
     {
-        NavMeshAgent.speed = isChase ? _runSpeed : _moveSpeed;
+        NavMeshAgent.speed = isChase ? RunSpeed : MoveSpeed;
     }
 
     public bool TryExecuteAction(int chance)

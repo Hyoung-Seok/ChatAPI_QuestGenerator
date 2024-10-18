@@ -1,27 +1,42 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyBaseController : UnitStateController
 {
+    // Component
     public NavMeshAgent NavMeshAgent { get; private set; }
     public Rigidbody Rig { get; private set; }
     public Animator Animator { get; private set; }
     public GameObject GameObject { get; private set; }
     
-    // Detect member
-    public Transform TargetTf { get; protected set; }
-    protected float DetectDistance { get; set; }
-    protected float DetectAngle { get; set; }
+    // Origin
+    public float OriginStopDistance { get; protected set; }
+    public Vector3 OriginPosition { get; protected set; }
     
+    // status
+    protected readonly float MoveSpeed;
+    protected readonly float RunSpeed;
+    protected readonly float MaxHp;
+    protected float CurrentHp;
+        
+    // Detect member
+    private static readonly LayerMask LayerMask = LayerMask.GetMask("Enemy");
+    public Transform TargetTf { get; protected set; }
+    private readonly float _detectDistance;
+    private readonly float _detectAngle;
     private Vector3 _forward = Vector3.zero;
     private Vector3 _position = Vector3.zero;
     private Vector3 _targetDir = Vector3.zero;
     private float _targetDot = 0;
-    private readonly LayerMask _layerMask;
-
-    public virtual void ResetEnemy(Vector3 pos) {}
     
-    protected EnemyBaseController(GameObject obj)
+    // Action
+    public Action<EnemyBaseController> ReturnAction;
+    
+    public virtual void ResetEnemy() {}
+    public virtual void HitEvent(float dmg) {}
+    
+    protected EnemyBaseController(GameObject obj, ZombieStatus status)
     {
         NavMeshAgent = obj.GetComponent<NavMeshAgent>();
         Rig = obj.GetComponent<Rigidbody>();
@@ -29,12 +44,28 @@ public class EnemyBaseController : UnitStateController
         GameObject = obj;
         TargetTf = GameManager.Instance.PlayerComponent.PlayerTransform;
         
-        _layerMask = LayerMask.GetMask("Enemy");
+        // nav mesh set
+        OriginStopDistance = NavMeshAgent.stoppingDistance;
+        OriginPosition = obj.transform.position;
+        
+        // status set
+        _detectDistance = status.DetectRange;
+        _detectAngle = status.DetectAngle;
+        MoveSpeed = status.MoveSpeed;
+        RunSpeed = status.RunSpeed;
+        NavMeshAgent.angularSpeed = status.RotationSpeed;
+        CurrentHp = MaxHp = status.MaxHp;
+    }
+    
+    public void SetPosition(Vector3 pos)
+    {
+        OriginPosition = pos;
+        GameObject.transform.position = pos;
     }
 
     public bool DetectTarget()
     {
-        if(Vector3.Distance(TargetTf.position, GameObject.transform.position) > DetectDistance)
+        if(Vector3.Distance(TargetTf.position, GameObject.transform.position) > _detectDistance)
         {
             return false;
         }
@@ -47,13 +78,13 @@ public class EnemyBaseController : UnitStateController
         _targetDir = (TargetTf.position - _position).normalized;
         _targetDot = Vector3.Dot(_forward, _targetDir);
 
-        if (_targetDot > Mathf.Cos(DetectAngle * Mathf.Deg2Rad) == false)
+        if (_targetDot > Mathf.Cos(_detectAngle * Mathf.Deg2Rad) == false)
         {
             Debug.DrawLine(_position, TargetTf.position, Color.red);
             return false;
         }
 
-        if (Physics.SphereCast(_position, 0.5f,_targetDir, out var hit, DetectDistance, ~_layerMask) == false)
+        if (Physics.SphereCast(_position, 0.5f,_targetDir, out var hit, _detectDistance, ~LayerMask) == false)
         {
             return false;
         }
@@ -70,10 +101,10 @@ public class EnemyBaseController : UnitStateController
 
     private void DrawView()
     {
-        var left = Quaternion.AngleAxis(-DetectAngle, Vector3.up) * _forward;
-        var right = Quaternion.AngleAxis(DetectAngle, Vector3.up) * _forward;
+        var left = Quaternion.AngleAxis(-_detectAngle, Vector3.up) * _forward;
+        var right = Quaternion.AngleAxis(_detectAngle, Vector3.up) * _forward;
         
-        Debug.DrawLine(_position, _position + left * DetectDistance, Color.white);
-        Debug.DrawLine(_position, _position + right * DetectDistance, Color.white);
+        Debug.DrawLine(_position, _position + left * _detectDistance, Color.white);
+        Debug.DrawLine(_position, _position + right * _detectDistance, Color.white);
     }
 }
