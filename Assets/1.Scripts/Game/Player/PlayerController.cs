@@ -57,6 +57,7 @@ public class PlayerController : UnitStateController
     public void PlayerDamaged(float dmg)
     {
         _currentHp -= dmg;
+        Debug.Log($"Player HP : {_currentHp}");
         Animator.SetFloat(_playerHpKey, _currentHp);
 
         if (_currentHp <= 0)

@@ -46,6 +46,7 @@ public class EnemyBaseController : UnitStateController
         Animator = obj.GetComponent<Animator>();
         GameObject = obj;
         TargetTf = GameManager.Instance.PlayerComponent.PlayerTransform;
+        obj.GetComponent<OnPhysicsEvent>().SetDamage(status.Damage);
         
         // nav mesh set
         OriginStopDistance = NavMeshAgent.stoppingDistance;
