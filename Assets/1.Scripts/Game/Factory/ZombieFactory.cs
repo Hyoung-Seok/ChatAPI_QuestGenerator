@@ -10,11 +10,11 @@ public class ZombieFactory : EnemyFactory
     [SerializeField] private Transform effectParent;
     [SerializeField] private GameObject hitEffect;
 
-    private IObjectPool<ObjectPool> _pool;
+    private IObjectPool<ObjectPool> _effectPool;
 
     private void Awake()
     {
-        _pool = new ObjectPool<ObjectPool>(CreateHitEffect, GetObject, ReturnObject,
+        _effectPool = new ObjectPool<ObjectPool>(CreateHitEffect, GetObject, ReturnObject,
             OnDestroyPoolObject, maxSize: 20);
     }
 
@@ -28,13 +28,13 @@ public class ZombieFactory : EnemyFactory
 
     private ObjectPool GetPoolObject()
     {
-        return _pool.Get();
+        return _effectPool.Get();
     }
     
     private ObjectPool CreateHitEffect()
     {
         var effect = Instantiate(hitEffect, effectParent).GetComponent<ObjectPool>();
-        effect.SetManagedPool(_pool);
+        effect.SetManagedPool(_effectPool);
 
         return effect;
     }
