@@ -92,7 +92,7 @@ public class Weapon : MonoBehaviour
             
         ShootRayFormCenter();
             
-        GameManager.Instance.CameraEffect.ShakeCamera();
+        GameManager.Instance.CameraEffect.ShakeCamera(ECameraShake.RECOIL);
         GameManager.Instance.CameraController.IsRecoil = true;
     }
 

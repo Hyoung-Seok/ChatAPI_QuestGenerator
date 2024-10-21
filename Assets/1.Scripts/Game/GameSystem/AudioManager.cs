@@ -20,12 +20,14 @@ public class AudioManager : MonoBehaviour
     
     [Header("Sound Clip")]
     [SerializeField] private AudioClip[] gunSoundList;
+    [SerializeField] private AudioClip[] playerHitVoice;
     [SerializeField] private AudioClip[] playerHitSounds;
     
     // path
     private const string SOUND_PATH = "Sound/";
     private const string GUNSOUND_PATH = "Enemy/HeadShot/";
-    private const string HITSOUND_PATH = "Player/HitVoice/";
+    private const string HITVOICE_PATH = "Player/HitVoice/";
+    private const string HITSOUND_PATH = "Player/HitSound/";
 
     private Dictionary<string, AudioClip[]> _clipDic;
     
@@ -43,13 +45,16 @@ public class AudioManager : MonoBehaviour
         {
             effectSource.Add(gameObject.AddComponent<AudioSource>());
             effectSource[i].outputAudioMixerGroup = mixerGroup;
+            effectSource[i].spatialBlend = 1;
         }
         
         gunSoundList = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, GUNSOUND_PATH));
+        playerHitVoice = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, HITVOICE_PATH));
         playerHitSounds = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, HITSOUND_PATH));
         
         _clipDic.Add("HeadShot", gunSoundList);
-        _clipDic.Add("HitVoice", playerHitSounds);
+        _clipDic.Add("HitVoice", playerHitVoice);
+        _clipDic.Add("HitSound", playerHitSounds);
     }
 
     public void PlaySound(ESoundType type, string key, int index = -1)
