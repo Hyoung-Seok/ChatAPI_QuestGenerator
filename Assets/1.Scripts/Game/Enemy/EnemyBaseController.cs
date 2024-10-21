@@ -22,7 +22,7 @@ public class EnemyBaseController : UnitStateController
         
     // Detect member
     private static readonly LayerMask LayerMask = LayerMask.GetMask("Enemy");
-    public Transform TargetTf { get; protected set; }
+    public Transform TargetTf { get; set; }
     private readonly float _detectDistance;
     private readonly float _detectAngle;
     private Vector3 _forward = Vector3.zero;
@@ -37,9 +37,9 @@ public class EnemyBaseController : UnitStateController
     public virtual void ResetEnemy() {}
     public virtual void HitEvent(float dmg, HitPoint hitPoint) {}
     
-    protected EnemyBaseController(GameObject obj, ZombieStatus status, Func<ObjectPool> hitEvent = null)
+    protected EnemyBaseController(GameObject obj, ZombieStatus status, Func<ObjectPool> hitEffectPool = null)
     {
-        GetHitEffect = hitEvent;
+        GetHitEffect = hitEffectPool;
         
         NavMeshAgent = obj.GetComponent<NavMeshAgent>();
         Rig = obj.GetComponent<Rigidbody>();
@@ -65,6 +65,11 @@ public class EnemyBaseController : UnitStateController
     {
         OriginPosition = pos;
         GameObject.transform.position = pos;
+    }
+
+    public void SetTargetTransform(Transform target)
+    {
+        TargetTf = target;
     }
 
     public bool DetectTarget()

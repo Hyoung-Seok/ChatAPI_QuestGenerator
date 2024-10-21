@@ -19,6 +19,11 @@ public abstract class EnemyFactory : MonoBehaviour
     private List<EnemyBaseController> _spawnEnemyContainer;
     protected abstract EnemyBaseController CreateEnemy();
 
+    public void SetTargetTransformSpawnEnemy(Transform target)
+    {
+        _spawnEnemyContainer.ForEach(x => x.SetTargetTransform(target));
+    }
+
     private void ReturnObjectToPool(EnemyBaseController obj)
     {
         obj.GameObject.SetActive(false);

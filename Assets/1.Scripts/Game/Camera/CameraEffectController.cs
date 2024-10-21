@@ -88,14 +88,11 @@ public class CameraEffectController
     public IEnumerator HitCameraEffect()
     {
         _vignette.intensity.value = _maxIntensity;
-        Debug.Log(_vignette.intensity.value);
         
         while (_vignette.intensity.value > 0)
         {
             _vignette.intensity.value =
                 Mathf.MoveTowards(_vignette.intensity.value, 0, Time.deltaTime * _fadeSpeed);
-            
-            Debug.Log(_vignette.intensity.value);
 
             yield return _waitForEndOfFrame;
         }

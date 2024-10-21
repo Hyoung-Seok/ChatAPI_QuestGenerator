@@ -21,6 +21,7 @@ public class PlayerController : UnitStateController
     
     [Header("Player State")]
     private readonly PlayerMoveState _moveState;
+    private readonly PlayerDeathState _deathState;
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
@@ -59,6 +60,8 @@ public class PlayerController : UnitStateController
         _hitClips = _instance.AudioManager.GetAudioClips("HitVoice");
         
         _moveState = new PlayerMoveState(this, status);
+        _deathState = new PlayerDeathState(this);
+        
         ChangeMainState(_moveState);
     }
 
@@ -72,18 +75,18 @@ public class PlayerController : UnitStateController
         PlayAudio(AudioSource, _hitClips[Random.Range(0, _hitClips.Length)]);
         _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound");
         _instance.CameraEffect.ShakeCamera(ECameraShake.HIT, 1.5f);
-
+        
         if (_currentHp > 30)
         {
             _instance.StartHitCameraEffect();
         }
-        else if (_currentHp <= 30)
+        else if (_currentHp <= 30 && _currentHp > 0)
         {
             _instance.StartHealthEffect();
         }
         else
         {
-            // TODO : 사망처리
+            ChangeMainState(_deathState);
         }
     }
 
@@ -158,5 +161,10 @@ public class PlayerController : UnitStateController
     private void OnMoveValueChangeEvent(PlayerStatus data)
     {
         _moveState.OnValueUpdate(data);
+    }
+    
+    private void ResetPlayer()
+    {
+        
     }
 }
