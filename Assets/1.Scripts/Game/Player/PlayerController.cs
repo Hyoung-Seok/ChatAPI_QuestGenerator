@@ -10,6 +10,7 @@ public class PlayerController : UnitStateController
     public Animator Animator { get; private set; }
     public Transform Transform { get; private set; }
     public Transform CameraDir { get; private set; }
+    public AudioSource AudioSource { get; private set; }
     public bool IsEquipped { get; private set; }
     
     [Header("Status")] 
@@ -20,10 +21,10 @@ public class PlayerController : UnitStateController
     private readonly PlayerMoveState _moveState;
     
     private float _currentHp;
+    private readonly AudioClip[] _hitClips;
 
     #region AnimationKey
     
-    [Header("Animation Hash")]
     public readonly int SpeedKey = Animator.StringToHash("Speed");
     private readonly int _idleAnimation = Animator.StringToHash("IdleMotions");
     private readonly int _playerHpKey = Animator.StringToHash("PlayerHP");
@@ -39,6 +40,7 @@ public class PlayerController : UnitStateController
         Animator = componentData.Animator;
         Transform = componentData.PlayerTransform;
         CameraDir = componentData.CameraDir;
+        AudioSource = componentData.AudioSource;
 
         _currentHp = PlayerMaxHp = status.MaxHp;
         _lv = status.Level;
@@ -49,6 +51,8 @@ public class PlayerController : UnitStateController
         IsEquipped = false;
         Animator.SetFloat(_playerHpKey, _currentHp);
         Animator.SetBool(_equippedKey, false);
+
+        _hitClips = GameManager.Instance.AudioManager.GetAudioClips("HitVoice");
         
         _moveState = new PlayerMoveState(this, status);
         ChangeMainState(_moveState);
@@ -58,7 +62,9 @@ public class PlayerController : UnitStateController
     {
         _currentHp -= dmg;
         Debug.Log($"Player HP : {_currentHp}");
+        
         Animator.SetFloat(_playerHpKey, _currentHp);
+        PlayAudio(AudioSource, _hitClips[Random.Range(0, _hitClips.Length)]);
 
         if (_currentHp <= 0)
         {
@@ -111,6 +117,12 @@ public class PlayerController : UnitStateController
         }
         
         CurInputState = inputState;
+    }
+
+    private void PlayAudio(AudioSource source, AudioClip clip)
+    {
+        source.clip = clip;
+        source.Play();
     }
     
     private void EquippedWeapon()

@@ -1,6 +1,4 @@
-
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using UnityEngine;
@@ -22,10 +20,12 @@ public class AudioManager : MonoBehaviour
     
     [Header("Sound Clip")]
     [SerializeField] private AudioClip[] gunSoundList;
+    [SerializeField] private AudioClip[] playerHitSounds;
     
     // path
     private const string SOUND_PATH = "Sound/";
     private const string GUNSOUND_PATH = "Enemy/HeadShot/";
+    private const string HITSOUND_PATH = "Player/HitVoice/";
 
     private Dictionary<string, AudioClip[]> _clipDic;
     
@@ -46,8 +46,10 @@ public class AudioManager : MonoBehaviour
         }
         
         gunSoundList = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, GUNSOUND_PATH));
+        playerHitSounds = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, HITSOUND_PATH));
         
         _clipDic.Add("HeadShot", gunSoundList);
+        _clipDic.Add("HitVoice", playerHitSounds);
     }
 
     public void PlaySound(ESoundType type, string key, int index = -1)
@@ -69,6 +71,11 @@ public class AudioManager : MonoBehaviour
             default:
                 return;
         }
+    }
+
+    public AudioClip[] GetAudioClips(string key)
+    {
+        return _clipDic.GetValueOrDefault(key);
     }
 
     private void PlayRandomSound(AudioClip clip)

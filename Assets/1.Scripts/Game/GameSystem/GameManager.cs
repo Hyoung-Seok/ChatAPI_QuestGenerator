@@ -44,15 +44,15 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
+        // sound
+        AudioManager.Init(5);
+        
         // camera Init
         CameraController = new PlayerCameraController(playerCamData);
         CameraEffect = new CameraEffectController(playerCamData);
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
-        
-        // sound
-        AudioManager.Init(5);
     }
 
     #region EventFunction
