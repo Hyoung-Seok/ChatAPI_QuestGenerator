@@ -4061,9 +4061,12 @@ MonoBehaviour:
   pitchMax: 50
   transform: {fileID: 347971517}
   targetTf: {fileID: 347971513}
+  volume: {fileID: 625209691}
   virtualCameras:
   - {fileID: 347971512}
   - {fileID: 347971511}
+  maxVignetteIntensity: 0.45
+  fadeSpeed: 0.6
 --- !u!1 &1598034062
 GameObject:
   m_ObjectHideFlags: 0

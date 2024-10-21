@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -22,6 +24,7 @@ public class PlayerController : UnitStateController
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
+    private GameManager _instance;
 
     #region AnimationKey
     
@@ -52,7 +55,8 @@ public class PlayerController : UnitStateController
         Animator.SetFloat(_playerHpKey, _currentHp);
         Animator.SetBool(_equippedKey, false);
 
-        _hitClips = GameManager.Instance.AudioManager.GetAudioClips("HitVoice");
+        _instance = GameManager.Instance;
+        _hitClips = _instance.AudioManager.GetAudioClips("HitVoice");
         
         _moveState = new PlayerMoveState(this, status);
         ChangeMainState(_moveState);
@@ -66,10 +70,18 @@ public class PlayerController : UnitStateController
         Animator.SetFloat(_playerHpKey, _currentHp);
         
         PlayAudio(AudioSource, _hitClips[Random.Range(0, _hitClips.Length)]);
-        GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound");
-        GameManager.Instance.CameraEffect.ShakeCamera(ECameraShake.HIT, 1.5f);
+        _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound");
+        _instance.CameraEffect.ShakeCamera(ECameraShake.HIT, 1.5f);
 
-        if (_currentHp <= 0)
+        if (_currentHp > 30)
+        {
+            _instance.StartHitCameraEffect();
+        }
+        else if (_currentHp <= 30)
+        {
+            _instance.StartHealthEffect();
+        }
+        else
         {
             // TODO : 사망처리
         }

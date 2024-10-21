@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -32,6 +34,9 @@ public class GameManager : MonoBehaviour
     
     #endregion
     
+    private IEnumerator _healthWarningEffect;
+    private bool _isPlaying = false;
+    
     private void Awake()
     {
         if (Instance == null)
@@ -50,6 +55,8 @@ public class GameManager : MonoBehaviour
         // camera Init
         CameraController = new PlayerCameraController(playerCamData);
         CameraEffect = new CameraEffectController(playerCamData);
+
+        _healthWarningEffect = CameraEffect.HealthWarningEffect();
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
@@ -57,11 +64,6 @@ public class GameManager : MonoBehaviour
 
     #region EventFunction
     
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
         // manager
@@ -82,5 +84,32 @@ public class GameManager : MonoBehaviour
 
     }
     
+    #endregion
+
+    #region Coroutine
+
+    public void StartHitCameraEffect()
+    {
+        StartCoroutine(CameraEffect.HitCameraEffect());
+    }
+
+    public void StartHealthEffect()
+    {
+        if (_isPlaying == true)
+        {
+            return;
+        }
+        
+        StartCoroutine(_healthWarningEffect);
+        _isPlaying = true;
+    }
+
+    public void StopHealthEffect()
+    {
+        StopCoroutine(_healthWarningEffect);
+        CameraEffect.ResetVignetteValue();
+        _isPlaying = false;
+    }
+
     #endregion
 }
