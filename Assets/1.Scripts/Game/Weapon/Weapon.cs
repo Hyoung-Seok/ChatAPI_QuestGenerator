@@ -28,7 +28,6 @@ public class Weapon : MonoBehaviour
         Init();
         GameManager.Instance.CameraController.SetRecoil(weaponData);
         
-        
         _mainCam = Camera.main;
         _screenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
     }
