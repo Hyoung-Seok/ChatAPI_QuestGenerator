@@ -3,12 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 public class Weapon : MonoBehaviour
 {
     [Header("Component")] 
     [SerializeField] private WeaponData weaponData;
-    [SerializeField] private WeaponSound sound;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private Transform cartridgeOutPos;
 
     [Header("Effect")] 
@@ -22,11 +23,11 @@ public class Weapon : MonoBehaviour
     private float _curTime = 0;
     private Vector2 _screenCenter;
     private Camera _mainCam;
+    private List<AudioClip> _gunSoundClip;
 
     private void Start()
     {
         Init();
-        GameManager.Instance.CameraController.SetRecoil(weaponData);
         
         _mainCam = Camera.main;
         _screenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
@@ -53,18 +54,7 @@ public class Weapon : MonoBehaviour
         
         if (Input.GetButton("Fire1") == true && _canFire == true)
         {
-            _pool.Get();
-            
-            muzzleEffect.Play();
-            sound.PlayFireSound();
-            
-            _canFire = false;
-            _curTime = 0;
-            
-            ShootRayFormCenter();
-            
-            GameManager.Instance.CameraEffect.ShakeCamera();
-            GameManager.Instance.CameraController.IsRecoil = true;
+            Fire();
         }
     }
 
@@ -72,14 +62,38 @@ public class Weapon : MonoBehaviour
     {
         _pool = new ObjectPool<ObjectPool>(CreateObjectPool, GetObject, ReturnObject,
             OnDestroyPoolObject, maxSize: weaponData.Magazine + 10);
+        
         _hitPoint = new HitPoint();
         
         muzzleEffect.Stop();
+
+        _gunSoundClip = new List<AudioClip>();
+        _gunSoundClip = weaponData.GunSound;
+        
+        GameManager.Instance.CameraController.SetRecoil(weaponData);
     }
     
     public void Reload()
     {
         
+    }
+
+    private void Fire()
+    {
+        _pool.Get();
+            
+        muzzleEffect.Play();
+
+        audioSource.clip = _gunSoundClip[Random.Range(0, _gunSoundClip.Count)];
+        audioSource.Play();
+            
+        _canFire = false;
+        _curTime = 0;
+            
+        ShootRayFormCenter();
+            
+        GameManager.Instance.CameraEffect.ShakeCamera();
+        GameManager.Instance.CameraController.IsRecoil = true;
     }
 
     private void ShootRayFormCenter()
@@ -101,7 +115,7 @@ public class Weapon : MonoBehaviour
             _hitPoint.Init(hit);
             hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f, _hitPoint);
             
-            sound.PlayHeadShotSound();
+            //sound.PlayHeadShotSound();
             GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
         }
     }

@@ -47,3 +47,7 @@ MonoBehaviour:
   magazine: 25
   recoilX: 0.04
   recoilY: 0.25
+  gunSound:
+  - {fileID: 8300000, guid: 587bb06fc481cf04a934c38988553065, type: 3}
+  - {fileID: 8300000, guid: d460f81f077c56b44a5846a35035c4d7, type: 3}
+  - {fileID: 8300000, guid: a86e6f660e3f7c9458ac70aaa1dbed7a, type: 3}
