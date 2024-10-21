@@ -22,6 +22,7 @@ public class PlayerController : UnitStateController
     [Header("Player State")]
     private readonly PlayerMoveState _moveState;
     private readonly PlayerDeathState _deathState;
+    public PlayerMoveState PlayerMoveState => _moveState;
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
@@ -35,6 +36,7 @@ public class PlayerController : UnitStateController
     private readonly int _quippedTriggerKey = Animator.StringToHash("Equipped");
     private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
     private readonly int _aimKey = Animator.StringToHash("Aim");
+    private readonly int _deathKey = Animator.StringToHash("IsDead");
     
     #endregion
     
@@ -86,6 +88,7 @@ public class PlayerController : UnitStateController
         }
         else
         {
+            Animator.SetBool(_deathKey, true);
             ChangeMainState(_deathState);
         }
     }
@@ -137,6 +140,22 @@ public class PlayerController : UnitStateController
         CurInputState = inputState;
     }
 
+    public void ResetPlayer()
+    {
+        Animator.SetBool(_deathKey, false);
+        _currentHp = PlayerMaxHp;
+        
+        if (IsEquipped == true)
+        {
+            ChangePlayerInputState(EPlayerInputState.EQUIPPED);   
+        }
+        
+        Transform.SetPositionAndRotation(new Vector3(0,0,0), Quaternion.identity);
+        SpawnerManager.Instance.ResetAllEnemyTargetTransform(Transform);
+        
+        ChangeMainState(_moveState);
+    }
+    
     private void PlayAudio(AudioSource source, AudioClip clip)
     {
         source.clip = clip;
@@ -161,10 +180,5 @@ public class PlayerController : UnitStateController
     private void OnMoveValueChangeEvent(PlayerStatus data)
     {
         _moveState.OnValueUpdate(data);
-    }
-    
-    private void ResetPlayer()
-    {
-        
     }
 }

@@ -10,13 +10,23 @@ public class PlayerDeathState : PlayerBaseState
 
     public override void Enter()
     {
-        Controller.Animator.SetBool(_deathKey, true);
+        if (Controller.CurInputState == EPlayerInputState.AIM)
+        {
+            GameManager.Instance.UIContainer.SetActiveCrossHair(false);
+            GameManager.Instance.CameraController.IsRecoil = false;
+            
+            Controller.ChangePlayerInputState(EPlayerInputState.IDLE);
+        }
+        
         SpawnerManager.Instance.ResetAllEnemyTargetTransform();
     }
 
     public override void OnUpdate()
     {
-
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Controller.ResetPlayer();
+        }
     }
 
     public override void OnFixedUpdate()
@@ -31,6 +41,6 @@ public class PlayerDeathState : PlayerBaseState
 
     public override void Exit()
     {
-        Controller.Animator.SetBool(_deathKey, false);
+        
     }
 }
