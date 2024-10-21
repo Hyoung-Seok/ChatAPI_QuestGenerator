@@ -115,7 +115,7 @@ public class Weapon : MonoBehaviour
             _hitPoint.Init(hit);
             hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f, _hitPoint);
             
-            //sound.PlayHeadShotSound();
+            GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot");
             GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
         }
     }

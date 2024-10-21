@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private AudioManager audioManager;
     [SerializeField] private UIContainer uiContainer;
 
     #region Property
@@ -27,6 +28,8 @@ public class GameManager : MonoBehaviour
     public PlayerCameraController CameraController { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
     public UIContainer UIContainer => uiContainer;
+    public AudioManager AudioManager => audioManager;
+    
     #endregion
     
     private void Awake()
@@ -47,6 +50,9 @@ public class GameManager : MonoBehaviour
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
+        
+        // sound
+        AudioManager.Init(5);
     }
 
     #region EventFunction
