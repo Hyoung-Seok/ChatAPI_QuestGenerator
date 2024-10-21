@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour
         _clipDic.Add("HitSound", playerHitSounds);
     }
 
-    public void PlaySound(ESoundType type, string key, int index = -1)
+    public void PlaySound(ESoundType type, string key, Vector3 pos = default, int index = -1)
     {
         if (_clipDic.TryGetValue(key, out var clips) == false)
         {
@@ -69,9 +69,14 @@ public class AudioManager : MonoBehaviour
             case ESoundType.BGM:
                 break;
             
-            case ESoundType.EFFECT:
+            case ESoundType.EFFECT when pos == Vector3.zero:
                 PlayRandomSound(clips[Random.Range(0, clips.Length)]);
                 break;
+            
+            case ESoundType.EFFECT:
+                PlayRandomSound(clips[Random.Range(0, clips.Length)], pos);
+                break;
+                
             
             default:
                 return;
@@ -88,6 +93,16 @@ public class AudioManager : MonoBehaviour
         var source = effectSource.FirstOrDefault(x => x.isPlaying == false);
 
         source = (source == null) ? effectSource[0] : source;
+        source.clip = clip;
+        source.Play();
+    }
+    
+    private void PlayRandomSound(AudioClip clip, Vector3 pos)
+    {
+        var source = effectSource.FirstOrDefault(x => x.isPlaying == false);
+        
+        source = (source == null) ? effectSource[0] : source;
+        source.transform.position = pos;
         source.clip = clip;
         source.Play();
     }
