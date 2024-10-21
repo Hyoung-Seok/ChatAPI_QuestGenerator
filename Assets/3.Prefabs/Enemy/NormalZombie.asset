@@ -16,7 +16,7 @@ MonoBehaviour:
   defense: 10
   detectRange: 20
   detectAngle: 20
-  returnDistance: 15
+  returnDistance: 30
   fireHearingRange: 40
   footStepHearingRange: 5
   idleStateMinTime: 10
@@ -25,8 +25,8 @@ MonoBehaviour:
   moveSpeed: 0.6
   runSpeed: 8
   rotationSpeed: 350
-  attackRange: 1.5
+  attackRange: 1.9
   attackDelay: 2
-  damage: 10
+  damage: 60
   agonizingChance: 30
-  screamChance: 40
+  screamChance: 30

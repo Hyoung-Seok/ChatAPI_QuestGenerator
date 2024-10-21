@@ -2,30 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 public class Weapon : MonoBehaviour
 {
     [Header("Component")] 
     [SerializeField] private WeaponData weaponData;
-    [SerializeField] private WeaponSound sound;
+    [SerializeField] private AudioSource audioSource;
     [SerializeField] private Transform cartridgeOutPos;
 
     [Header("Effect")] 
     [SerializeField] private ParticleSystem muzzleEffect;
+    private HitPoint _hitPoint;
 
     public WeaponData WeaponData => weaponData;
     
-    private Queue<Cartridge> _shells;
-    
+    private IObjectPool<ObjectPool> _pool;
     private bool _canFire = true;
     private float _curTime = 0;
     private Vector2 _screenCenter;
     private Camera _mainCam;
+    private List<AudioClip> _gunSoundClip;
 
     private void Start()
     {
         Init();
-        GameManager.Instance.CameraController.SetRecoil(weaponData);
         
         _mainCam = Camera.main;
         _screenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
@@ -52,28 +54,23 @@ public class Weapon : MonoBehaviour
         
         if (Input.GetButton("Fire1") == true && _canFire == true)
         {
-            var cartridge = GetCartridge();
-            cartridge.StartCellDischarge(cartridgeOutPos.forward);
-            
-            muzzleEffect.Play();
-            sound.PlayFireSound();
-            
-            _canFire = false;
-            _curTime = 0;
-            
-            ShootRayFormCenter();
-            
-            GameManager.Instance.CameraEffect.ShakeCamera();
-            GameManager.Instance.CameraController.IsRecoil = true;
+            Fire();
         }
     }
 
     public void Init()
     {
-        _shells = new Queue<Cartridge>();
-        CreateCartridge();
-
+        _pool = new ObjectPool<ObjectPool>(CreateObjectPool, GetObject, ReturnObject,
+            OnDestroyPoolObject, maxSize: weaponData.Magazine + 10);
+        
+        _hitPoint = new HitPoint();
+        
         muzzleEffect.Stop();
+
+        _gunSoundClip = new List<AudioClip>();
+        _gunSoundClip = weaponData.GunSound;
+        
+        GameManager.Instance.CameraController.SetRecoil(weaponData);
     }
     
     public void Reload()
@@ -81,50 +78,76 @@ public class Weapon : MonoBehaviour
         
     }
 
+    private void Fire()
+    {
+        _pool.Get();
+            
+        muzzleEffect.Play();
+
+        audioSource.clip = _gunSoundClip[Random.Range(0, _gunSoundClip.Count)];
+        audioSource.Play();
+            
+        _canFire = false;
+        _curTime = 0;
+            
+        ShootRayFormCenter();
+            
+        GameManager.Instance.CameraEffect.ShakeCamera(ECameraShake.RECOIL);
+        GameManager.Instance.CameraController.IsRecoil = true;
+    }
+
     private void ShootRayFormCenter()
     {
         var ray = _mainCam.ScreenPointToRay(_screenCenter);
 
-        if (Physics.Raycast(ray, out var hit, 100.0f) == true)
+        if (Physics.Raycast(ray, out var hit, 100.0f) == false)
         {
-            Debug.Log($"Hit : {hit.collider.name}");
+            return;
         }
+
+        if (hit.collider.CompareTag("Enemy"))
+        {
+            _hitPoint.Init(hit);
+            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage, _hitPoint);
+        }
+        else if (hit.collider.CompareTag("Head"))
+        {
+            _hitPoint.Init(hit);
+            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f, _hitPoint);
+            
+            GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot");
+            GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
+        }
+    }
+
+    #region ObjectPool
+
+    private ObjectPool CreateObjectPool()
+    {
+        var obj = Instantiate(weaponData.Cartridge, cartridgeOutPos).GetComponent<Cartridge>();
+        obj.SetManagedPool(_pool);
+
+        return obj;
     }
     
-    private void CreateCartridge(int count = 0)
+    private void GetObject(ObjectPool obj)
     {
-        var creatCount = (count == 0) ? weaponData.Magazine + 10 : count;
-
-        for (var i = 0; i < creatCount; ++i)
-        {
-            var cartridge = Instantiate(weaponData.Cartridge, cartridgeOutPos).GetComponent<Cartridge>();
-
-            cartridge.ReturnAction = ReturnCartridge;
-            cartridge.gameObject.SetActive(false);
-            
-            _shells.Enqueue(cartridge);
-        }
-    }
-
-    private Cartridge GetCartridge()
-    {
-        if (_shells.Count <= 0)
-        {
-            CreateCartridge();
-        }
-
-        var shell = _shells.Dequeue();
-
-        shell.gameObject.transform.SetPositionAndRotation(cartridgeOutPos.position,
+        obj.gameObject.SetActive(true);
+        
+        obj.gameObject.transform.SetPositionAndRotation(cartridgeOutPos.position,
             weaponData.Cartridge.transform.rotation);
-        shell.gameObject.SetActive(true);
-
-        return shell;
+        obj.OnEnableEvent(cartridgeOutPos.forward);
     }
 
-    private void ReturnCartridge(Cartridge cartridge)
+    private void ReturnObject(ObjectPool obj)
     {
-        cartridge.gameObject.SetActive(false);
-        _shells.Enqueue(cartridge);
+        obj.gameObject.SetActive(false);
     }
+
+    private void OnDestroyPoolObject(ObjectPool obj)
+    {
+        Destroy(obj.gameObject);
+    }
+
+    #endregion
 }

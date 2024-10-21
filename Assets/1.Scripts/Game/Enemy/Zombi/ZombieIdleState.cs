@@ -30,7 +30,7 @@ public class ZombieIdleState : ZombieBaseState
             Controller.Animator.SetTrigger(_isAgonizing);
         }
         
-        Debug.Log($"Time : {_transitionTime}");
+        Controller.Tmp.text = "CurrentState : Idle";
     }
 
     public override void OnUpdate()

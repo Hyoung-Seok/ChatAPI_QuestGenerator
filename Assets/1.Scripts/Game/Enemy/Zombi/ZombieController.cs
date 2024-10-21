@@ -1,4 +1,7 @@
+using System;
+using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ZombieController : EnemyBaseController
 {
@@ -8,31 +11,21 @@ public class ZombieController : EnemyBaseController
     public ZombieChaseState ZombieChaseState { get; private set; }
     public ZombieAttackState ZombieAttackState { get; private set; }
     public ZombieReturnState ZombieReturnState { get; private set; }
+    public ZombieDeadState ZombieDeadState { get; private set; }
 
-    // status
-    private readonly float _moveSpeed = 0.0f;
-    private readonly float _runSpeed = 0.0f;
+    public TextMeshPro Tmp;
 
     // HashKey
     public readonly int RunKey = Animator.StringToHash("IsRun");
+    public readonly int DeadKey = Animator.StringToHash("IsDead");
     
-    // Property
-    public float OriginStopDistance { get; private set; }
-    public Vector3 OriginPosition { get; private set; }
-
-    public ZombieController(EnemyComponent component, ZombieStatus status) : base(component)
+    public ZombieController(GameObject obj, ZombieStatus status, Func<ObjectPool> getEffect = null) : base(obj, status, getEffect)
     {
-        //TODO : 추후 플레이어로 변경
-        TargetTf = TestManager.Instance.Target;
-        DetectDistance = status.DetectRange;
-        DetectAngle = status.DetectAngle;
-        
-        _moveSpeed = status.MoveSpeed;
-        _runSpeed = status.RunSpeed;
-        NavMeshAgent.angularSpeed = status.RotationSpeed;
+        Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
+        var hitEvent = obj.GetComponent<OnPhysicsEvent>();
 
-        OriginStopDistance = NavMeshAgent.stoppingDistance;
-        OriginPosition = Tf.position;
+        hitEvent.OnHitFunc -= HitEvent;
+        hitEvent.OnHitFunc += HitEvent;
         
         ChangeSpeed(false);
 
@@ -41,13 +34,72 @@ public class ZombieController : EnemyBaseController
         ZombieChaseState = new ZombieChaseState(this, status);
         ZombieAttackState = new ZombieAttackState(this, status);
         ZombieReturnState = new ZombieReturnState(this);
+        ZombieDeadState = new ZombieDeadState(this);
         
         ChangeMainState(ZombieIdleState);
     }
 
+    public override void HitEvent(float dmg, HitPoint hitPoint)
+    {
+        CurrentHp -= dmg;
+        Debug.Log($"Cur HP : {CurrentHp}");
+
+        var effect = GetHitEffect?.Invoke();
+
+        if (effect is not null)
+        {
+            effect.transform.position = hitPoint.HitPosition;
+            effect.transform.rotation = Quaternion.LookRotation(hitPoint.HitNormal);   
+        }
+
+        if (CurrentHp <= 0 && MainState != ZombieDeadState)
+        {
+            ChangeMainState(ZombieDeadState);
+        }
+    }
+
+    public override void ResetEnemy()
+    {
+        // nav Mesh Reset
+        NavMeshAgent.ResetPath();
+        NavMeshAgent.autoBraking = true;
+        NavMeshAgent.stoppingDistance = OriginStopDistance;
+        
+        // status Reset
+        CurrentHp = MaxHp;
+        
+        // Animator Parameters Reset
+        foreach (var param in Animator.parameters)
+        {
+            switch (param.type)
+            {
+                case AnimatorControllerParameterType.Int:
+                    Animator.SetInteger(param.name, 0);
+                    break;
+                
+                case AnimatorControllerParameterType.Bool:
+                    Animator.SetBool(param.name, false);
+                    break;
+                
+                case AnimatorControllerParameterType.Float:
+                    Animator.SetFloat(param.name, 0);
+                    break;
+                
+                case AnimatorControllerParameterType.Trigger:
+                    Animator.ResetTrigger(param.name);
+                    break;
+                
+                default:
+                    return;
+            }
+        }
+        
+        ReturnAction?.Invoke(this);
+    }
+
     public void ChangeSpeed(bool isChase)
     {
-        NavMeshAgent.speed = isChase ? _runSpeed : _moveSpeed;
+        NavMeshAgent.speed = isChase ? RunSpeed : MoveSpeed;
     }
 
     public bool TryExecuteAction(int chance)

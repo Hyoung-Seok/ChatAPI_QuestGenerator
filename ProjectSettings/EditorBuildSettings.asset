@@ -5,10 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 1
-    path: Assets/2.Scenes/Quest/QuestSystem.unity
-    guid: f494500c4c80fde4dba1dbc008210ba6
+    path: Assets/2.Scenes/Game/GameTestScene.unity
+    guid: 5aa63e2f65fc1c34e82d681512ede3fa
   m_configObjects: {}

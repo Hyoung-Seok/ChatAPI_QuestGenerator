@@ -27,6 +27,8 @@ public class ZombiePatrolState : ZombieBaseState
 
         Controller.NavMeshAgent.SetDestination(_targetPos);
         Controller.Animator.SetBool(_walkKey, true);
+        
+        Controller.Tmp.text = "CurrentState : Patrol";
     }
 
     public override void OnUpdate()
@@ -60,7 +62,7 @@ public class ZombiePatrolState : ZombieBaseState
     private Vector3 GetRandomPatrolPos()
     {
         var randDir = Random.insideUnitSphere * _patrolRange;
-        randDir += Controller.Tf.position;
+        randDir += Controller.GameObject.transform.position;
 
         return NavMesh.SamplePosition(randDir, out var hit, _patrolRange, NavMesh.AllAreas)
             ? hit.position

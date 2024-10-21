@@ -1,23 +1,41 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Debug")] 
+    public bool IsDebug = false;
+    
     [Header("Player")]
     [SerializeField] private PlayerComponentData playerComponentData;
     [SerializeField] private PlayerStatus playerStatus;
-    public WeaponManager WeaponManager;
-    public PlayerController Player { get; private set; }
+    [SerializeField] private WeaponManager weaponManager;
 
     [Header("PlayerCamera")] 
     [SerializeField] private PlayerCameraData playerCamData;
-    public PlayerCameraController CameraController { get; private set; }
 
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
+    [SerializeField] private AudioManager audioManager;
+    [SerializeField] private UIContainer uiContainer;
 
+    #region Property
+    
     public static GameManager Instance { get; private set; }
     public PlayerComponentData PlayerComponent => playerComponentData;
+    public WeaponManager WeaponManager => weaponManager;
+    public PlayerController Player { get; private set; }
+    public PlayerCameraController CameraController { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
+    public UIContainer UIContainer => uiContainer;
+    public AudioManager AudioManager => audioManager;
+    
+    #endregion
+    
+    private IEnumerator _healthWarningEffect;
+    private bool _isPlaying = false;
     
     private void Awake()
     {
@@ -31,9 +49,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
+        // sound
+        AudioManager.Init(5);
+        
         // camera Init
         CameraController = new PlayerCameraController(playerCamData);
         CameraEffect = new CameraEffectController(playerCamData);
+
+        _healthWarningEffect = CameraEffect.HealthWarningEffect();
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
@@ -41,11 +64,6 @@ public class GameManager : MonoBehaviour
 
     #region EventFunction
     
-    private void Start()
-    {
-        
-    }
-
     private void Update()
     {
         // manager
@@ -53,7 +71,7 @@ public class GameManager : MonoBehaviour
         
         // player
         CameraController.OnUpdate();
-        Player.OnUpdate();   
+        Player.OnUpdate();
     }
 
     private void FixedUpdate()
@@ -66,5 +84,32 @@ public class GameManager : MonoBehaviour
 
     }
     
+    #endregion
+
+    #region Coroutine
+
+    public void StartHitCameraEffect()
+    {
+        StartCoroutine(CameraEffect.HitCameraEffect());
+    }
+
+    public void StartHealthEffect()
+    {
+        if (_isPlaying == true)
+        {
+            return;
+        }
+        
+        StartCoroutine(_healthWarningEffect);
+        _isPlaying = true;
+    }
+
+    public void StopHealthEffect()
+    {
+        StopCoroutine(_healthWarningEffect);
+        CameraEffect.ResetVignetteValue();
+        _isPlaying = false;
+    }
+
     #endregion
 }

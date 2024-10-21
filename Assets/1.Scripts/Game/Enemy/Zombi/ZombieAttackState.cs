@@ -7,7 +7,6 @@ public class ZombieAttackState : ZombieBaseState
     private readonly float _attackRange;
     private readonly float _attackDelay;
     private readonly float _detectedRange;
-    private readonly Transform _targetTf;
     private readonly Transform _tf;
     private readonly int _attackTrigger = Animator.StringToHash("IsAttack");
     private readonly int _attackAni = Animator.StringToHash("AttackAni");
@@ -19,18 +18,21 @@ public class ZombieAttackState : ZombieBaseState
         _attackRange = status.AttackRange;
         _attackDelay = status.AttackDelay;
         _detectedRange = status.DetectRange;
-
-        _targetTf = Controller.TargetTf;
-        _tf = Controller.Tf;
+        
+        _tf = Controller.GameObject.transform;
     }
     
     public override void Enter()
     {
         _curTime = 0;
-        Controller.NavMeshAgent.SetDestination(_tf.position);
+        Controller.NavMeshAgent.ResetPath();
+        Controller.NavMeshAgent.autoBraking = false;
         
+        Controller.Animator.SetBool(Controller.RunKey, false);
         Controller.Animator.SetInteger(_attackAni, Random.Range(0,2));
         Controller.Animator.SetTrigger(_attackTrigger);
+        
+        Controller.Tmp.text = "CurrentState : Attack";
     }
 
     public override void OnUpdate()
@@ -42,7 +44,7 @@ public class ZombieAttackState : ZombieBaseState
             return;
         }
 
-        var distance = Vector3.Distance(_targetTf.position, _tf.position);
+        var distance = Vector3.Distance(Controller.TargetTf.position, _tf.position);
 
         if (distance <= _attackRange)
         {
@@ -75,5 +77,7 @@ public class ZombieAttackState : ZombieBaseState
     public override void Exit()
     {
         _curTime = 0;
+        Controller.Animator.ResetTrigger(_attackTrigger);
+        Controller.NavMeshAgent.autoBraking = true;
     }
 }

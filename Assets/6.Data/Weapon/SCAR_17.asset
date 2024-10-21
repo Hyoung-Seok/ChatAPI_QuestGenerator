@@ -42,9 +42,12 @@ MonoBehaviour:
     scale: {x: 1, y: 1, z: 1}
   cartridge: {fileID: 5471510219388969344, guid: a82a352bc6c9b3e4dbfcfee1371d838f,
     type: 3}
-  damage: 30
+  damage: 20
   fireRate: 0.1
   magazine: 25
   recoilX: 0.04
   recoilY: 0.25
-  recoveryWeight: 2
+  gunSound:
+  - {fileID: 8300000, guid: 587bb06fc481cf04a934c38988553065, type: 3}
+  - {fileID: 8300000, guid: d460f81f077c56b44a5846a35035c4d7, type: 3}
+  - {fileID: 8300000, guid: a86e6f660e3f7c9458ac70aaa1dbed7a, type: 3}

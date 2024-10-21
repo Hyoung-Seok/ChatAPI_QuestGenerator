@@ -30,6 +30,9 @@ public class WeaponData : ScriptableObject
     [SerializeField] private int magazine;
     [SerializeField, Range(0, 1)] private float recoilX;
     [SerializeField, Range(0, 1)] private float recoilY;
+
+    [Header("Sound")] 
+    [SerializeField] private List<AudioClip> gunSound;
     
     public WeaponTransform BackTf => backTf;
     public WeaponTransform HandTf => handTf;
@@ -47,4 +50,5 @@ public class WeaponData : ScriptableObject
     public int Magazine => magazine;
     public float RecoilX => recoilX;
     public float RecoilY => recoilY;
+    public List<AudioClip> GunSound => gunSound;
 }
