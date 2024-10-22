@@ -15,5 +15,4 @@ public class ZombieFactory : EnemyFactory
         
         return new ZombieController(obj, normalZombieStatus, SpawnerManager.Instance.GetPoolObject);
     }
-    
 }

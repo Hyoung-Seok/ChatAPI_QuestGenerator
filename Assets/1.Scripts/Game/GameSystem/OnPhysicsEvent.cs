@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class OnPhysicsEvent : MonoBehaviour
 {
-    public Action<float, HitPoint> OnHitFunc;
+    public event Action<float, HitPoint> OnTakeDamage;
+    public event Action<float> OnHitTarget;
 
     private bool _isPlayerInRange = false;
     private float _damage = 0;
@@ -11,6 +12,11 @@ public class OnPhysicsEvent : MonoBehaviour
     public void SetDamage(float damage)
     {
         _damage = damage;
+    }
+
+    public void TakeDamage(float dmg, HitPoint point)
+    {
+        OnTakeDamage?.Invoke(dmg, point);
     }
     
     private void OnTriggerEnter(Collider other)
@@ -42,7 +48,7 @@ public class OnPhysicsEvent : MonoBehaviour
             return;
         }
         
-        GameManager.Instance.Player.PlayerDamaged(_damage);
+        OnHitTarget?.Invoke(_damage);
     }
 
     #endregion

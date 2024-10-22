@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using UnityEngine;
@@ -12,7 +10,7 @@ public class SpawnerManager : MonoBehaviour
     [SerializeField] private GameObject hitEffect;
     
     [Header("Current Spawner")]
-    [SerializeField, ReadOnly] private List<EnemyFactory> _spawnerList;
+    [SerializeField, ReadOnly] private List<EnemyFactory> spawnerList;
     public static SpawnerManager Instance { get; private set; }
     private IObjectPool<ObjectPool> _effectPool;
 
@@ -23,10 +21,10 @@ public class SpawnerManager : MonoBehaviour
             Instance = this;
         }
 
-        _spawnerList = new List<EnemyFactory>();
+        spawnerList = new List<EnemyFactory>();
         for (var i = 1; i < transform.childCount; ++i)
         {
-            _spawnerList.Add(transform.GetChild(i).GetComponent<EnemyFactory>());
+            spawnerList.Add(transform.GetChild(i).GetComponent<EnemyFactory>());
         }
         
         _effectPool = new ObjectPool<ObjectPool>(CreateHitEffect, GetObject, ReturnObject,
@@ -37,11 +35,11 @@ public class SpawnerManager : MonoBehaviour
     {
         if (target == null)
         {
-            _spawnerList.ForEach(x => x.SetTargetTransformSpawnEnemy(effectParent));
+            spawnerList.ForEach(x => x.SetTargetTransformSpawnEnemy(effectParent));
             return;
         }
         
-        _spawnerList.ForEach(x => x.SetTargetTransformSpawnEnemy(target));
+        spawnerList.ForEach(x => x.SetTargetTransformSpawnEnemy(target));
     }
     
     public ObjectPool GetPoolObject()

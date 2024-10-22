@@ -108,14 +108,15 @@ public class Weapon : MonoBehaviour
         if (hit.collider.CompareTag("Enemy"))
         {
             _hitPoint.Init(hit);
-            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage, _hitPoint);
+            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage, _hitPoint);
+            
         }
         else if (hit.collider.CompareTag("Head"))
         {
             _hitPoint.Init(hit);
-            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.OnHitFunc(weaponData.Damage * 1.5f, _hitPoint);
+            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage * 1.5f, _hitPoint);
             
-            GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot");
+            GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot", false);
             GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
         }
     }

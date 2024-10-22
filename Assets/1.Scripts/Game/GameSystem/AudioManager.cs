@@ -8,7 +8,7 @@ using UnityEngine.Serialization;
 public enum ESoundType
 {
     BGM,
-    EFFECT
+    EFFECT,
 }
 
 public class AudioManager : MonoBehaviour
@@ -57,7 +57,7 @@ public class AudioManager : MonoBehaviour
         _clipDic.Add("HitSound", playerHitSounds);
     }
 
-    public void PlaySound(ESoundType type, string key, Vector3 pos = default, int index = -1)
+    public void PlaySound(ESoundType type, string key, bool is3DSound, Vector3 pos = default, int index = -1)
     {
         if (_clipDic.TryGetValue(key, out var clips) == false)
         {
@@ -70,13 +70,12 @@ public class AudioManager : MonoBehaviour
                 break;
             
             case ESoundType.EFFECT when pos == Vector3.zero:
-                PlayRandomSound(clips[Random.Range(0, clips.Length)]);
+                PlayRandomSound(clips[Random.Range(0, clips.Length)], is3DSound);
                 break;
             
             case ESoundType.EFFECT:
-                PlayRandomSound(clips[Random.Range(0, clips.Length)], pos);
+                PlayRandomSound(clips[Random.Range(0, clips.Length)], pos, is3DSound);
                 break;
-                
             
             default:
                 return;
@@ -88,20 +87,22 @@ public class AudioManager : MonoBehaviour
         return _clipDic.GetValueOrDefault(key);
     }
 
-    private void PlayRandomSound(AudioClip clip)
+    private void PlayRandomSound(AudioClip clip, bool is3D)
     {
         var source = effectSource.FirstOrDefault(x => x.isPlaying == false);
 
         source = (source == null) ? effectSource[0] : source;
+        source.spatialBlend = (is3D) ? 1 : 0;
         source.clip = clip;
         source.Play();
     }
     
-    private void PlayRandomSound(AudioClip clip, Vector3 pos)
+    private void PlayRandomSound(AudioClip clip, Vector3 pos, bool is3D)
     {
         var source = effectSource.FirstOrDefault(x => x.isPlaying == false);
         
         source = (source == null) ? effectSource[0] : source;
+        source.spatialBlend = (is3D) ? 1 : 0;
         source.transform.position = pos;
         source.clip = clip;
         source.Play();

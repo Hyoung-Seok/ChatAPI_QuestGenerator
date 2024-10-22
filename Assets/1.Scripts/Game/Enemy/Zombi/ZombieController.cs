@@ -22,10 +22,13 @@ public class ZombieController : EnemyBaseController
     public ZombieController(GameObject obj, ZombieStatus status, Func<ObjectPool> getEffect = null) : base(obj, status, getEffect)
     {
         Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
-        var hitEvent = obj.GetComponent<OnPhysicsEvent>();
-
-        hitEvent.OnHitFunc -= HitEvent;
-        hitEvent.OnHitFunc += HitEvent;
+        var physicsEvent = obj.GetComponent<OnPhysicsEvent>();
+        
+        physicsEvent.OnTakeDamage -= HitEvent;
+        physicsEvent.OnTakeDamage += HitEvent;
+        
+        physicsEvent.OnHitTarget -= GameManager.Instance.Player.PlayerDamaged;
+        physicsEvent.OnHitTarget += GameManager.Instance.Player.PlayerDamaged;
         
         ChangeSpeed(false);
 

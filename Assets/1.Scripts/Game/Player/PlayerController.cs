@@ -75,7 +75,7 @@ public class PlayerController : UnitStateController
         Animator.SetFloat(_playerHpKey, _currentHp);
         
         PlayAudio(AudioSource, _hitClips[Random.Range(0, _hitClips.Length)]);
-        _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound", Transform.position);
+        _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound", true, Transform.position);
         _instance.CameraEffect.ShakeCamera(ECameraShake.HIT, 1.5f);
         
         if (_currentHp > 30)

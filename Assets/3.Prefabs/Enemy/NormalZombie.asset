@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHp: 100
   defense: 10
-  detectRange: 20
-  detectAngle: 20
+  detectRange: 30
+  detectAngle: 40
   returnDistance: 30
   fireHearingRange: 40
   footStepHearingRange: 5
   idleStateMinTime: 10
   idleStateMaxTime: 20
-  patrolRange: 4
+  patrolRange: 10
   moveSpeed: 0.6
   runSpeed: 8
   rotationSpeed: 350
