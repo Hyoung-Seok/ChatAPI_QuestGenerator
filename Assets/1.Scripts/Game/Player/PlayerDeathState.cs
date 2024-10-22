@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerDeathState : PlayerBaseState
 {
-    private readonly int _deathKey = Animator.StringToHash("IsDead");
-    
     public PlayerDeathState(PlayerController controller) : base(controller) { }
 
     public override void Enter()

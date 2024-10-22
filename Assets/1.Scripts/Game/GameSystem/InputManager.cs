@@ -48,6 +48,11 @@ public class InputManager : MonoBehaviour, IEventFunction
             _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
         }
 
+        if (Input.GetButtonDown("Reloading") && _controller.IsEquipped == true && _controller.CurInputState != EPlayerInputState.AIM)
+        {
+            _controller.ChangePlayerInputState(EPlayerInputState.RELOADING);
+        }
+
         if (Input.GetButtonDown("Cancel") == true)
         {
             _isLockMouse = !_isLockMouse;

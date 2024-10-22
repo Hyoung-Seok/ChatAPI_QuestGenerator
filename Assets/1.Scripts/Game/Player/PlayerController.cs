@@ -37,6 +37,7 @@ public class PlayerController : UnitStateController
     private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
     private readonly int _aimKey = Animator.StringToHash("Aim");
     private readonly int _deathKey = Animator.StringToHash("IsDead");
+    private readonly int _reloading = Animator.StringToHash("Reloading");
     
     #endregion
     
@@ -131,6 +132,10 @@ public class PlayerController : UnitStateController
                 Animator.SetBool(_aimKey, true);
                 
                 _moveState.ChangeMoveSpeed(inputState, IsEquipped);
+                break;
+            
+            case EPlayerInputState.RELOADING when GameManager.Instance.WeaponManager.IsReloading == false:
+                Animator.SetTrigger(_reloading);   
                 break;
             
             default:
