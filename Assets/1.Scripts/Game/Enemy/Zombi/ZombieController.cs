@@ -21,7 +21,7 @@ public class ZombieController : EnemyBaseController
     
     public ZombieController(GameObject obj, ZombieStatus status, Func<ObjectPool> getEffect = null) : base(obj, status, getEffect)
     {
-        Tmp = obj.transform.GetChild(2).GetComponent<TextMeshPro>();
+        Tmp = obj.transform.GetChild(3).GetComponent<TextMeshPro>();
         var physicsEvent = obj.GetComponent<OnPhysicsEvent>();
         
         physicsEvent.OnTakeDamage -= HitEvent;
