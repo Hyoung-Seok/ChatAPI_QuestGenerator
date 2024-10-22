@@ -104,7 +104,7 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
-
+        
         if (hit.collider.CompareTag("Enemy"))
         {
             _hitPoint.Init(hit);

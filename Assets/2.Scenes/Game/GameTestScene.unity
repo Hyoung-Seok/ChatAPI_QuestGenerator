@@ -2243,7 +2243,7 @@ MonoBehaviour:
   effectParent: {fileID: 895016947}
   hitEffect: {fileID: 1772699890950729315, guid: 89d6e7d43f63f5248a759e561c468b5e,
     type: 3}
-  _spawnerList: []
+  spawnerList: []
 --- !u!1 &895016946
 GameObject:
   m_ObjectHideFlags: 0
@@ -3841,7 +3841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 6827857666732831365, guid: fac32e1faf0541544967d28e0e5f24cb,
+  enemyPrefab: {fileID: 4469433113143549368, guid: ad5562e74d9d66145beb55ecc88130d1,
     type: 3}
   spawnRange: 30
   firstCreateCount: 5
