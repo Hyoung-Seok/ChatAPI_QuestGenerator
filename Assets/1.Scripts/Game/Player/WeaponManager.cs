@@ -25,6 +25,7 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private Transform handPos;
     
     public bool IsReloading { get; private set; }
+    public bool CanReloading => currentWeapon.CanReload;
     private WeaponData _weaponData;
     private IEnumerator _setWeightRoutine;
     private IEnumerator _reloadRoutine;
@@ -147,6 +148,7 @@ public class WeaponManager : MonoBehaviour
         
         leftHandGrab.weight = 1;
         IsReloading = false;
+        currentWeapon.Reload();
     }
 
     #endregion

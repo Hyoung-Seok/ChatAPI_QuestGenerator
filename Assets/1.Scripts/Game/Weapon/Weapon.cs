@@ -15,6 +15,10 @@ public class Weapon : MonoBehaviour
     [Header("Effect")] 
     [SerializeField] private ParticleSystem muzzleEffect;
     private HitPoint _hitPoint;
+    
+    private List<int> _magazineList;
+    private int _curMagIndex = 0;
+    public bool CanReload { get; private set; }
 
     public WeaponData WeaponData => weaponData;
     
@@ -69,17 +73,48 @@ public class Weapon : MonoBehaviour
 
         _gunSoundClip = new List<AudioClip>();
         _gunSoundClip = weaponData.GunSound;
+
+        _magazineList = new List<int>();
+        for (var i = 0; i < 4; ++i)
+        {
+            _magazineList.Add(weaponData.Magazine);
+        }
+        CanReload = true;
         
+        GameManager.Instance.UIManager.SetMagazineCountUI(_magazineList.Count - 1);
+        GameManager.Instance.UIManager.SetMagazineInfoUI(weaponData.Magazine,weaponData.Magazine);
         GameManager.Instance.CameraController.SetRecoil(weaponData);
     }
     
     public void Reload()
     {
+        if (_magazineList.Count <= 1)
+        {
+            return;
+        }
         
+        if (_magazineList[_curMagIndex] <= 0)
+        {
+            _magazineList.RemoveAt(_curMagIndex);
+            GameManager.Instance.UIManager.SetMagazineCountUI(_magazineList.Count - 1);
+
+            if (_magazineList.Count - 1 <= 0)
+            {
+                CanReload = false;
+            }
+        }
+
+        _curMagIndex = (_curMagIndex + 1 <= _magazineList.Count - 1) ? ++_curMagIndex : 0;
+        GameManager.Instance.UIManager.SetCurrentBulletInfoUI(_magazineList[_curMagIndex]);
     }
 
     private void Fire()
     {
+        if (_magazineList[_curMagIndex] <= 0)
+        {
+            return;
+        }
+        
         _pool.Get();
             
         muzzleEffect.Play();
@@ -94,6 +129,7 @@ public class Weapon : MonoBehaviour
             
         GameManager.Instance.CameraEffect.ShakeCamera(ECameraShake.RECOIL);
         GameManager.Instance.CameraController.IsRecoil = true;
+        GameManager.Instance.UIManager.SetCurrentBulletInfoUI(--_magazineList[_curMagIndex]);
     }
 
     private void ShootRayFormCenter()
@@ -117,7 +153,7 @@ public class Weapon : MonoBehaviour
             hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage * 1.5f, _hitPoint);
             
             GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot", false);
-            GameManager.Instance.UIContainer.SetActiveCrossHair(true, true);
+            GameManager.Instance.UIManager.SetActiveCrossHair(true, true);
         }
     }
 
