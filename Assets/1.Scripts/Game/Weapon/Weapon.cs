@@ -133,10 +133,11 @@ public class Weapon : MonoBehaviour
     
     private void GetObject(ObjectPool obj)
     {
-        obj.gameObject.SetActive(true);
-        
         obj.gameObject.transform.SetPositionAndRotation(cartridgeOutPos.position,
             weaponData.Cartridge.transform.rotation);
+        
+        obj.gameObject.SetActive(true);
+        
         obj.OnEnableEvent(cartridgeOutPos.forward);
     }
 

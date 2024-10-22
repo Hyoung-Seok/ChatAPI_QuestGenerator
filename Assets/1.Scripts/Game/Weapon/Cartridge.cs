@@ -12,6 +12,10 @@ public class Cartridge : ObjectPool
     
     [Header("Component")]
     [SerializeField] private Rigidbody rigidBody;
+
+    public override void OnEnableEvent()
+    {
+    }
     
     public override void OnEnableEvent(Vector3 dir)
     {
