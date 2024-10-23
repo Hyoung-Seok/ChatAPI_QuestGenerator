@@ -3,46 +3,38 @@ using UnityEngine;
 
 public class OnPhysicsEvent : MonoBehaviour
 {
-    public Action<float, HitPoint> OnHitFunc;
+    public event Action<float, HitPoint> OnTakeDamage;
+    public event Action<float> OnHitTarget;
 
     private bool _isPlayerInRange = false;
+    private AttackCollider _attackCollider;
     private float _damage = 0;
+
+    private void Start()
+    {
+        _attackCollider = gameObject.GetComponentInChildren<AttackCollider>();
+    }
 
     public void SetDamage(float damage)
     {
         _damage = damage;
     }
+
+    public void TakeDamage(float dmg, HitPoint point)
+    {
+        OnTakeDamage?.Invoke(dmg, point);
+    }
     
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player") == false)
-        {
-            return;
-        }
-
-        _isPlayerInRange = true;
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") == false)
-        {
-            return;
-        }
-
-        _isPlayerInRange = false;
-    }
-
     #region AnimationEvent
 
     public void AttackPlayer()
     {
-        if (_isPlayerInRange == false)
+        if (_attackCollider.IsPlayerInRange == false)
         {
             return;
         }
         
-        GameManager.Instance.Player.PlayerDamaged(_damage);
+        OnHitTarget?.Invoke(_damage);
     }
 
     #endregion

@@ -24,8 +24,11 @@ public class WeaponManager : MonoBehaviour
     [SerializeField] private Transform backPos;
     [SerializeField] private Transform handPos;
     
+    public bool IsReloading { get; private set; }
+    public bool CanReloading => currentWeapon.CanReload;
     private WeaponData _weaponData;
     private IEnumerator _setWeightRoutine;
+    private IEnumerator _reloadRoutine;
 
     private void Start()
     {
@@ -91,9 +94,15 @@ public class WeaponManager : MonoBehaviour
         StartSetWeightRoutine(weightTime);
     }
 
-    public void SetWeight()
+    public void StartReloadRoutine()
     {
-        StartSetWeightRoutine(0.01f, 0.0f);
+        _reloadRoutine = ReloadRoutine();
+        StartCoroutine(_reloadRoutine);
+    }
+
+    public void SetWeight(float weight)
+    {
+        StartSetWeightRoutine(0.01f, weight);
     }
 
     public void UnEquipWeapon()
@@ -126,6 +135,20 @@ public class WeaponManager : MonoBehaviour
         yield return new WaitForSeconds(weightTime);
         
         leftHandGrab.weight = weight;
+    }
+
+    private IEnumerator ReloadRoutine()
+    {
+        IsReloading = true;
+        yield return new WaitForSeconds(0.05f);
+        
+        leftHandGrab.weight = 0;
+        
+        yield return new WaitForSeconds(2.5f);
+        
+        leftHandGrab.weight = 1;
+        IsReloading = false;
+        currentWeapon.Reload();
     }
 
     #endregion

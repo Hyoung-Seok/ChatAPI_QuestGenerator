@@ -26,7 +26,7 @@ public class PlayerController : UnitStateController
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
-    private GameManager _instance;
+    private readonly GameManager _instance;
 
     #region AnimationKey
     
@@ -37,6 +37,7 @@ public class PlayerController : UnitStateController
     private readonly int _equippedKey = Animator.StringToHash("IsEquipped");
     private readonly int _aimKey = Animator.StringToHash("Aim");
     private readonly int _deathKey = Animator.StringToHash("IsDead");
+    private readonly int _reloading = Animator.StringToHash("Reloading");
     
     #endregion
     
@@ -75,7 +76,7 @@ public class PlayerController : UnitStateController
         Animator.SetFloat(_playerHpKey, _currentHp);
         
         PlayAudio(AudioSource, _hitClips[Random.Range(0, _hitClips.Length)]);
-        _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound", Transform.position);
+        _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound", true, Transform.position);
         _instance.CameraEffect.ShakeCamera(ECameraShake.HIT, 1.5f);
         
         if (_currentHp > 30)
@@ -133,6 +134,12 @@ public class PlayerController : UnitStateController
                 _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
+            case EPlayerInputState.RELOADING 
+                when GameManager.Instance.WeaponManager.IsReloading == false &&
+                     GameManager.Instance.WeaponManager.CanReloading == true :
+                Animator.SetTrigger(_reloading);
+                break;
+            
             default:
                 return;
         }
@@ -169,12 +176,14 @@ public class PlayerController : UnitStateController
             IsEquipped = false;
             Animator.SetBool(_equippedKey, IsEquipped);
             Animator.SetTrigger(_quippedTriggerKey);
+            GameManager.Instance.UIManager.SetActiveMagazineUI(false);
             return;
         }
 
         IsEquipped = true;
         Animator.SetBool(_equippedKey, IsEquipped);
         Animator.SetTrigger(_quippedTriggerKey);
+        GameManager.Instance.UIManager.SetActiveMagazineUI(true);
     }
 
     private void OnMoveValueChangeEvent(PlayerStatus data)

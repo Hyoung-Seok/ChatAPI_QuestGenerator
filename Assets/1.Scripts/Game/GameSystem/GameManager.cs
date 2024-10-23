@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class GameManager : MonoBehaviour
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
     [SerializeField] private AudioManager audioManager;
-    [SerializeField] private UIContainer uiContainer;
+    [FormerlySerializedAs("uiContainer")] [SerializeField] private UIManager uiManager;
 
     #region Property
     
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
     public PlayerController Player { get; private set; }
     public PlayerCameraController CameraController { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
-    public UIContainer UIContainer => uiContainer;
+    public UIManager UIManager => uiManager;
     public AudioManager AudioManager => audioManager;
     
     #endregion

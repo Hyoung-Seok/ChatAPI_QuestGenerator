@@ -36,16 +36,21 @@ public class InputManager : MonoBehaviour, IEventFunction
         
         if (Input.GetButtonDown("Fire2") && _controller.IsEquipped == true)
         {
-            GameManager.Instance.UIContainer.SetActiveCrossHair(true);
+            GameManager.Instance.UIManager.SetActiveCrossHair(true);
             _controller.ChangePlayerInputState(EPlayerInputState.AIM);
         }
 
         if (Input.GetButtonUp("Fire2") && _controller.IsEquipped == true)
         {
-            GameManager.Instance.UIContainer.SetActiveCrossHair(false);
+            GameManager.Instance.UIManager.SetActiveCrossHair(false);
             GameManager.Instance.CameraController.IsRecoil = false;
             
             _controller.ChangePlayerInputState(EPlayerInputState.IDLE);
+        }
+
+        if (Input.GetButtonDown("Reloading") && _controller.IsEquipped == true && _controller.CurInputState != EPlayerInputState.AIM)
+        {
+            _controller.ChangePlayerInputState(EPlayerInputState.RELOADING);
         }
 
         if (Input.GetButtonDown("Cancel") == true)

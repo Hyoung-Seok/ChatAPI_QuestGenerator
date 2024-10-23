@@ -57,6 +57,7 @@ public class ZombiePatrolState : ZombieBaseState
     public override void Exit()
     {
         Controller.Animator.SetBool(_walkKey, false);
+        Controller.NavMeshAgent.ResetPath();
     }
 
     private Vector3 GetRandomPatrolPos()
@@ -66,6 +67,6 @@ public class ZombiePatrolState : ZombieBaseState
 
         return NavMesh.SamplePosition(randDir, out var hit, _patrolRange, NavMesh.AllAreas)
             ? hit.position
-            : Vector3.zero;
+            : Controller.GameObject.transform.position;
     }
 }

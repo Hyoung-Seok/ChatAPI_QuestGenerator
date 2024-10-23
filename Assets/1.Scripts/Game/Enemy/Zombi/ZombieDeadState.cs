@@ -11,6 +11,7 @@ public class ZombieDeadState : ZombieBaseState
     
     public override void Enter()
     {
+        Controller.NavMeshAgent.ResetPath();
         Controller.Animator.SetBool(Controller.DeadKey, true);
         _curTime = 0;
     }

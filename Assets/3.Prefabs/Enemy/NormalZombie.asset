@@ -12,21 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d207d45c8bbe7cd40b236037590a531f, type: 3}
   m_Name: NormalZombie
   m_EditorClassIdentifier: 
-  maxHp: 100
+  maxHp: 180
   defense: 10
-  detectRange: 20
-  detectAngle: 20
+  detectRange: 30
+  detectAngle: 40
   returnDistance: 30
   fireHearingRange: 40
   footStepHearingRange: 5
   idleStateMinTime: 10
   idleStateMaxTime: 20
-  patrolRange: 4
+  patrolRange: 10
   moveSpeed: 0.6
   runSpeed: 8
   rotationSpeed: 350
   attackRange: 1.9
   attackDelay: 2
-  damage: 60
+  damage: 10
   agonizingChance: 30
   screamChance: 30

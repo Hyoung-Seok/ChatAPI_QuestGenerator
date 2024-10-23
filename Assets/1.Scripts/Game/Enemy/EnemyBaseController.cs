@@ -41,12 +41,12 @@ public class EnemyBaseController : UnitStateController
     {
         GetHitEffect = hitEffectPool;
         
-        NavMeshAgent = obj.GetComponent<NavMeshAgent>();
-        Rig = obj.GetComponent<Rigidbody>();
-        Animator = obj.GetComponent<Animator>();
         GameObject = obj;
+        NavMeshAgent = GameObject.GetComponent<NavMeshAgent>();
+        Rig = GameObject.GetComponent<Rigidbody>();
+        Animator = GameObject.GetComponent<Animator>();
         TargetTf = GameManager.Instance.PlayerComponent.PlayerTransform;
-        obj.GetComponent<OnPhysicsEvent>().SetDamage(status.Damage);
+        GameObject.GetComponent<OnPhysicsEvent>().SetDamage(status.Damage);
         
         // nav mesh set
         OriginStopDistance = NavMeshAgent.stoppingDistance;

@@ -4,5 +4,6 @@ public enum EPlayerInputState
     WALK,
     RUN,
     EQUIPPED,
-    AIM
+    AIM,
+    RELOADING
 }
