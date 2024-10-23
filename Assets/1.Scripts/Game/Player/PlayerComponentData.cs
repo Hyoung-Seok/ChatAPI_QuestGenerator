@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerComponentData : MonoBehaviour
 {
@@ -8,4 +9,5 @@ public class PlayerComponentData : MonoBehaviour
     public Transform CameraDir;
     public Animator Animator;
     public AudioSource AudioSource;
+    public PlayerInput PlayerInput;
 }

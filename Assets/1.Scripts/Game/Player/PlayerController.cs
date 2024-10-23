@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
@@ -13,6 +14,7 @@ public class PlayerController : UnitStateController
     public Transform Transform { get; private set; }
     public Transform CameraDir { get; private set; }
     public AudioSource AudioSource { get; private set; }
+    public PlayerInput PlayerInput { get; private set; }
     public bool IsEquipped { get; private set; }
     
     [Header("Status")] 
@@ -25,7 +27,6 @@ public class PlayerController : UnitStateController
     private readonly PlayerInteractionState _playerInteractionState;
     public PlayerMoveState MoveState => _moveState;
     public PlayerInteractionState InteractionState => _playerInteractionState;
-
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
@@ -51,6 +52,7 @@ public class PlayerController : UnitStateController
         Transform = componentData.PlayerTransform;
         CameraDir = componentData.CameraDir;
         AudioSource = componentData.AudioSource;
+        PlayerInput = componentData.PlayerInput;
 
         _currentHp = PlayerMaxHp = status.MaxHp;
         _lv = status.Level;
@@ -118,11 +120,6 @@ public class PlayerController : UnitStateController
                 GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
                 
-                _moveState.ChangeMoveSpeed(inputState, IsEquipped);
-                break;
-            
-            case EPlayerInputState.WALK:
-            case EPlayerInputState.RUN:
                 _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
