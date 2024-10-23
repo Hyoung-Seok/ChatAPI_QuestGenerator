@@ -52,7 +52,7 @@ public class InputManager : MonoBehaviour, IEventFunction
         {
             _controller.ChangePlayerInputState(EPlayerInputState.RELOADING);
         }
-
+        
         if (Input.GetButtonDown("Cancel") == true)
         {
             _isLockMouse = !_isLockMouse;

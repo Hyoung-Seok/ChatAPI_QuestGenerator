@@ -13,6 +13,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxBulletCount;
     [SerializeField] private TextMeshProUGUI magCount;
 
+    [Header("Npc_UI")] 
+    [SerializeField] private GameObject npcUI;
+
     [Header("Animation Clip")] 
     [SerializeField] private Animator crossHairAnimation;
 

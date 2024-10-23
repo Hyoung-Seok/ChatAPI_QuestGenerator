@@ -22,7 +22,10 @@ public class PlayerController : UnitStateController
     [Header("Player State")]
     private readonly PlayerMoveState _moveState;
     private readonly PlayerDeathState _deathState;
-    public PlayerMoveState PlayerMoveState => _moveState;
+    private readonly PlayerInteractionState _playerInteractionState;
+    public PlayerMoveState MoveState => _moveState;
+    public PlayerInteractionState InteractionState => _playerInteractionState;
+
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
@@ -64,6 +67,7 @@ public class PlayerController : UnitStateController
         
         _moveState = new PlayerMoveState(this, status);
         _deathState = new PlayerDeathState(this);
+        _playerInteractionState = new PlayerInteractionState(this);
         
         ChangeMainState(_moveState);
     }
