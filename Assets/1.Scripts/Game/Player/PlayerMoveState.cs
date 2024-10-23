@@ -6,7 +6,7 @@ public class PlayerMoveState : PlayerBaseState
     private PlayerStatus _status;
     
     private float _maxMoveSpeed;
-    private float _smoothTime;
+    private readonly float _smoothTime;
     private float _curSpeed = 0.0f;
     
     private Vector3 _camForward = Vector3.zero;

@@ -7,8 +7,8 @@ public class PlayerCameraController : IEventFunction
     private readonly float _rotationSpeed;
     private readonly float _pitchMin;
     private readonly float _pitchMax;
-    private Transform _transform;
-    private Transform _targetTf;
+    private readonly Transform _transform;
+    private readonly Transform _targetTf;
     private Vector2 _targetRotation = Vector2.zero;
     
     // recoil value

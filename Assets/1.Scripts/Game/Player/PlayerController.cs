@@ -72,6 +72,7 @@ public class PlayerController : UnitStateController
         _playerInteractionState = new PlayerInteractionState(this);
         
         ChangeMainState(_moveState);
+        RegisterInputAction();
     }
 
     public void PlayerDamaged(float dmg)
@@ -191,4 +192,62 @@ public class PlayerController : UnitStateController
     {
         _moveState.OnValueUpdate(data);
     }
+
+    #region InputAction
+
+    private void RegisterInputAction()
+    {
+        PlayerInput.actions["Aim"].performed += OnAim;
+        PlayerInput.actions["Aim"].canceled += OnAim;
+
+        PlayerInput.actions["Equip"].performed += OnEquip;
+
+        PlayerInput.actions["Reloading"].performed += OnReloading;
+    }
+    
+    private void OnAim(InputAction.CallbackContext context)
+    {
+        if (IsEquipped == false)
+        {
+            return;
+        }
+        
+        if (context.performed == true)
+        {
+            GameManager.Instance.UIManager.SetActiveCrossHair(true);
+            ChangePlayerInputState(EPlayerInputState.AIM);
+        }
+        else if (context.canceled)
+        {
+            GameManager.Instance.UIManager.SetActiveCrossHair(false);
+            GameManager.Instance.CameraController.IsRecoil = false;
+            
+            ChangePlayerInputState(EPlayerInputState.IDLE);
+        }
+    }
+
+    private void OnEquip(InputAction.CallbackContext context)
+    {
+        if (context.performed == false)
+        {
+            return;
+        }
+        
+        ChangePlayerInputState(EPlayerInputState.EQUIPPED);
+    }
+
+    private void OnReloading(InputAction.CallbackContext context)
+    {
+        if (context.performed == false)
+        {
+            return;
+        }
+
+        if (IsEquipped == true && CurInputState != EPlayerInputState.AIM)
+        {
+            ChangePlayerInputState(EPlayerInputState.RELOADING);   
+        }
+    }
+
+    #endregion
 }

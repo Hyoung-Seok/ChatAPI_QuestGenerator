@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Manager")] 
     [SerializeField] private InputManager inputManager;
     [SerializeField] private AudioManager audioManager;
-    [FormerlySerializedAs("uiContainer")] [SerializeField] private UIManager uiManager;
+    [SerializeField] private UIManager uiManager;
 
     #region Property
     
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
     public CameraEffectController CameraEffect { get; private set; }
     public UIManager UIManager => uiManager;
     public AudioManager AudioManager => audioManager;
+    public PlayerInput PlayerInput { get; private set; }
     
     #endregion
     
@@ -61,6 +63,7 @@ public class GameManager : MonoBehaviour
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
+        PlayerInput = playerComponentData.PlayerInput;
     }
 
     #region EventFunction
