@@ -24,16 +24,6 @@ public class InputManager : MonoBehaviour, IEventFunction
             _controller.ChangePlayerInputState(EPlayerInputState.EQUIPPED);
         }
         
-        if (Input.GetKeyDown(runKey))
-        {
-            _controller.ChangePlayerInputState(EPlayerInputState.RUN);
-        }
-        
-        if (Input.GetKeyUp(runKey))
-        {
-            _controller.ChangePlayerInputState(EPlayerInputState.WALK);
-        }
-        
         if (Input.GetButtonDown("Fire2") && _controller.IsEquipped == true)
         {
             GameManager.Instance.UIManager.SetActiveCrossHair(true);

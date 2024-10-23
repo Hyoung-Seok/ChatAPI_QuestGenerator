@@ -1,13 +1,12 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMoveState : PlayerBaseState
 {
     private PlayerStatus _status;
     
-    private float _horizontal;
-    private float _vertical;
     private float _maxMoveSpeed;
-    
+    private float _smoothTime;
     private float _curSpeed = 0.0f;
     
     private Vector3 _camForward = Vector3.zero;
@@ -15,13 +14,17 @@ public class PlayerMoveState : PlayerBaseState
     private Vector3 _moveDir = Vector3.zero;
     private Vector3 _lookDir = Vector3.zero;
     private Vector3 _prevDir = Vector3.zero;
+    private Vector2 _input = Vector2.zero;
+    private Vector2 _smoothInput = Vector2.zero;
 
     private bool _isSetIdleAnimation = false;
 
     public PlayerMoveState(PlayerController controller, PlayerStatus data) : base(controller)
     {
         _status = data;
+        
         _maxMoveSpeed = _status.MoveSpeed;
+        _smoothTime = _status.MoveInputSmooth;
     }
 
     public void ChangeMoveSpeed(EPlayerInputState state, bool isEquipped)
@@ -33,12 +36,6 @@ public class PlayerMoveState : PlayerBaseState
             EPlayerInputState.IDLE when (isEquipped == false) => _status.MoveSpeed,
             EPlayerInputState.IDLE => _status.EquippedMoveSpeed,
             
-            EPlayerInputState.WALK when (isEquipped == false) => _status.MoveSpeed,
-            EPlayerInputState.WALK => _status.EquippedMoveSpeed,
-            
-            EPlayerInputState.RUN when (isEquipped == false) => _status.RunSpeed,
-            EPlayerInputState.RUN => _status.EquippedRunSpeed,
-            
             EPlayerInputState.EQUIPPED => _status.EquippedMoveSpeed,
             
             _ => _status.MoveSpeed
@@ -48,19 +45,24 @@ public class PlayerMoveState : PlayerBaseState
     public override void Enter()
     {
         _prevDir = Controller.Transform.forward;
+        
+        Controller.PlayerInput.actions["Move"].performed += OnMove;
+        Controller.PlayerInput.actions["Move"].canceled += OnMove;
+        
+        Controller.PlayerInput.actions["Run"].performed += OnRun;
+        Controller.PlayerInput.actions["Run"].canceled += OnRun;
     }
 
     public override void OnUpdate()
     {
-        _horizontal = Input.GetAxis("Horizontal");
-        _vertical = Input.GetAxis("Vertical");
+        _smoothInput = Vector2.MoveTowards(_smoothInput, _input, Time.deltaTime * _smoothTime);
         
         InitCameraDir();
         UpdatePlayerSpeed();
         
-        if (_horizontal != 0 || _vertical != 0)
+        if (_smoothInput.x != 0 || _smoothInput.y != 0)
         {
-            _moveDir = (_camForward * _vertical) + (_camRight * _horizontal);
+            _moveDir = (_camForward * _smoothInput.y) + (_camRight * _smoothInput.x);
             _moveDir.Normalize();
             _lookDir = _moveDir;
         }
@@ -100,7 +102,11 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void Exit()
     {
+        Controller.PlayerInput.actions["Move"].performed -= OnMove;
+        Controller.PlayerInput.actions["Move"].canceled -= OnMove;
         
+        Controller.PlayerInput.actions["Run"].performed -= OnRun;
+        Controller.PlayerInput.actions["Run"].canceled -= OnRun;
     }
 
     public void OnValueUpdate(PlayerStatus data)
@@ -121,7 +127,7 @@ public class PlayerMoveState : PlayerBaseState
 
     private void UpdatePlayerSpeed()
     {
-        if (_horizontal != 0 || _vertical != 0)
+        if (_smoothInput.x != 0 || _smoothInput.y != 0)
         {
             _curSpeed = Mathf.MoveTowards(_curSpeed, _maxMoveSpeed, _status.Acceleration * Time.deltaTime);
             _isSetIdleAnimation = false;
@@ -140,5 +146,29 @@ public class PlayerMoveState : PlayerBaseState
     {
         Controller.ChangeIdleAnimation();
         _isSetIdleAnimation = true;
+    }
+
+    private void OnMove(InputAction.CallbackContext context)
+    {
+        if (context.performed == true)
+        {
+            _input = context.ReadValue<Vector2>();
+        }
+        else if (context.canceled == true)
+        {
+            _input = Vector2.zero;   
+        }
+    }
+
+    private void OnRun(InputAction.CallbackContext context)
+    {
+        if (context.performed == true)
+        {
+            _maxMoveSpeed = (Controller.IsEquipped) ? _status.EquippedRunSpeed : _status.RunSpeed;
+        }
+        else if (context.canceled == true)
+        {
+            _maxMoveSpeed = (Controller.IsEquipped) ? _status.EquippedMoveSpeed : _status.MoveSpeed;
+        }
     }
 }
