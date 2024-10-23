@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
@@ -24,11 +25,12 @@ public class Weapon : MonoBehaviour
     
     private IObjectPool<ObjectPool> _pool;
     private bool _canFire = true;
+    private bool _isPressed = false;
     private float _curTime = 0;
     private Vector2 _screenCenter;
     private Camera _mainCam;
     private List<AudioClip> _gunSoundClip;
-
+    
     private void Start()
     {
         Init();
@@ -39,11 +41,6 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetButtonUp("Fire1") == true)
-        {
-            GameManager.Instance.CameraController.IsRecoil = false;
-        }
-        
         if (_canFire == false)
         {
             _curTime += Time.deltaTime;
@@ -56,7 +53,7 @@ public class Weapon : MonoBehaviour
             _canFire = true;
         }
         
-        if (Input.GetButton("Fire1") == true && _canFire == true)
+        if (_isPressed == true && _canFire == true)
         {
             Fire();
         }
@@ -84,6 +81,10 @@ public class Weapon : MonoBehaviour
         GameManager.Instance.UIManager.SetMagazineCountUI(_magazineList.Count - 1);
         GameManager.Instance.UIManager.SetMagazineInfoUI(weaponData.Magazine,weaponData.Magazine);
         GameManager.Instance.CameraController.SetRecoil(weaponData);
+        
+        var playerInput = GameManager.Instance.PlayerInput;
+        playerInput.actions["Fire"].performed += OnFire;
+        playerInput.actions["Fire"].canceled += OnFire;
     }
     
     public void Reload()
@@ -154,6 +155,16 @@ public class Weapon : MonoBehaviour
             
             GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot", false);
             GameManager.Instance.UIManager.SetActiveCrossHair(true, true);
+        }
+    }
+
+    private void OnFire(InputAction.CallbackContext context)
+    {
+        _isPressed = context.performed == true;
+
+        if (context.canceled == true)
+        {
+            GameManager.Instance.CameraController.IsRecoil = false;
         }
     }
 
