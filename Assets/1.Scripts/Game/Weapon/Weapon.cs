@@ -104,7 +104,7 @@ public class Weapon : MonoBehaviour
             }
         }
 
-        _curMagIndex = (_curMagIndex + 1 <= _magazineList.Count - 1) ? ++_curMagIndex : 0;
+        _curMagIndex = (_curMagIndex + 1 < _magazineList.Count) ? ++_curMagIndex : 0;
         GameManager.Instance.UIManager.SetCurrentBulletInfoUI(_magazineList[_curMagIndex]);
     }
 
