@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerCameraData playerCamData;
 
     [Header("Manager")] 
-    [SerializeField] private InputManager inputManager;
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private UIManager uiManager;
 
@@ -39,6 +38,7 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator _healthWarningEffect;
     private bool _isPlaying = false;
+    private bool _isLockMouse = false;
     
     private void Awake()
     {
@@ -64,15 +64,30 @@ public class GameManager : MonoBehaviour
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
         PlayerInput = playerComponentData.PlayerInput;
+        
+        // Action Register
+        PlayerInput.actions["Escape"].performed -= OnEscapeAction;
+        PlayerInput.actions["Escape"].performed += OnEscapeAction;
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        _isLockMouse = true;
+    }
+
+    private void OnEscapeAction(InputAction.CallbackContext context)
+    {
+        if (context.performed != true)
+        {
+            return;
+        }
+        
+        _isLockMouse = !_isLockMouse;
+        Cursor.lockState = (_isLockMouse) ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
     #region EventFunction
     
     private void Update()
     {
-        // manager
-        inputManager.OnUpdate();
-        
         // player
         CameraController.OnUpdate();
         Player.OnUpdate();
