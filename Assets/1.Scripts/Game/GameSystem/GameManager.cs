@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Manager")] 
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private UIManager uiManager;
+    public NpcManager NpcManager { get; private set; }
 
     #region Property
     
@@ -52,7 +53,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        // sound
+        // Audio
         AudioManager.Init(5);
         
         // camera Init
@@ -64,6 +65,8 @@ public class GameManager : MonoBehaviour
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
         PlayerInput = playerComponentData.PlayerInput;
+        
+        NpcManager = new NpcManager();
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;

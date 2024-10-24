@@ -102,6 +102,16 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void Exit()
     {
+        _input = _smoothInput = Vector2.zero;
+        Controller.PlayerRig.velocity = Vector3.zero;
+        _curSpeed = 0;
+        UpdatePlayerSpeed();
+
+        if (Controller.CurInputState == EPlayerInputState.AIM)
+        {
+            Controller.ChangePlayerInputState(EPlayerInputState.IDLE);
+        }
+        
         Controller.PlayerInput.actions["Move"].performed -= OnMove;
         Controller.PlayerInput.actions["Move"].canceled -= OnMove;
         

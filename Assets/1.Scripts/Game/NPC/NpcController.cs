@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Serialization;
 
 public class NpcController : Interactable
 {
@@ -17,7 +18,6 @@ public class NpcController : Interactable
     [Header("Quest")]
     [SerializeField] private List<QuestData> _questDatas;
 
-    private bool _isInteraction = false;
     private PlayerController _playerController;
     private IEnumerator _headWeight;
     private WaitForEndOfFrame _waitForEndOfFrame;
@@ -31,19 +31,22 @@ public class NpcController : Interactable
 
     public override void OnTriggerEnterEvent()
     {
-        _isInteraction = true;
+        GameManager.Instance.NpcManager.EnterInteraction += OnInteractionStart;
+        GameManager.Instance.NpcManager.ExitInteraction += OnInteractionEnd;
     }
     
     public override void OnTriggerStayEvent() { }
 
     public override void OnTriggerExitEvent()
     {
-        _isInteraction = false;
+        GameManager.Instance.NpcManager.EnterInteraction -= OnInteractionStart;
+        GameManager.Instance.NpcManager.ExitInteraction -= OnInteractionEnd;
     }
 
     private void OnInteractionStart()
     {
         npcCamera.gameObject.SetActive(true);
+        _playerController.ChangeMainState(_playerController.InteractionState);
         
         StartHeadWeightRoutine(1);
     }
@@ -51,6 +54,7 @@ public class NpcController : Interactable
     private void OnInteractionEnd()
     {
         npcCamera.gameObject.SetActive(false);
+        _playerController.ChangeMainState(_playerController.MoveState);
         
         StartHeadWeightRoutine(0);
     }
