@@ -84,7 +84,7 @@ public class UIManager : MonoBehaviour
         _curSelectedQuestData = _currentQuestDisplay[index].QuestData;
         
         EnableButton(EButtonType.Next);
-        PrintTextRoutine().Forget();
+        //PrintTextRoutine().Forget();
     }
 
     private void EnableButton(EButtonType type)
@@ -126,63 +126,63 @@ public class UIManager : MonoBehaviour
         
     }
     
-    private async UniTaskVoid PrintTextRoutine()
-    {
-        var scripts = _curSelectedQuestData.Scripts;
-        var length = scripts.Count;
-        var count = 0;
-        
-        textField.text = string.Empty;
-        EnableButton(EButtonType.Next);
-
-        while (true)
-        {
-            foreach (var c in scripts[count])
-            {
-                textField.text += c;
-                
-                if (_isInputNextButton == true)
-                {
-                    textField.text = scripts[count];
-                    _isInputNextButton = false;
-                    break;
-                }
-                
-                await UniTask.Delay(textSpeed);
-            }
-
-            await UniTask.WaitUntil(() => _isInputNextButton == true);
-
-            _isInputNextButton = false;
-            textField.text = string.Empty;
-            
-            count++;
-            if (count >= length - 1)
-            {
-                break;
-            }
-        }
-        
-        EnableButton(EButtonType.Accept);
-        
-        foreach (var c in scripts[count])
-        {
-            textField.text += c;
-
-            if (_isInputAcceptButton == true)
-            {
-                textField.text = scripts[count];
-                _isInputAcceptButton = false;
-                break;
-            }
-            await UniTask.Delay(textSpeed);
-        }
-
-        await UniTask.WaitUntil(() => _isInputAcceptButton == true);
-        
-        //TODO : AcceptButton과 Refuse 버튼에 대한 상호작용 처리
-        _isInputNextButton = false;
-    }
+    // private async UniTaskVoid PrintTextRoutine()
+    // {
+    //     var scripts = _curSelectedQuestData.Scripts;
+    //     var length = scripts.Count;
+    //     var count = 0;
+    //     
+    //     textField.text = string.Empty;
+    //     EnableButton(EButtonType.Next);
+    //
+    //     while (true)
+    //     {
+    //         foreach (var c in scripts[count])
+    //         {
+    //             textField.text += c;
+    //             
+    //             if (_isInputNextButton == true)
+    //             {
+    //                 textField.text = scripts[count];
+    //                 _isInputNextButton = false;
+    //                 break;
+    //             }
+    //             
+    //             await UniTask.Delay(textSpeed);
+    //         }
+    //
+    //         await UniTask.WaitUntil(() => _isInputNextButton == true);
+    //
+    //         _isInputNextButton = false;
+    //         textField.text = string.Empty;
+    //         
+    //         count++;
+    //         if (count >= length - 1)
+    //         {
+    //             break;
+    //         }
+    //     }
+    //     
+    //     EnableButton(EButtonType.Accept);
+    //     
+    //     foreach (var c in scripts[count])
+    //     {
+    //         textField.text += c;
+    //
+    //         if (_isInputAcceptButton == true)
+    //         {
+    //             textField.text = scripts[count];
+    //             _isInputAcceptButton = false;
+    //             break;
+    //         }
+    //         await UniTask.Delay(textSpeed);
+    //     }
+    //
+    //     await UniTask.WaitUntil(() => _isInputAcceptButton == true);
+    //     
+    //     //TODO : AcceptButton과 Refuse 버튼에 대한 상호작용 처리
+    //     _isInputNextButton = false;
+    // }
 
     private void CreateQuestDisplay(int createCount)
     {

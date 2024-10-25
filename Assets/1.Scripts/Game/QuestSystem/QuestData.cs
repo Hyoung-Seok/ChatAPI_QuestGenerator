@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Org.BouncyCastle.Asn1.X509;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Quest Data", menuName = "Scriptable Object/Quest Data", order = int.MaxValue)]
 public class QuestData : ScriptableObject
@@ -13,18 +15,19 @@ public class QuestData : ScriptableObject
     [SerializeField] private EQuestType questType;
     [SerializeField] private string npcName;
     [SerializeField] private List<TargetInfo> targetInfo;
-    [SerializeField] private List<string> scripts;
+
+    [Header("Scripts")] 
+    [SerializeField] private ScriptsData scriptsData;
 
     public string QuestID => questID;
     public string Title => title;
     public EQuestType QuestType => questType;
     public string NpcName => npcName;
     public List<TargetInfo> TargetInfos => targetInfo;
-    public List<string> Scripts => scripts;
+    public ScriptsData ScriptsData => scriptsData;
     
     public void InitQuestData(List<string> valueList)
     {
-        scripts = new List<string>();
         targetInfo = new List<TargetInfo>();
 
         questID = valueList[0];
@@ -43,17 +46,9 @@ public class QuestData : ScriptableObject
             targetInfo.Add(new TargetInfo(target[i], res));    
         }
         
-        var texts = valueList[6].Split('*');
-        foreach (var text in texts)
-        {
-            scripts.Add(text);
-        }
+        scriptsData = new ScriptsData(valueList[6]);
     }
-
-    public void OnClickEvent()
-    {
-        QuestUIManager.Instance.InitScripts(scripts);
-    }
+    
     
     private EQuestType ConvertQuestType(string type)
     {
@@ -84,6 +79,61 @@ public class TargetInfo
     {
         targetName = name;
         targetCount = count;
+    }
+}
+
+[Serializable]
+public class ScriptsData
+{
+    [Header("시작 대사")] 
+    [SerializeField] private List<string> startScripts;
+
+    [Header("수락 대사")] 
+    [SerializeField] private string acceptScript;
+    
+    [Header("거절 대사")] 
+    [SerializeField] private string refuseScript;
+    
+    [Header("진행중 대사")] 
+    [SerializeField] private string processScript;
+    
+    public List<string> StartScripts => startScripts;
+    public string AcceptScript => acceptScript;
+    public string RefuseScript => refuseScript;
+    public string ProcessScript => processScript;
+
+    public ScriptsData(string json)
+    {
+        startScripts = new List<string>();
+
+        var jObj = JObject.Parse(json);
+
+        foreach (var kvp in jObj)
+        {
+            var value = kvp.Value.ToString();
+
+            switch (kvp.Key)
+            {
+                case "OnStart":
+                    startScripts.AddRange(value.Split('*'));
+                    break;
+                
+                case "OnAccept":
+                    acceptScript = value;
+                    break;
+                
+                case "OnRefuse":
+                    refuseScript = value;
+                    break;
+                
+                case "OnProcess":
+                    processScript = value;
+                    break;
+                
+                default:
+                    return;
+            }
+        }
     }
 }
 
