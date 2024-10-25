@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     private bool _isMagUIEnabled = false;
     private bool _isInputNextButton = false;
     private bool _isInputAcceptButton = false;
+    private bool _isInputRefuseButton = false;
     
     private readonly int _enableKey = Animator.StringToHash("Enable");
 
@@ -84,7 +85,7 @@ public class UIManager : MonoBehaviour
         _curSelectedQuestData = _currentQuestDisplay[index].QuestData;
         
         EnableButton(EButtonType.Next);
-        //PrintTextRoutine().Forget();
+        PrintTextRoutine().Forget();
     }
 
     private void EnableButton(EButtonType type)
@@ -123,66 +124,98 @@ public class UIManager : MonoBehaviour
 
     private void OnRefuseButtonClickEvent()
     {
-        
+        _isInputRefuseButton = true;
     }
     
-    // private async UniTaskVoid PrintTextRoutine()
-    // {
-    //     var scripts = _curSelectedQuestData.Scripts;
-    //     var length = scripts.Count;
-    //     var count = 0;
-    //     
-    //     textField.text = string.Empty;
-    //     EnableButton(EButtonType.Next);
-    //
-    //     while (true)
-    //     {
-    //         foreach (var c in scripts[count])
-    //         {
-    //             textField.text += c;
-    //             
-    //             if (_isInputNextButton == true)
-    //             {
-    //                 textField.text = scripts[count];
-    //                 _isInputNextButton = false;
-    //                 break;
-    //             }
-    //             
-    //             await UniTask.Delay(textSpeed);
-    //         }
-    //
-    //         await UniTask.WaitUntil(() => _isInputNextButton == true);
-    //
-    //         _isInputNextButton = false;
-    //         textField.text = string.Empty;
-    //         
-    //         count++;
-    //         if (count >= length - 1)
-    //         {
-    //             break;
-    //         }
-    //     }
-    //     
-    //     EnableButton(EButtonType.Accept);
-    //     
-    //     foreach (var c in scripts[count])
-    //     {
-    //         textField.text += c;
-    //
-    //         if (_isInputAcceptButton == true)
-    //         {
-    //             textField.text = scripts[count];
-    //             _isInputAcceptButton = false;
-    //             break;
-    //         }
-    //         await UniTask.Delay(textSpeed);
-    //     }
-    //
-    //     await UniTask.WaitUntil(() => _isInputAcceptButton == true);
-    //     
-    //     //TODO : AcceptButton과 Refuse 버튼에 대한 상호작용 처리
-    //     _isInputNextButton = false;
-    // }
+    private async UniTask PrintTextRoutine()
+    {
+        // 초기화
+        var scripts = _curSelectedQuestData.ScriptsData;
+        textField.text = string.Empty;
+        EnableButton(EButtonType.Next);
+        
+        // 스타트 텍스트 출력
+        await PrintStartText(scripts.StartScripts);
+        
+        if (_isInputAcceptButton == true)
+        {
+            await PrintText(scripts.AcceptScript);
+        }
+        else
+        {
+            await PrintText(scripts.RefuseScript);
+        }
+
+        await UniTask.WaitUntil(() => _isInputNextButton == true);
+    }
+
+    private async UniTask PrintStartText(List<string> scripts)
+    {
+        // 마지막 이전까지 대사 출력
+        for(var i = 0; i < scripts.Count - 1; ++i)
+        {
+            Debug.Log(scripts[i]);
+            foreach (var c in scripts[i])
+            {
+                textField.text += c;
+
+                if (_isInputNextButton == true)
+                {
+                    textField.text = scripts[i];
+                    _isInputNextButton = false;
+                    break;
+                }
+
+                await UniTask.Delay(textSpeed);
+            }
+
+            await UniTask.WaitUntil(() => _isInputNextButton == true);
+            
+            _isInputNextButton = false;
+            textField.text = string.Empty;
+        }
+        
+        // 마지막 대사 출력
+        EnableButton(EButtonType.Accept);
+        foreach (var c in scripts[^1])
+        {
+            textField.text += c;
+
+            if (_isInputAcceptButton || _isInputRefuseButton)
+            {
+                textField.text = scripts[^1];
+                _isInputAcceptButton = _isInputRefuseButton = false;
+                break;
+            }
+
+            await UniTask.Delay(textSpeed);
+        }
+        
+        await UniTask.WaitUntil(() => _isInputAcceptButton || _isInputRefuseButton);
+    }
+
+    private async UniTask PrintText(string text)
+    {
+        _isInputAcceptButton = _isInputRefuseButton = false;
+        textField.text = string.Empty;
+        EnableButton(EButtonType.Next);
+        
+        foreach (var c in text)
+        {
+            textField.text += c;
+
+            if (_isInputNextButton)
+            {
+                textField.text = text;
+                _isInputNextButton = false;
+                break;
+            }
+            
+            await UniTask.Delay(textSpeed);
+        }
+        
+        _isInputNextButton = false;
+    }
 
     private void CreateQuestDisplay(int createCount)
     {
