@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour
         PlayerInput = playerComponentData.PlayerInput;
         
         NpcManager = new NpcManager();
+        UIManager.Init();
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;
@@ -74,6 +75,12 @@ public class GameManager : MonoBehaviour
         
         Cursor.lockState = CursorLockMode.Locked;
         _isLockMouse = true;
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        _isLockMouse = false;
     }
 
     private void OnEscapeAction(InputAction.CallbackContext context)
