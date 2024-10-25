@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: TestData
+  m_EditorClassIdentifier: 
+  questID: asdasd
+  title: "\"\uC655\uC790\uC758 \uBAA8\uD5D8\""
+  questType: 0
+  npcName: "\uD558\uB9AC\uC2A4"
+  targetInfo:
+  - targetName: "\u3134\u3147\u3139\u3134\u3147\u3139"
+    targetCount: 10
+  scripts:
+  - "\u3132\u3132\u3132\u3132\u3132\u3131"
+  - "\u3131\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134\u3134"
+  - "\u3138\u3138\u3138\u3138\u3138"
+  - "\u3139\u3139\u3139\u3139\u3139\u3139\u3139\u3139\u3139\u3139"
