@@ -5,7 +5,7 @@ public class PlayerInteractionState : PlayerBaseState
     
     public override void Enter()
     {
-
+        
     }
 
     public override void OnUpdate()

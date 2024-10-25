@@ -25,7 +25,6 @@ public class NpcController : Interactable
     private void Start()
     {
         _playerController = GameManager.Instance.Player;
-
         _waitForEndOfFrame = new WaitForEndOfFrame();
     }
 
@@ -83,5 +82,13 @@ public class NpcController : Interactable
         }
 
         headRig.weight = target;
+        if (target <= 0)
+        {
+            GameManager.Instance.UIManager.DisableNpcUI();
+        }
+        else
+        {
+            GameManager.Instance.UIManager.EnableNpcUI(_questDatas);
+        }
     }
 }
