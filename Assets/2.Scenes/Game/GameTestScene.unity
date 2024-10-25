@@ -1249,7 +1249,7 @@ MonoBehaviour:
     type: 3}
   questParent: {fileID: 639756571}
   npcField: {fileID: 151664163}
-  textField: {fileID: 151664163}
+  textField: {fileID: 1421948849}
   buttonList:
   - {fileID: 1944031040}
   - {fileID: 808321975}
@@ -1258,6 +1258,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 3f7c64056794ffb419c9d78444147116, type: 3}
   - {fileID: 21300000, guid: 86f4d8a8a3f6a874da8b8a4d04b0b414, type: 3}
   - {fileID: 21300000, guid: e53e04befb8a5884daa6b709186c4f54, type: 3}
+  textSpeed: 80
   crossHairAnimation: {fileID: 936296922}
 --- !u!1 &301638556
 GameObject:
@@ -4560,9 +4561,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0075a4947a9dda49b73de71a971b0c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  equippedKey: 113
-  runKey: 304
-  _isLockMouse: 0
 --- !u!114 &1040478636
 MonoBehaviour:
   m_ObjectHideFlags: 0

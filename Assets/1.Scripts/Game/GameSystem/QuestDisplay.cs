@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class QuestDisplay : MonoBehaviour
@@ -11,15 +12,15 @@ public class QuestDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questTitleText;
     [SerializeField] private Image questStateImg;
 
-    private QuestData _questData;
+    public QuestData QuestData { get; private set; }
     private Button _button;
 
     public void SetQuestData(QuestData data)
     {
-        _questData = data;
+        QuestData = data;
         gameObject.GetComponent<Button>().onClick.AddListener(QuestClickEvent);
 
-        questTitleText.text = _questData.Title;
+        questTitleText.text = QuestData.Title;
     }
     
     public void ResetQuestData()
