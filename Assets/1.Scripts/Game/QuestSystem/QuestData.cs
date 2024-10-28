@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Org.BouncyCastle.Asn1.X509;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Quest Data", menuName = "Scriptable Object/Quest Data", order = int.MaxValue)]
 public class QuestData : ScriptableObject
@@ -19,6 +15,7 @@ public class QuestData : ScriptableObject
     [Header("Scripts")] 
     [SerializeField] private ScriptsData scriptsData;
 
+    public EQuestState CurQuestState { get; set; }
     public string QuestID => questID;
     public string Title => title;
     public EQuestType QuestType => questType;
@@ -47,6 +44,7 @@ public class QuestData : ScriptableObject
         }
         
         scriptsData = new ScriptsData(valueList[6]);
+        CurQuestState = EQuestState.Start;
     }
     
     

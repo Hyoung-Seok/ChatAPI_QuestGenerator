@@ -19,8 +19,18 @@ public class QuestDisplay : MonoBehaviour
     {
         QuestData = data;
         gameObject.GetComponent<Button>().onClick.AddListener(QuestClickEvent);
+        questStateImg.sprite =
+            GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
 
         questTitleText.text = QuestData.Title;
+    }
+
+    public void UpdateQuestState(EQuestState state)
+    {
+        QuestData.CurQuestState = state;
+        
+        questStateImg.sprite =
+            GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
     }
     
     public void ResetQuestData()

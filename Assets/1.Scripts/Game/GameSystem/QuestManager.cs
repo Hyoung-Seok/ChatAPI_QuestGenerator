@@ -10,5 +10,15 @@ public enum EQuestState
 }
 public class QuestManager : MonoBehaviour
 {
-    
+    [SerializeField] private List<QuestData> _curProcessQuest;
+
+    public void Init()
+    {
+        _curProcessQuest = new List<QuestData>();
+    }
+
+    public void AddQuest(QuestData data)
+    {
+        _curProcessQuest.Add(data);
+    }
 }

@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject npcUI;
     [SerializeField] private GameObject questPrefabs;
     [SerializeField] private Transform questParent;
+    [SerializeField] private GameObject questPanel;
     [SerializeField] private TextMeshProUGUI npcField;
     [SerializeField] private TextMeshProUGUI textField;
     [SerializeField] private List<Button> buttonList;
@@ -31,7 +32,7 @@ public class UIManager : MonoBehaviour
 
     private Queue<QuestDisplay> _questListPool;
     private List<QuestDisplay> _currentQuestDisplay;
-    private QuestData _curSelectedQuestData;
+    private QuestDisplay _curSelectedQuestData;
     private IEnumerator _textPrintRoutine;
     
     private bool _isMagUIEnabled = false;
@@ -80,11 +81,18 @@ public class UIManager : MonoBehaviour
         if(_isMagUIEnabled == true) magazineUI.SetActive(true);
     }
 
+    public Sprite GetQuestStateSprite(EQuestState state)
+    {
+        return questStateSprite[(int)state];
+    }
+
     public void OnQuestClickEvent(int index)
     {
-        _curSelectedQuestData = _currentQuestDisplay[index].QuestData;
+        _curSelectedQuestData = _currentQuestDisplay[index].GetComponent<QuestDisplay>();
         
         EnableButton(EButtonType.Next);
+        questPanel.gameObject.SetActive(false);
+        
         PrintTextRoutine().Forget();
     }
 
@@ -107,8 +115,12 @@ public class UIManager : MonoBehaviour
                 buttonList[2].gameObject.SetActive(true);
                 break;
             
-            default:
+            case EButtonType.None:
+                buttonList.ForEach(x => x.gameObject.SetActive(false));
                 break;
+            
+            default:
+                return;
         }
     }
 
@@ -130,7 +142,7 @@ public class UIManager : MonoBehaviour
     private async UniTask PrintTextRoutine()
     {
         // 초기화
-        var scripts = _curSelectedQuestData.ScriptsData;
+        var scripts = _curSelectedQuestData.QuestData.ScriptsData;
         textField.text = string.Empty;
         EnableButton(EButtonType.Next);
         
@@ -139,6 +151,9 @@ public class UIManager : MonoBehaviour
         
         if (_isInputAcceptButton == true)
         {
+            _curSelectedQuestData.UpdateQuestState(EQuestState.Processing);
+            GameManager.Instance.QuestManager.AddQuest(_curSelectedQuestData.QuestData);
+            
             await PrintText(scripts.AcceptScript);
         }
         else
@@ -147,6 +162,9 @@ public class UIManager : MonoBehaviour
         }
 
         await UniTask.WaitUntil(() => _isInputNextButton == true);
+        
+        questPanel.gameObject.SetActive(true);
+        EnableButton(EButtonType.None);
     }
 
     private async UniTask PrintStartText(List<string> scripts)
@@ -299,5 +317,6 @@ public enum EButtonType
 {
     Next,
     Accept,
-    Refuse
+    Refuse,
+    None
 }

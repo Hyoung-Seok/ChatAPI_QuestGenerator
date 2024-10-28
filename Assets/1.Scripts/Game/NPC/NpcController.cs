@@ -16,7 +16,7 @@ public class NpcController : Interactable
     [SerializeField] private float headWeightTime = 1.0f;
     
     [Header("Quest")]
-    [SerializeField] private List<QuestData> _questDatas;
+    [SerializeField] private List<QuestData> questData;
 
     private PlayerController _playerController;
     private IEnumerator _headWeight;
@@ -88,7 +88,8 @@ public class NpcController : Interactable
         }
         else
         {
-            GameManager.Instance.UIManager.EnableNpcUI(_questDatas);
+            GameManager.Instance.UIManager.EnableNpcUI(questData);
+            // TODO : 기본 대사를 출력할 수 있도록 작성.
         }
     }
 }

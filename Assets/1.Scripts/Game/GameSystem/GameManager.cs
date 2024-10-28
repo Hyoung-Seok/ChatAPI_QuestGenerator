@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [Header("Manager")] 
     [SerializeField] private AudioManager audioManager;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private QuestManager questManager;
     public NpcManager NpcManager { get; private set; }
 
     #region Property
@@ -34,6 +35,7 @@ public class GameManager : MonoBehaviour
     public UIManager UIManager => uiManager;
     public AudioManager AudioManager => audioManager;
     public PlayerInput PlayerInput { get; private set; }
+    public QuestManager QuestManager => questManager;
     
     #endregion
     
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         
         NpcManager = new NpcManager();
         UIManager.Init();
+        questManager.Init();
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;
