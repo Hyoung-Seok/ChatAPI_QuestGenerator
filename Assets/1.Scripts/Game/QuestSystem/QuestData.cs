@@ -11,11 +11,12 @@ public class QuestData : ScriptableObject
     [SerializeField] private EQuestType questType;
     [SerializeField] private string npcName;
     [SerializeField] private List<TargetInfo> targetInfo;
+    [SerializeField] private EQuestState curQuestState;
 
     [Header("Scripts")] 
     [SerializeField] private ScriptsData scriptsData;
-
-    public EQuestState CurQuestState { get; set; }
+    
+    public EQuestState CurQuestState { get => curQuestState; set => curQuestState = value; }
     public string QuestID => questID;
     public string Title => title;
     public EQuestType QuestType => questType;
@@ -69,6 +70,7 @@ public class TargetInfo
 {
     [SerializeField] private string targetName;
     [SerializeField] private int targetCount;
+    public int CurTargetCount;
 
     public string TargetName => targetName;
     public int TargetCount => targetCount;
@@ -77,6 +79,7 @@ public class TargetInfo
     {
         targetName = name;
         targetCount = count;
+        CurTargetCount = 0;
     }
 }
 

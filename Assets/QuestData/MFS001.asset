@@ -17,8 +17,9 @@ MonoBehaviour:
   questType: 0
   npcName: "\uBBF8\uCCBC"
   targetInfo:
-  - targetName: "\uD30C\uC774\uC5B4\uBCF4\uC5B4"
+  - targetName: "\uBCC0\uC774\uCCB41\uD638"
     targetCount: 5
+    CurTargetCount: 0
   scriptsData:
     startScripts:
     - "\uC774 \uC9C0\uC5ED\uC744 \uB108\uBB34\uB098\uB3C4 \uACE0\uD1B5\uC2A4\uB7FD\uAC8C

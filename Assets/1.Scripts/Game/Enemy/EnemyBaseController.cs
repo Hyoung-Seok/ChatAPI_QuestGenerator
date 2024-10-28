@@ -15,6 +15,7 @@ public class EnemyBaseController : UnitStateController
     public Vector3 OriginPosition { get; private set; }
     
     // status
+    protected string EnemyName;
     protected readonly float MoveSpeed;
     protected readonly float RunSpeed;
     protected readonly float MaxHp;
@@ -32,12 +33,13 @@ public class EnemyBaseController : UnitStateController
     
     // Action
     public Action<EnemyBaseController> ReturnAction;
+    public static Action<string> OnQuestUpdate;
     protected readonly Func<ObjectPool> GetHitEffect;
     
     public virtual void ResetEnemy() {}
     public virtual void HitEvent(float dmg, HitPoint hitPoint) {}
     
-    protected EnemyBaseController(GameObject obj, ZombieStatus status, Func<ObjectPool> hitEffectPool = null)
+    protected EnemyBaseController(GameObject obj, EnemyStatus status, Func<ObjectPool> hitEffectPool = null)
     {
         GetHitEffect = hitEffectPool;
         
@@ -53,6 +55,7 @@ public class EnemyBaseController : UnitStateController
         OriginPosition = obj.transform.position;
         
         // status set
+        EnemyName = status.EnemyName;
         _detectDistance = status.DetectRange;
         _detectAngle = status.DetectAngle;
         MoveSpeed = status.MoveSpeed;

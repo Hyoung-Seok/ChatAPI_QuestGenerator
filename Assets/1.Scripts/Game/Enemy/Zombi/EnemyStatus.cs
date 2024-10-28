@@ -1,9 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ZombieStatus", menuName = "Scriptable Object/ZombieStatus", order = int.MaxValue)]
-public class ZombieStatus : ScriptableObject
+[CreateAssetMenu(fileName = "EnemyStatus", menuName = "Scriptable Object/EnemyStatus", order = int.MaxValue)]
+public class EnemyStatus : ScriptableObject
 {
     [Header("Status")] 
+    [SerializeField] private string enemyName;
     [SerializeField] private float maxHp;
     [SerializeField] private float defense;
     [SerializeField] private float detectRange;
@@ -33,6 +34,7 @@ public class ZombieStatus : ScriptableObject
     [SerializeField, Range(1,100)] private int agonizingChance;
     [SerializeField, Range(1,100)] private int screamChance;
 
+    public string EnemyName => enemyName;
     public float MaxHp => maxHp;
     public float Defense => defense;
     public float Damage => damage;
