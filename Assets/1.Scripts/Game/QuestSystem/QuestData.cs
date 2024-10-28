@@ -94,11 +94,15 @@ public class ScriptsData
     
     [Header("진행중 대사")] 
     [SerializeField] private string processScript;
+
+    [Header("완료 대사")] 
+    [SerializeField] private string clearScript;
     
     public List<string> StartScripts => startScripts;
     public string AcceptScript => acceptScript;
     public string RefuseScript => refuseScript;
     public string ProcessScript => processScript;
+    public string ClearScript => clearScript;
 
     public ScriptsData(string json)
     {
@@ -126,6 +130,10 @@ public class ScriptsData
                 
                 case "OnProcess":
                     processScript = value;
+                    break;
+                
+                case "OnClear":
+                    clearScript = value;
                     break;
                 
                 default:
