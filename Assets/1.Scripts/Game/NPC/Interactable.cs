@@ -3,9 +3,9 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour
 {
-    public abstract void OnTriggerEnterEvent();
-    public abstract void OnTriggerStayEvent();
-    public abstract void OnTriggerExitEvent();
+    protected abstract void OnTriggerEnterEvent();
+    protected abstract void OnTriggerStayEvent();
+    protected abstract void OnTriggerExitEvent();
 
     private void OnTriggerEnter(Collider other)
     {

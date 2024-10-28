@@ -10,11 +10,11 @@ public class NpcManager
     {
         var playerInput = GameManager.Instance.PlayerInput;
 
-        playerInput.actions["Interaction"].performed += OnInteraction;
+        playerInput.actions["Interaction"].performed += OnEnterInteraction;
         playerInput.actions["Escape"].performed += OnExitInteraction;
     }
     
-    private void OnInteraction(InputAction.CallbackContext context)
+    private void OnEnterInteraction(InputAction.CallbackContext context)
     {
         if (context.performed == false)
         {

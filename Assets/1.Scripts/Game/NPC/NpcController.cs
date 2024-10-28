@@ -28,15 +28,15 @@ public class NpcController : Interactable
         _waitForEndOfFrame = new WaitForEndOfFrame();
     }
 
-    public override void OnTriggerEnterEvent()
+    protected override void OnTriggerEnterEvent()
     {
         GameManager.Instance.NpcManager.EnterInteraction += OnInteractionStart;
         GameManager.Instance.NpcManager.ExitInteraction += OnInteractionEnd;
     }
     
-    public override void OnTriggerStayEvent() { }
+    protected override void OnTriggerStayEvent() { }
 
-    public override void OnTriggerExitEvent()
+    protected override void OnTriggerExitEvent()
     {
         GameManager.Instance.NpcManager.EnterInteraction -= OnInteractionStart;
         GameManager.Instance.NpcManager.ExitInteraction -= OnInteractionEnd;
