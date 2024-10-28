@@ -13,7 +13,7 @@ public class ZombieIdleState : ZombieBaseState
     private float _curTime = 0;
     private float _transitionTime = 0;
     
-    public ZombieIdleState(ZombieController controller, ZombieStatus status) : base(controller)
+    public ZombieIdleState(ZombieController controller, EnemyStatus status) : base(controller)
     {
         _minTime = status.IdleStateMinTime;
         _maxTime = status.IdleStateMaxTime;

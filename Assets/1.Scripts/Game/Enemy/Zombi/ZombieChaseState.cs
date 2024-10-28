@@ -17,7 +17,7 @@ public class ZombieChaseState : ZombieBaseState
     private float _waitingTime = 0;
     private Vector3 _velocity = Vector3.zero;
     
-    public ZombieChaseState(ZombieController controller, ZombieStatus status) : base(controller)
+    public ZombieChaseState(ZombieController controller, EnemyStatus status) : base(controller)
     {
         _navMeshAgent = Controller.NavMeshAgent;
         

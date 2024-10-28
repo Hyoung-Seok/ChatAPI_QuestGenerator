@@ -13,7 +13,7 @@ public class ZombieAttackState : ZombieBaseState
 
     private float _curTime;
     
-    public ZombieAttackState(ZombieController controller, ZombieStatus status) : base(controller)
+    public ZombieAttackState(ZombieController controller, EnemyStatus status) : base(controller)
     {
         _attackRange = status.AttackRange;
         _attackDelay = status.AttackDelay;

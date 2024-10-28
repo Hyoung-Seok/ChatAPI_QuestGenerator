@@ -19,7 +19,7 @@ public class ZombieController : EnemyBaseController
     public readonly int RunKey = Animator.StringToHash("IsRun");
     public readonly int DeadKey = Animator.StringToHash("IsDead");
     
-    public ZombieController(GameObject obj, ZombieStatus status, Func<ObjectPool> getEffect = null) : base(obj, status, getEffect)
+    public ZombieController(GameObject obj, EnemyStatus status, Func<ObjectPool> getEffect = null) : base(obj, status, getEffect)
     {
         Tmp = obj.transform.GetChild(3).GetComponent<TextMeshPro>();
         var physicsEvent = obj.GetComponent<OnPhysicsEvent>();
@@ -58,6 +58,8 @@ public class ZombieController : EnemyBaseController
         if (CurrentHp <= 0 && MainState != ZombieDeadState)
         {
             ChangeMainState(ZombieDeadState);
+            Debug.Log(OnQuestUpdate);
+            OnQuestUpdate?.Invoke(EnemyName);
         }
     }
 
