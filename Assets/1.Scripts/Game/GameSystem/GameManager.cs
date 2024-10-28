@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -18,9 +19,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerCameraData playerCamData;
 
     [Header("Manager")] 
-    [SerializeField] private InputManager inputManager;
     [SerializeField] private AudioManager audioManager;
-    [FormerlySerializedAs("uiContainer")] [SerializeField] private UIManager uiManager;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private QuestManager questManager;
+    public NpcManager NpcManager { get; private set; }
 
     #region Property
     
@@ -32,11 +34,14 @@ public class GameManager : MonoBehaviour
     public CameraEffectController CameraEffect { get; private set; }
     public UIManager UIManager => uiManager;
     public AudioManager AudioManager => audioManager;
+    public PlayerInput PlayerInput { get; private set; }
+    public QuestManager QuestManager => questManager;
     
     #endregion
     
     private IEnumerator _healthWarningEffect;
     private bool _isPlaying = false;
+    private bool _isLockMouse = false;
     
     private void Awake()
     {
@@ -50,7 +55,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
         
-        // sound
+        // Audio
         AudioManager.Init(5);
         
         // camera Init
@@ -61,15 +66,41 @@ public class GameManager : MonoBehaviour
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
+        PlayerInput = playerComponentData.PlayerInput;
+        
+        NpcManager = new NpcManager();
+        UIManager.Init();
+        questManager.Init();
+        
+        // Action Register
+        PlayerInput.actions["Escape"].performed -= OnEscapeAction;
+        PlayerInput.actions["Escape"].performed += OnEscapeAction;
+        
+        Cursor.lockState = CursorLockMode.Locked;
+        _isLockMouse = true;
+    }
+
+    public void UnlockCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        _isLockMouse = false;
+    }
+
+    private void OnEscapeAction(InputAction.CallbackContext context)
+    {
+        if (context.performed != true)
+        {
+            return;
+        }
+        
+        _isLockMouse = !_isLockMouse;
+        Cursor.lockState = (_isLockMouse) ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
     #region EventFunction
     
     private void Update()
     {
-        // manager
-        inputManager.OnUpdate();
-        
         // player
         CameraController.OnUpdate();
         Player.OnUpdate();

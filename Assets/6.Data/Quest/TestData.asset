@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: TestData
+  m_EditorClassIdentifier: 
+  questID: AB101120
+  title: "\"\uC655\uC790\uC758 \uBAA8\uD5D8\""
+  questType: 0
+  npcName: "\uD558\uB9AC\uC2A4"
+  targetInfo:
+  - targetName: "\u3134\u3147\u3139\u3134\u3147\u3139"
+    targetCount: 10
+  scripts:
+  - "\uC548\uB155 \uB0B4\uC774\uB984\uC740 \uD558\uB9AC\uC2A4. \uC9C0\uAE08 \uC880\uBE44\uB4E4\uC774
+    \uB108\uBB34 \uB9CE\uC544\uC11C \uACE0\uD1B5\uC774\uC57C."
+  - "\uC790\uB124\uB294 \uC2E0\uC785 PMC \uC544\uB2CC\uAC00? \uCD1D\uAE30 \uC0AC\uC6A9\uBC95\uC740
+    \uC798 \uC54C\uACE0\uC788\uB098? \uAC13 \uC804\uC7A5\uC5D0 \uD22C\uC785\uD55C
+    \uC0C8\uB0B4\uAE30\uB77C \uADF8\uB7F0\uC9C0 \uC0C1\uCC98\uD558\uB098 \uC5C6\uAD70."
+  - "\uC790\uB124\uC5D0\uAC8C \uBA87\uAC00\uC9C0 \uBBF8\uC158\uC744 \uC8FC\uB3C4\uB85D
+    \uD558\uC9C0."
+  - "\uCD1D\uAE30 \uC0AC\uC6A9\uBC95\uC744 \uC775\uD788\uAE30 \uC704\uD574 \uC880\uBE44
+    10\uB9C8\uB9AC\uB97C \uC7A1\uC544\uC640\uB77C. \uC99D\uAC70\uB294 \uD544\uC694
+    \uC5C6\uB2E4. \uB108\uB97C \uBBFF\uC9C0. \uC5B4\uB5A4\uAC00?"

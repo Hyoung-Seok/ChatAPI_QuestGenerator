@@ -14,8 +14,9 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private float equippedMoveSpeed = 10.0f;
     [SerializeField] private float equippedRunSpeed = 10.0f;
     [SerializeField] private float aimMoveSpeed = 10.0f;
-    
-    [Header("Character Status")]
+
+    [Header("Character Status")] 
+    [SerializeField] private float moveInputSmooth = 2;
     [SerializeField] private float maxHP = 100.0f;
     [SerializeField] private int level = 1;
 
@@ -31,6 +32,7 @@ public class PlayerStatus : MonoBehaviour
     public float EquippedMoveSpeed => equippedMoveSpeed;
     public float EquippedRunSpeed => equippedRunSpeed;
     public float AimMoveSpeed => aimMoveSpeed;
+    public float MoveInputSmooth => moveInputSmooth;
     
     #endregion
 

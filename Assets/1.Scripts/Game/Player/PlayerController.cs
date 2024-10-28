@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 
 public class PlayerController : UnitStateController
@@ -13,6 +14,7 @@ public class PlayerController : UnitStateController
     public Transform Transform { get; private set; }
     public Transform CameraDir { get; private set; }
     public AudioSource AudioSource { get; private set; }
+    public PlayerInput PlayerInput { get; private set; }
     public bool IsEquipped { get; private set; }
     
     [Header("Status")] 
@@ -22,7 +24,9 @@ public class PlayerController : UnitStateController
     [Header("Player State")]
     private readonly PlayerMoveState _moveState;
     private readonly PlayerDeathState _deathState;
-    public PlayerMoveState PlayerMoveState => _moveState;
+    private readonly PlayerInteractionState _playerInteractionState;
+    public PlayerMoveState MoveState => _moveState;
+    public PlayerInteractionState InteractionState => _playerInteractionState;
     
     private float _currentHp;
     private readonly AudioClip[] _hitClips;
@@ -48,6 +52,7 @@ public class PlayerController : UnitStateController
         Transform = componentData.PlayerTransform;
         CameraDir = componentData.CameraDir;
         AudioSource = componentData.AudioSource;
+        PlayerInput = componentData.PlayerInput;
 
         _currentHp = PlayerMaxHp = status.MaxHp;
         _lv = status.Level;
@@ -64,8 +69,10 @@ public class PlayerController : UnitStateController
         
         _moveState = new PlayerMoveState(this, status);
         _deathState = new PlayerDeathState(this);
+        _playerInteractionState = new PlayerInteractionState(this);
         
         ChangeMainState(_moveState);
+        RegisterInputAction();
     }
 
     public void PlayerDamaged(float dmg)
@@ -114,11 +121,6 @@ public class PlayerController : UnitStateController
                 GameManager.Instance.WeaponManager.ChangeWeaponState(inputState);
                 Animator.SetBool(_aimKey, false);
                 
-                _moveState.ChangeMoveSpeed(inputState, IsEquipped);
-                break;
-            
-            case EPlayerInputState.WALK:
-            case EPlayerInputState.RUN:
                 _moveState.ChangeMoveSpeed(inputState, IsEquipped);
                 break;
             
@@ -190,4 +192,62 @@ public class PlayerController : UnitStateController
     {
         _moveState.OnValueUpdate(data);
     }
+
+    #region InputAction
+
+    private void RegisterInputAction()
+    {
+        PlayerInput.actions["Aim"].performed += OnAim;
+        PlayerInput.actions["Aim"].canceled += OnAim;
+
+        PlayerInput.actions["Equip"].performed += OnEquip;
+
+        PlayerInput.actions["Reloading"].performed += OnReloading;
+    }
+    
+    private void OnAim(InputAction.CallbackContext context)
+    {
+        if (IsEquipped == false)
+        {
+            return;
+        }
+        
+        if (context.performed == true)
+        {
+            GameManager.Instance.UIManager.SetActiveCrossHair(true);
+            ChangePlayerInputState(EPlayerInputState.AIM);
+        }
+        else if (context.canceled)
+        {
+            GameManager.Instance.UIManager.SetActiveCrossHair(false);
+            GameManager.Instance.CameraController.IsRecoil = false;
+            
+            ChangePlayerInputState(EPlayerInputState.IDLE);
+        }
+    }
+
+    private void OnEquip(InputAction.CallbackContext context)
+    {
+        if (context.performed == false)
+        {
+            return;
+        }
+        
+        ChangePlayerInputState(EPlayerInputState.EQUIPPED);
+    }
+
+    private void OnReloading(InputAction.CallbackContext context)
+    {
+        if (context.performed == false)
+        {
+            return;
+        }
+
+        if (IsEquipped == true && CurInputState != EPlayerInputState.AIM)
+        {
+            ChangePlayerInputState(EPlayerInputState.RELOADING);   
+        }
+    }
+
+    #endregion
 }

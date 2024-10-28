@@ -1,45 +1,99 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 
-public class NpcController : MonoBehaviour
+public class NpcController : Interactable
 {
-    [Header("QuestList")] 
-    [SerializeField] private string idleScripts;
-    [SerializeField] private List<QuestData> questList;
+    [Header("Component")] 
+    [SerializeField] private CinemachineVirtualCamera npcCamera;
+    [SerializeField] private MultiAimConstraint headRig;
 
-    private void OnTriggerEnter(Collider other)
+    [Header("Setting")] 
+    [SerializeField] private float headWeightTime = 1.0f;
+    [SerializeField] private string defaultText;
+    
+    [Header("Quest")]
+    [SerializeField] private List<QuestData> questData;
+
+    private PlayerController _playerController;
+    private IEnumerator _headWeight;
+    private WaitForEndOfFrame _waitForEndOfFrame;
+
+    private void Start()
     {
-        if (other.CompareTag("Player") == false)
+        _playerController = GameManager.Instance.Player;
+        _waitForEndOfFrame = new WaitForEndOfFrame();
+    }
+
+    protected override void OnTriggerEnterEvent()
+    {
+        GameManager.Instance.NpcManager.EnterInteraction += OnInteractionStart;
+        GameManager.Instance.NpcManager.ExitInteraction += OnInteractionEnd;
+    }
+    
+    protected override void OnTriggerStayEvent() { }
+
+    protected override void OnTriggerExitEvent()
+    {
+        GameManager.Instance.NpcManager.EnterInteraction -= OnInteractionStart;
+        GameManager.Instance.NpcManager.ExitInteraction -= OnInteractionEnd;
+    }
+
+    private void OnInteractionStart()
+    {
+        npcCamera.gameObject.SetActive(true);
+        _playerController.ChangeMainState(_playerController.InteractionState);
+        
+        StartHeadWeightRoutine(1);
+    }
+
+    private void OnInteractionEnd()
+    {
+        if (npcCamera.gameObject.activeSelf == false)
         {
             return;
         }
         
-        QuestUIManager.Instance.SetInteractionButton(true);
+        npcCamera.gameObject.SetActive(false);
+        _playerController.ChangeMainState(_playerController.MoveState);
+        StartHeadWeightRoutine(0);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void StartHeadWeightRoutine(float target)
     {
-        if (other.CompareTag("Player") == false)
+        if (_headWeight != null)
         {
-            return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.E) == true && QuestUIManager.Instance.CurrentState == false)
-        {
-            QuestUIManager.Instance.InitNpcTextInfo("찰리 중사", idleScripts);
-            QuestUIManager.Instance.InitQuestButton(questList);
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") == false)
-        {
-            return;
+            StopCoroutine(_headWeight);
         }
         
-        QuestUIManager.Instance.SetInteractionButton(false);
+        _headWeight = HeadWeight(target);
+        StartCoroutine(_headWeight);
+    }
+
+    private IEnumerator HeadWeight(float target)
+    {
+        var curTime = 0.0f;
+
+        while (curTime < headWeightTime)
+        {
+            curTime += Time.deltaTime;
+            headRig.weight = Mathf.Lerp(headRig.weight, target, curTime / headWeightTime);
+
+            yield return _waitForEndOfFrame;
+        }
+
+        headRig.weight = target;
+        if (target <= 0)
+        {
+            GameManager.Instance.UIManager.DisableNpcUI();
+        }
+        else
+        {
+            GameManager.Instance.UIManager.UpdateDefaultText(defaultText);
+            GameManager.Instance.UIManager.EnableNpcUI(questData);
+        }
     }
 }
