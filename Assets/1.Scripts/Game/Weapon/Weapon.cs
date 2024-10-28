@@ -151,7 +151,7 @@ public class Weapon : MonoBehaviour
         else if (hit.collider.CompareTag("Head"))
         {
             _hitPoint.Init(hit);
-            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage * 1.5f, _hitPoint);
+            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage * 1.5f, _hitPoint);
             
             GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot", false);
             GameManager.Instance.UIManager.SetActiveCrossHair(true, true);
