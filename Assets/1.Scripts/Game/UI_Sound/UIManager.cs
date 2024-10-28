@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
     [Header("Animation Clip")] 
     [SerializeField] private Animator crossHairAnimation;
 
+    private string _defaultText;
     private Queue<QuestDisplay> _questListPool;
     private List<QuestDisplay> _currentQuestDisplay;
     private QuestDisplay _curSelectedQuestData;
@@ -56,12 +57,19 @@ public class UIManager : MonoBehaviour
     
     #region NpcUI
 
+    public void UpdateDefaultText(string text)
+    {
+        _defaultText = text;
+        textField.text = _defaultText;
+    }
+
     public void EnableNpcUI(List<QuestData> questData)
     {
         _isMagUIEnabled = magazineUI.activeSelf;
         if(_isMagUIEnabled == true) magazineUI.SetActive(false);
 
         npcField.text = questData[0].NpcName;
+        textField.text = _defaultText;
         npcUI.SetActive(true);
         
         GameManager.Instance.UnlockCursor();
@@ -92,8 +100,23 @@ public class UIManager : MonoBehaviour
         
         EnableButton(EButtonType.Next);
         questPanel.gameObject.SetActive(false);
-        
-        PrintTextRoutine().Forget();
+
+        switch (_curSelectedQuestData.QuestData.CurQuestState)
+        {
+            case EQuestState.Start:
+                PrintStartTextRoutine().Forget();
+                break;
+            
+            case EQuestState.Processing:
+                PrintProcessTextRoutine().Forget();
+                break;
+            
+            case EQuestState.Completion:
+                break;
+            
+            default:
+                return;
+        }
     }
 
     private void EnableButton(EButtonType type)
@@ -139,7 +162,7 @@ public class UIManager : MonoBehaviour
         _isInputRefuseButton = true;
     }
     
-    private async UniTask PrintTextRoutine()
+    private async UniTask PrintStartTextRoutine()
     {
         // 초기화
         var scripts = _curSelectedQuestData.QuestData.ScriptsData;
@@ -164,6 +187,22 @@ public class UIManager : MonoBehaviour
         await UniTask.WaitUntil(() => _isInputNextButton == true);
         
         questPanel.gameObject.SetActive(true);
+        textField.text = _defaultText;
+        EnableButton(EButtonType.None);
+    }
+
+    private async UniTask PrintProcessTextRoutine()
+    {
+        var scripts = _curSelectedQuestData.QuestData.ScriptsData.ProcessScript;
+        textField.text = string.Empty;
+        EnableButton(EButtonType.Next);
+
+        await PrintText(scripts);
+        await UniTask.WaitUntil(() => _isInputNextButton == true);
+
+        _isInputNextButton = false;
+        questPanel.gameObject.SetActive(true);
+        textField.text = _defaultText;
         EnableButton(EButtonType.None);
     }
 
@@ -172,7 +211,6 @@ public class UIManager : MonoBehaviour
         // 마지막 이전까지 대사 출력
         for(var i = 0; i < scripts.Count - 1; ++i)
         {
-            Debug.Log(scripts[i]);
             foreach (var c in scripts[i])
             {
                 textField.text += c;

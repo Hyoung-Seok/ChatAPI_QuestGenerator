@@ -19,9 +19,11 @@ public class QuestDisplay : MonoBehaviour
     {
         QuestData = data;
         gameObject.GetComponent<Button>().onClick.AddListener(QuestClickEvent);
+        
         questStateImg.sprite =
             GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
-
+        QuestStateTextUpdate(QuestData.CurQuestState);
+        
         questTitleText.text = QuestData.Title;
     }
 
@@ -31,6 +33,8 @@ public class QuestDisplay : MonoBehaviour
         
         questStateImg.sprite =
             GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
+
+        QuestStateTextUpdate(state);
     }
     
     public void ResetQuestData()
@@ -45,5 +49,16 @@ public class QuestDisplay : MonoBehaviour
     private void QuestClickEvent()
     {
         GameManager.Instance.UIManager.OnQuestClickEvent(transform.GetSiblingIndex());
+    }
+
+    private void QuestStateTextUpdate(EQuestState state)
+    {
+        questStateText.text = state switch
+        {
+            EQuestState.Start => "<시작 가능>",
+            EQuestState.Processing => "<진행중>",
+            EQuestState.Completion => "<완료가능>",
+            _ => " "
+        };
     }
 }

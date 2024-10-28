@@ -2491,6 +2491,7 @@ MonoBehaviour:
   npcCamera: {fileID: 1603495967}
   headRig: {fileID: 214767611}
   headWeightTime: 1
+  defaultText: "\uBB34\uC2A8 \uB3C4\uC6C0\uC774 \uD544\uC694\uD558\uC2E0\uAC00\uC694?"
   questData:
   - {fileID: 11400000, guid: a29d8252f9fc5814d9b1fc1ee3e96844, type: 2}
 --- !u!1 &625209690
