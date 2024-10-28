@@ -52,9 +52,13 @@ public class NpcController : Interactable
 
     private void OnInteractionEnd()
     {
+        if (npcCamera.gameObject.activeSelf == false)
+        {
+            return;
+        }
+        
         npcCamera.gameObject.SetActive(false);
         _playerController.ChangeMainState(_playerController.MoveState);
-        
         StartHeadWeightRoutine(0);
     }
 
