@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
     private string _defaultText;
     private Queue<QuestButton> _questListPool;
     private List<QuestButton> _currentQuestDisplay;
+    private NpcController _curNpcController;
     private QuestButton _curSelectedQuestData;
     private IEnumerator _textPrintRoutine;
     
@@ -63,8 +64,10 @@ public class UIManager : MonoBehaviour
         textField.text = _defaultText;
     }
 
-    public void EnableNpcUI(List<QuestData> questData)
+    public void EnableNpcUI(List<QuestData> questData, NpcController controller)
     {
+        _curNpcController = controller;
+        
         _isMagUIEnabled = magazineUI.activeSelf;
         if(_isMagUIEnabled == true) magazineUI.SetActive(false);
 
@@ -87,6 +90,8 @@ public class UIManager : MonoBehaviour
         
         npcUI.SetActive(false);
         if(_isMagUIEnabled == true) magazineUI.SetActive(true);
+
+        _curNpcController = null;
     }
 
     public Sprite GetQuestStateSprite(EQuestState state)
@@ -108,15 +113,21 @@ public class UIManager : MonoBehaviour
                 break;
             
             case EQuestState.Processing:
-                PrintProcessTextRoutine().Forget();
+                PrintText(_curSelectedQuestData.QuestData.ScriptsData.ProcessScript).Forget();
                 break;
             
             case EQuestState.Completion:
+                PrintText(_curSelectedQuestData.QuestData.ScriptsData.ClearScript).Forget();
+                
+                ReturnToPoolQuestDisplay(index);
+                _curNpcController.RemoveQuestData(index);
                 break;
             
             default:
                 return;
         }
+
+        _curSelectedQuestData = null;
     }
 
     private void EnableButton(EButtonType type)
@@ -190,22 +201,7 @@ public class UIManager : MonoBehaviour
         textField.text = _defaultText;
         EnableButton(EButtonType.None);
     }
-
-    private async UniTask PrintProcessTextRoutine()
-    {
-        var scripts = _curSelectedQuestData.QuestData.ScriptsData.ProcessScript;
-        textField.text = string.Empty;
-        EnableButton(EButtonType.Next);
-
-        await PrintText(scripts);
-        await UniTask.WaitUntil(() => _isInputNextButton == true);
-
-        _isInputNextButton = false;
-        questPanel.gameObject.SetActive(true);
-        textField.text = _defaultText;
-        EnableButton(EButtonType.None);
-    }
-
+    
     private async UniTask PrintStartText(List<string> scripts)
     {
         // 마지막 이전까지 대사 출력
@@ -270,7 +266,12 @@ public class UIManager : MonoBehaviour
             await UniTask.Delay(textSpeed);
         }
         
+        await UniTask.WaitUntil(() => _isInputNextButton == true);
+
         _isInputNextButton = false;
+        questPanel.gameObject.SetActive(true);
+        textField.text = _defaultText;
+        EnableButton(EButtonType.None);
     }
 
     private void CreateQuestDisplay(int createCount)
@@ -309,6 +310,16 @@ public class UIManager : MonoBehaviour
         }
         
         _currentQuestDisplay.Clear();
+    }
+
+    private void ReturnToPoolQuestDisplay(int index)
+    {
+        var obj = _currentQuestDisplay[index];
+        _currentQuestDisplay.RemoveAt(index);
+        
+        obj.transform.SetParent(transform);
+        obj.gameObject.SetActive(false);
+        _questListPool.Enqueue(obj);
     }
 
     #endregion

@@ -42,6 +42,11 @@ public class NpcController : Interactable
         GameManager.Instance.NpcManager.ExitInteraction -= OnInteractionEnd;
     }
 
+    public void RemoveQuestData(int index)
+    {
+        questData.RemoveAt(index);
+    }
+
     private void OnInteractionStart()
     {
         npcCamera.gameObject.SetActive(true);
@@ -93,7 +98,7 @@ public class NpcController : Interactable
         else
         {
             GameManager.Instance.UIManager.UpdateDefaultText(defaultText);
-            GameManager.Instance.UIManager.EnableNpcUI(questData);
+            GameManager.Instance.UIManager.EnableNpcUI(questData, this);
         }
     }
 }

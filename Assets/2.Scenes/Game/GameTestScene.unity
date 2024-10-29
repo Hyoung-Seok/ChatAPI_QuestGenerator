@@ -4787,8 +4787,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   curProcessQuest: []
-  curQuestPanel: {fileID: 0}
-  questPanelParent: {fileID: 0}
+  curQuestPanel: {fileID: 4836782342332756668, guid: 6fa2d3eebfe993144af0dca71d4e95c8,
+    type: 3}
+  questPanelParent: {fileID: 1985319112}
 --- !u!1 &1054512257
 GameObject:
   m_ObjectHideFlags: 0
