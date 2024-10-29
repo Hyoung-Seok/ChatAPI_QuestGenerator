@@ -15,7 +15,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private GameObject curQuestPanel;
     [SerializeField] private Transform questPanelParent;
 
-    private List<QuestDisplay> _curQuestDisplay;
+    [SerializeField] private List<QuestDisplay> _curQuestDisplay;
 
     public void Init()
     {
@@ -41,15 +41,18 @@ public class QuestManager : MonoBehaviour
 
         for (index = 0; index < curProcessQuest.Count; ++index)
         {
-            if (string.Equals(curProcessQuest[index].Title, key) == true)
+            if (string.Equals(curProcessQuest[index].Title, key) == false)
             {
-                curProcessQuest.RemoveAt(index);
+                continue;
             }
-        }
 
-        var obj = _curQuestDisplay[index];
-        Destroy(obj);
-        _curQuestDisplay.RemoveAt(index);
+            var obj = _curQuestDisplay[index];
+            Destroy(obj.gameObject);
+            curProcessQuest.RemoveAt(index);
+            _curQuestDisplay.RemoveAt(index);
+
+            break;
+        }
     }
 
     private void CheckEnemy(string enemyName)

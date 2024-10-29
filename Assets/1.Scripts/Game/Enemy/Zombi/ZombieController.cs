@@ -58,7 +58,6 @@ public class ZombieController : EnemyBaseController
         if (CurrentHp <= 0 && MainState != ZombieDeadState)
         {
             ChangeMainState(ZombieDeadState);
-            Debug.Log(OnQuestUpdate);
             OnQuestUpdate?.Invoke(EnemyName);
         }
     }

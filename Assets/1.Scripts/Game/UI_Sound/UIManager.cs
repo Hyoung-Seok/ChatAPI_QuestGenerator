@@ -105,6 +105,7 @@ public class UIManager : MonoBehaviour
         
         EnableButton(EButtonType.Next);
         questPanel.gameObject.SetActive(false);
+        AllButtonActionValueDisable();
 
         switch (_curSelectedQuestData.QuestData.CurQuestState)
         {
@@ -121,13 +122,14 @@ public class UIManager : MonoBehaviour
                 
                 ReturnToPoolQuestDisplay(index);
                 _curNpcController.RemoveQuestData(index);
+                GameManager.Instance.QuestManager.RemoveQuestData(_curSelectedQuestData.QuestData.Title);
+
+                _curSelectedQuestData = null;
                 break;
             
             default:
                 return;
         }
-
-        _curSelectedQuestData = null;
     }
 
     private void EnableButton(EButtonType type)
@@ -248,7 +250,6 @@ public class UIManager : MonoBehaviour
 
     private async UniTask PrintText(string text)
     {
-        _isInputAcceptButton = _isInputRefuseButton = false;
         textField.text = string.Empty;
         EnableButton(EButtonType.Next);
         
@@ -267,11 +268,15 @@ public class UIManager : MonoBehaviour
         }
         
         await UniTask.WaitUntil(() => _isInputNextButton == true);
-
-        _isInputNextButton = false;
+        
         questPanel.gameObject.SetActive(true);
         textField.text = _defaultText;
         EnableButton(EButtonType.None);
+    }
+
+    private void AllButtonActionValueDisable()
+    {
+        _isInputNextButton = _isInputAcceptButton = _isInputRefuseButton = false;
     }
 
     private void CreateQuestDisplay(int createCount)
