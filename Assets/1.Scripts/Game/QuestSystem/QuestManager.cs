@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum EQuestState
 {
@@ -10,27 +11,29 @@ public enum EQuestState
 }
 public class QuestManager : MonoBehaviour
 {
-    [SerializeField] private List<QuestData> _curProcessQuest;
+    [SerializeField] private List<QuestData> curProcessQuest;
+    [SerializeField] private GameObject curQuestPanel;
+    [SerializeField] private Transform questPanelParent;
 
     public void Init()
     {
-        _curProcessQuest = new List<QuestData>();
+        curProcessQuest = new List<QuestData>();
         EnemyBaseController.OnQuestUpdate += CheckEnemy;
     }
 
     public void AddQuest(QuestData data)
     {
-        _curProcessQuest.Add(data);
+        curProcessQuest.Add(data);
     }
 
     private void CheckEnemy(string enemyName)
     {
-        if (_curProcessQuest.Count <= 0)
+        if (curProcessQuest.Count <= 0)
         {
             return;
         }
         
-        foreach (var quest in _curProcessQuest)
+        foreach (var quest in curProcessQuest)
         {
             foreach (var target in quest.TargetInfos)
             {

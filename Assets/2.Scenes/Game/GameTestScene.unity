@@ -4786,7 +4786,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70bf8c865db5f55428a7fb7f8d19c587, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curProcessQuest: []
+  curProcessQuest: []
+  curQuestPanel: {fileID: 0}
+  questPanelParent: {fileID: 0}
 --- !u!1 &1054512257
 GameObject:
   m_ObjectHideFlags: 0

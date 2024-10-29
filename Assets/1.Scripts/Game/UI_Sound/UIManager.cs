@@ -31,9 +31,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Animator crossHairAnimation;
 
     private string _defaultText;
-    private Queue<QuestDisplay> _questListPool;
-    private List<QuestDisplay> _currentQuestDisplay;
-    private QuestDisplay _curSelectedQuestData;
+    private Queue<QuestButton> _questListPool;
+    private List<QuestButton> _currentQuestDisplay;
+    private QuestButton _curSelectedQuestData;
     private IEnumerator _textPrintRoutine;
     
     private bool _isMagUIEnabled = false;
@@ -45,8 +45,8 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
-        _questListPool = new Queue<QuestDisplay>();
-        _currentQuestDisplay = new List<QuestDisplay>();
+        _questListPool = new Queue<QuestButton>();
+        _currentQuestDisplay = new List<QuestButton>();
         
         CreateQuestDisplay(10);
         
@@ -96,7 +96,7 @@ public class UIManager : MonoBehaviour
 
     public void OnQuestClickEvent(int index)
     {
-        _curSelectedQuestData = _currentQuestDisplay[index].GetComponent<QuestDisplay>();
+        _curSelectedQuestData = _currentQuestDisplay[index].GetComponent<QuestButton>();
         
         EnableButton(EButtonType.Next);
         questPanel.gameObject.SetActive(false);
@@ -277,7 +277,7 @@ public class UIManager : MonoBehaviour
     {
         for (var i = 0; i < createCount; ++i)
         {
-            var obj = Instantiate(questPrefabs, transform).GetComponent<QuestDisplay>();
+            var obj = Instantiate(questPrefabs, transform).GetComponent<QuestButton>();
             obj.gameObject.SetActive(false);
             _questListPool.Enqueue(obj);
         }
