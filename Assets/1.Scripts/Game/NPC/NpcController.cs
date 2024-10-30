@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -14,9 +15,9 @@ public class NpcController : Interactable
     [Header("Setting")] 
     [SerializeField] private float headWeightTime = 1.0f;
     [SerializeField] private string defaultText;
-    
-    [Header("Quest")]
-    [SerializeField] private List<QuestData> questData;
+
+    [Header("Quest")] 
+    [SerializeField] private List<QuestContainer> questContainer;
 
     public string NpcName { get; private set; }
     private PlayerController _playerController;
@@ -28,9 +29,9 @@ public class NpcController : Interactable
         _playerController = GameManager.Instance.Player;
         _waitForEndOfFrame = new WaitForEndOfFrame();
 
-        if (questData.Count > 0)
+        if (questContainer.Count > 0)
         {
-            NpcName = questData[0].NpcName;
+            NpcName = questContainer[0].QuestData[0].NpcName;
         }
     }
 
@@ -50,7 +51,21 @@ public class NpcController : Interactable
 
     public void RemoveQuestData(int index)
     {
-        questData.RemoveAt(index);
+        questContainer[index].QuestData.RemoveAt(0);
+
+        if (questContainer[index].QuestData.Count <= 0)
+        {
+            questContainer.RemoveAt(index);
+            return;
+        }
+        
+        var curQuest = new List<QuestData>();
+        foreach (var quest in questContainer)
+        {
+            curQuest.Add(quest.QuestData[0]);   
+        }
+            
+        GameManager.Instance.UIManager.UpdateQuestPanel(curQuest);
     }
 
     private void OnInteractionStart()
@@ -103,8 +118,17 @@ public class NpcController : Interactable
         }
         else
         {
+            var curQuest = new List<QuestData>();
+            foreach (var quest in questContainer)
+            {
+                if (quest.QuestData.Count != 0)
+                { 
+                    curQuest.Add(quest.QuestData[0]);   
+                }
+            }
+            
             GameManager.Instance.UIManager.UpdateDefaultText(defaultText);
-            GameManager.Instance.UIManager.EnableNpcUI(questData, this);
+            GameManager.Instance.UIManager.EnableNpcUI(curQuest, this);
         }
     }
 }

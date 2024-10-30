@@ -94,6 +94,16 @@ public class UIManager : MonoBehaviour
         _curNpcController = null;
     }
 
+    public void UpdateQuestPanel(List<QuestData> questData)
+    {
+        ReturnToPoolQuestDisplay();
+        
+        foreach (var data in questData)
+        {
+            GetQuestDisplay(data);
+        }
+    }
+
     public Sprite GetQuestStateSprite(EQuestState state)
     {
         return questStateSprite[(int)state];

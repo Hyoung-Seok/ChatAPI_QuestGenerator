@@ -2678,9 +2678,13 @@ MonoBehaviour:
   headRig: {fileID: 214767611}
   headWeightTime: 1
   defaultText: "\uBB34\uC2A8 \uB3C4\uC6C0\uC774 \uD544\uC694\uD558\uC2E0\uAC00\uC694?"
-  questData:
-  - {fileID: 11400000, guid: f28cded728a4d5a44962d293f5a8db2b, type: 2}
-  - {fileID: 11400000, guid: 029fe780c684a3a4781cf2d35750fa8c, type: 2}
+  questContainer:
+  - QuestData:
+    - {fileID: 11400000, guid: 55883aa1bc59b4d4081f90870ceb9165, type: 2}
+    - {fileID: 11400000, guid: a9a18840f9e16784eaf24937dd850f82, type: 2}
+    - {fileID: 11400000, guid: 4c752b2d85bb2814580ba275d406e580, type: 2}
+  - QuestData:
+    - {fileID: 11400000, guid: f28cded728a4d5a44962d293f5a8db2b, type: 2}
 --- !u!1 &625209690
 GameObject:
   m_ObjectHideFlags: 0
