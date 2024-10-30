@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NormalZombie
   m_EditorClassIdentifier: 
   enemyName: "\uBCC0\uC774\uCCB41\uD638"
-  maxHp: 20
+  maxHp: 180
   defense: 10
   detectRange: 30
   detectAngle: 40

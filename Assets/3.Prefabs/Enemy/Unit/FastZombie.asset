@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d207d45c8bbe7cd40b236037590a531f, type: 3}
   m_Name: FastZombie
   m_EditorClassIdentifier: 
-  enemyName: "\uBCC0\uC774\uCCB41\uD638"
+  enemyName: "\uC2A4\uD06C\uB9AC\uBA38"
   maxHp: 120
   defense: 5
   detectRange: 40

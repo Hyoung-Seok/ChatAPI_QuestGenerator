@@ -137,12 +137,15 @@ public class OtherDataUI : EditorWindow
             var nameMatch = Regex.Match(_curSelectData, @"Name\s*:\s*(.*)");
             var infoMatch = Regex.Match(_curSelectData, @"Info\s*:\s*(.*)");
 
-            result = $"({nameMatch} \n {infoMatch}) \n";
+            var finalText = nameMatch.ToString().Replace("Name : ", $"{GetTitleString()}");
+            
+            result = $"({finalText} \n {infoMatch}) \n";
             CurOtherData += result;
         }
         else
         {
-            result = $"(TargetName : {_nameList.value}) \n";
+            var title = GetTitleString();
+            result = $"({title} : {_nameList.value}) \n";
             CurOtherData += result;
         }
         
@@ -250,6 +253,26 @@ public class OtherDataUI : EditorWindow
         
         var window = GetWindow<OtherDataUI>();
         window.Close();
+    }
+
+    private string GetTitleString()
+    {
+        var curData = _excelList.value;
+
+        if (curData.Contains("Monster") == true)
+        {
+            return "MonsterName : ";
+        }
+        else if (curData.Contains("Item") == true)
+        {
+            return "ItemName : ";
+        }
+        else if (curData.Contains("NPC") == true)
+        {
+            return "TargetNpcName : ";
+        }
+
+        return string.Empty;
     }
     
     private void OnDestroy()
