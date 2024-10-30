@@ -30,7 +30,7 @@ public class QuestManager : MonoBehaviour
         curProcessQuest.Add(data);
 
         var obj = Instantiate(curQuestPanel, questPanelParent).GetComponent<QuestDisplay>();
-        obj.UpdateQuestDisplay(data.Title, data.TargetInfos);
+        obj.UpdateQuestDisplay(data.Title, data.TargetInfos, data.QuestType);
         
         _curQuestDisplay.Add(obj);
     }
@@ -71,7 +71,7 @@ public class QuestManager : MonoBehaviour
                 if (quest.CurQuestState == EQuestState.Completion) continue;
                 
                 target.CurTargetCount++;
-                _curQuestDisplay[index].UpdateQuestDisplay(quest.TargetInfos);
+                _curQuestDisplay[index].UpdateQuestDisplay(quest.TargetInfos, quest.QuestType);
                 
                 if (target.CurTargetCount == target.TargetCount)
                 {

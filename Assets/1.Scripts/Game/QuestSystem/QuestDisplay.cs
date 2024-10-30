@@ -9,7 +9,7 @@ public class QuestDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questTitle;
     [SerializeField] private TextMeshProUGUI questCount;
 
-    public void UpdateQuestDisplay(string title, List<TargetInfo> targets)
+    public void UpdateQuestDisplay(string title, List<TargetInfo> targets, EQuestType type)
     {
         questTitle.text = title;
         questCount.text = string.Empty;
@@ -21,20 +21,31 @@ public class QuestDisplay : MonoBehaviour
         }
     }
 
-    public void UpdateQuestDisplay(List<TargetInfo> targets)
+    public void UpdateQuestDisplay(List<TargetInfo> targets, EQuestType type)
     {
         questCount.text = string.Empty;
         
-        foreach (var target in targets)
+        switch (type)
         {
-            questCount.text +=
-                $"{target.TargetName} : {target.CurTargetCount} / {target.TargetCount} \n";
+            case EQuestType.Fight:
+            case EQuestType.Get:
+                foreach (var target in targets)
+                {
+                    questCount.text +=
+                        $"{target.TargetName} : {target.CurTargetCount} / {target.TargetCount} \n";
+                }
+                break;
+            
+            case EQuestType.Deliver:
+                foreach (var target in targets)
+                {
+                    questCount.text +=
+                        $"{target.TargetName} 에게 물건 전해주기. \n";
+                }
+                break;
+            
+            default:
+                return;
         }
-    }
-    
-    public void ResetQuestDisplay()
-    {
-        questTitle.text = string.Empty;
-        questCount.text = string.Empty;
     }
 }
