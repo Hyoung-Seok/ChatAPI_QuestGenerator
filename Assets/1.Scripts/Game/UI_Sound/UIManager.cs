@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
                 ReturnToPoolQuestDisplay(index);
                 _curNpcController.RemoveQuestData(index);
                 GameManager.Instance.QuestManager.RemoveQuestData(_curSelectedQuestData.QuestData.Title);
-
+                
                 _curSelectedQuestData = null;
                 break;
             
