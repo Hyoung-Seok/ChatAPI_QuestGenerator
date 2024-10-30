@@ -18,6 +18,7 @@ public class NpcController : Interactable
     [Header("Quest")]
     [SerializeField] private List<QuestData> questData;
 
+    public string NpcName { get; private set; }
     private PlayerController _playerController;
     private IEnumerator _headWeight;
     private WaitForEndOfFrame _waitForEndOfFrame;
@@ -26,6 +27,11 @@ public class NpcController : Interactable
     {
         _playerController = GameManager.Instance.Player;
         _waitForEndOfFrame = new WaitForEndOfFrame();
+
+        if (questData.Count > 0)
+        {
+            NpcName = questData[0].NpcName;
+        }
     }
 
     protected override void OnTriggerEnterEvent()

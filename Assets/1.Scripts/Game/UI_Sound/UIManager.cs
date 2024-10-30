@@ -71,7 +71,7 @@ public class UIManager : MonoBehaviour
         _isMagUIEnabled = magazineUI.activeSelf;
         if(_isMagUIEnabled == true) magazineUI.SetActive(false);
 
-        npcField.text = questData[0].NpcName;
+        npcField.text = controller.NpcName;
         textField.text = _defaultText;
         npcUI.SetActive(true);
         
