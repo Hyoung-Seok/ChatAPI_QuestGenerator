@@ -2278,13 +2278,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 4469433113143549368, guid: cd2f8145f27046845b0b7dfd17b7d9c2,
+  enemyPrefab: {fileID: 2038966711523483619, guid: 23b8b4bf047a73046a7c8a93a9e7deee,
     type: 3}
   spawnRange: 30
   firstCreateCount: 5
   firstSpawnCount: 1
   maxTryCount: 10
-  normalEnemyStatus: {fileID: 11400000, guid: 8999486a380077e45af27561be384c44, type: 2}
+  normalEnemyStatus: {fileID: 11400000, guid: 04bbd2ea4d0ffbc4485ed429a73f2649, type: 2}
 --- !u!1 &554136428
 GameObject:
   m_ObjectHideFlags: 0
