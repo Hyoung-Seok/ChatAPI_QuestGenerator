@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Text.RegularExpressions;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -27,8 +29,10 @@ public class OtherDataUI : EditorWindow
     private Button _applyBt;
     private Button _resetBt;
     private Button _saveBt;
+    private Toggle _includeInfo;
 
     public static string CurOtherData;
+    private string _curSelectData;
     private ExcelParser _parser;
     
     private static bool _isOpen;
@@ -44,12 +48,7 @@ public class OtherDataUI : EditorWindow
         win.minSize = new Vector2(550, 510);
         win.maxSize = new Vector2(550, 510);
     }
-
-    public static void ResetCurrentData()
-    {
-        CurOtherData = string.Empty;
-    }
-
+    
     private void CreateGUI()
     {
         visualTreeAsset.CloneTree(rootVisualElement);
@@ -79,6 +78,8 @@ public class OtherDataUI : EditorWindow
         _applyBt = rootVisualElement.Q<Button>("ApplyButton");
         _resetBt = rootVisualElement.Q<Button>("ResetButton");
         _saveBt = rootVisualElement.Q<Button>("SaveButton");
+
+        _includeInfo = rootVisualElement.Q<Toggle>("IncludeInfo");
     }
 
     private void InitEventAndValue()
@@ -102,20 +103,18 @@ public class OtherDataUI : EditorWindow
 
     private void NameListValueChangeEvent(ChangeEvent<string> evt)
     {
-        string data;
-        
         if (_isSearch == false)
         {
             var col = _nameList.choices.IndexOf(_nameList.value);
-            data = _parser.ConvertValueDataToString(col + 1);    
+            
+            _curSelectData = _parser.ConvertValueDataToString(col + 1);
         }
         else
         {
-            data = _parser.ConvertValueDataToString(_parser.FindColumnWithValue(_nameList.value));
+            _curSelectData = _parser.ConvertValueDataToString(_parser.FindColumnWithValue(_nameList.value));
         }
         
-        
-        ResultWindow.UpdateOtherDataMessage(data);
+        ResultWindow.UpdateOtherDataMessage(_curSelectData);
     }
 
     private void LevelSliderValueChangeEvent(ChangeEvent<Vector2> evt)
@@ -131,7 +130,21 @@ public class OtherDataUI : EditorWindow
 
     private void AddButtonClickEvent(ClickEvent evt)
     {
-        CurOtherData += _nameList.value + "/";
+        var result = string.Empty;
+        
+        if (_includeInfo.value == true)
+        {
+            var nameMatch = Regex.Match(_curSelectData, @"Name\s*:\s*(.*)");
+            var infoMatch = Regex.Match(_curSelectData, @"Info\s*:\s*(.*)");
+
+            result = $"({nameMatch} \n {infoMatch}) \n";
+            CurOtherData += result;
+        }
+        else
+        {
+            result = $"(TargetName : {_nameList.value}) \n";
+            CurOtherData += result;
+        }
         
         ResultWindow.UpdateOtherDataMessage(CurOtherData);
         ResultWindow.UpdateProcessMessage($"{_nameList.value} Add Done!!");
