@@ -183,8 +183,6 @@ public class UIManager : MonoBehaviour
     private void OnAcceptButtonClickEvent()
     {
         _isInputAcceptButton = true;
-        
-        // TODO : 여기서 타입을 확인하고 전달?
     }
 
     private void OnRefuseButtonClickEvent()
@@ -208,6 +206,8 @@ public class UIManager : MonoBehaviour
             GameManager.Instance.QuestManager.AddQuest(_curSelectedQuestData.QuestData);
             
             await PrintText(scripts.AcceptScript);
+            
+            CheckQuestTypeIsDeliver();
         }
         else
         {
@@ -289,6 +289,17 @@ public class UIManager : MonoBehaviour
         questPanel.gameObject.SetActive(true);
         textField.text = _defaultText;
         EnableButton(EButtonType.None);
+    }
+
+    private void CheckQuestTypeIsDeliver()
+    {
+        if (_curSelectedQuestData.QuestData.QuestType != EQuestType.Deliver)
+        {
+            return;
+        }
+
+        GameManager.Instance.NpcManager.GetNpcControllerOrNull(_curNpcName)
+            ?.SetDeliverQuestData(_curSelectedQuestData.QuestData);
     }
 
     private void AllButtonActionValueDisable()

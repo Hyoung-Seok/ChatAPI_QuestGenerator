@@ -15,7 +15,6 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private List<QuestData> curProcessQuest;
     [SerializeField] private GameObject curQuestPanel;
     [SerializeField] private Transform questPanelParent;
-
     [SerializeField] private List<QuestDisplay> _curQuestDisplay;
 
     public void Init()

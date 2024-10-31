@@ -19,7 +19,7 @@ public class NpcController : Interactable
     [Header("Quest")] 
     [SerializeField] private List<QuestContainer> questContainer;
 
-    [field: SerializeField]public string NpcName { get; private set; }
+    [field: SerializeField] public string NpcName { get; private set; }
     private PlayerController _playerController;
     private IEnumerator _headWeight;
     private WaitForEndOfFrame _waitForEndOfFrame;
@@ -53,6 +53,12 @@ public class NpcController : Interactable
 
     public void RemoveQuestData(int index)
     {
+        if (questContainer[index].QuestData[0].QuestType == EQuestType.Deliver)
+        {
+            var pair = questContainer[index].QuestData[0].ChainQuest;
+            GameManager.Instance.NpcManager.GetNpcControllerOrNull(pair.Key)?.RemoveDeliverQuest(pair.Value);
+        }
+        
         questContainer[index].QuestData.RemoveAt(0);
 
         if (questContainer[index].QuestData.Count <= 0)
@@ -68,6 +74,53 @@ public class NpcController : Interactable
         }
             
         GameManager.Instance.UIManager.UpdateQuestPanel(curQuest);
+    }
+
+    public void SetDeliverQuestData(QuestData data)
+    {
+        var target = GameManager.Instance.NpcManager.GetNpcControllerOrNull(data.TargetInfos[0].TargetName);
+        int num;
+        var index = -1;
+
+        for (num = 0; num < questContainer.Count; ++num)
+        {
+            index = questContainer[num].QuestData.IndexOf(data);
+            if (index >= 0 && index <= questContainer[num].QuestData.Count - 1)
+            {
+                break;
+            }
+        }
+        
+        target.AddDeliverQuest(questContainer[num].QuestData[index + 1]);
+        
+        questContainer[num].QuestData[index + 1].AddChainQuest(NpcName, questContainer[num].QuestData[index]);
+        questContainer[num].QuestData.RemoveAt(index + 1);
+    }
+
+    private void AddDeliverQuest(QuestData data)
+    {
+        data.CurQuestState = EQuestState.Completion;
+        var container = new QuestContainer
+        {
+            QuestData = new List<QuestData> { data }
+        };
+
+        questContainer.Add(container);
+    }
+
+    private void RemoveDeliverQuest(QuestData data)
+    {
+        foreach (var container in questContainer)
+        {
+            var index = container.QuestData.IndexOf(data);
+            if (index <= -1)
+            {
+                continue;
+            }
+            
+            container.QuestData.RemoveAt(index);
+            GameManager.Instance.QuestManager.RemoveQuestData(data.Title);
+        }
     }
 
     private void OnInteractionStart()
