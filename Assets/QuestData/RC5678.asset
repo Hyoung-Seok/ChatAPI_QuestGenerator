@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: RC5678
+  m_EditorClassIdentifier: 
+  questID: RC5678
+  title: "\uCC30\uB9AC \uC911\uB839\uC5D0\uAC8C \uBC29\uB3C5\uBA74 \uD544\uD130 \uC804\uB2EC\uD558\uAE30"
+  questType: 2
+  npcName: "\uB9AC\uC544"
+  targetInfo:
+  - targetName: "\uCC30\uB9AC\uC911\uB839"
+    targetCount: 1
+    CurTargetCount: 0
+  curQuestState: 0
+  scriptsData:
+    startScripts:
+    - "\uC815\uB9D0 \uACE0\uB9C8\uC6CC, \uC5B8\uB2C8. \uC774 \uBC29\uB3C5\uBA74 \uD544\uD130\uB97C
+      \uAC00\uC9C0\uACE0 \uCC30\uB9AC \uC911\uB839\uC5D0\uAC8C \uC9C1\uC811 \uC804\uB2EC\uD574
+      \uC904 \uC218 \uC788\uC744\uAE4C?"
+    - "\uC911\uB839\uB2D8\uAED8 \uB0B4\uAC00 \uB9DD\uAC00\uD2B8\uB9B0 \uAC78 \uC54C\uB824\uC904
+      \uC6A9\uAE30\uAC00 \uB098\uC9C0 \uC54A\uC544\uC11C..."
+    - "\uC5B8\uB2C8\uAC00 \uC804\uB2EC\uD574\uC8FC\uBA74 \uC911\uB839\uB2D8\uB3C4
+      \uC880 \uB354 \uC774\uD574\uD574\uC8FC\uC2DC\uC9C0 \uC54A\uC744\uAE4C \uD574\uC11C."
+    - "\uC81C\uBC1C, \uC774 \uBD80\uD0C1\uB9CC \uB354 \uB4E4\uC5B4\uC918. \uB0B4\uAC00
+      \uC5B8\uB2C8\uC5D0\uAC8C \uC815\uB9D0 \uD070 \uC740\uD61C\uB97C \uC785\uC744
+      \uAC83 \uAC19\uC544."
+    acceptScript: "\uC815\uB9D0 \uACE0\uB9C8\uC6CC! \uCC30\uB9AC \uC911\uB839\uC740
+      \uBCA0\uC774\uC2A4 \uCEA0\uD504 \uC548\uC5D0 \uC788\uC5B4. \uC870\uC2EC\uD574\uC11C
+      \uAC00\uC918."
+    refuseScript: "\uADF8\uB798, \uC5B8\uB2C8\uB3C4 \uBC14\uC058\uACA0\uC9C0. \uB098
+      \uD63C\uC790 \uC5B4\uB5BB\uAC8C\uB4E0 \uD574\uBCFC\uAC8C..."
+    processScript: "\uC544\uC9C1 \uBC29\uB3C5\uBA74 \uD544\uD130\uB97C \uCC30\uB9AC
+      \uC911\uB839\uC5D0\uAC8C \uC804\uB2EC\uD558\uC9C0 \uBABB\uD588\uC5B4? \uC2DC\uAC04\uC774
+      \uC5C6\uC5B4, \uC5B8\uB2C8!"
+    clearScript: "\uC544, \uC5B8\uB2C8! \uCC30\uB9AC \uC911\uB839\uC5D0\uAC8C \uD544\uD130\uB97C
+      \uC804\uB2EC\uD588\uAD6C\uB098. \uC815\uB9D0 \uACE0\uB9C8\uC6CC. \uB098\uB3C4
+      \uC6A9\uAE30\uB97C \uB0B4\uBD10\uC57C\uACA0\uC5B4."
