@@ -19,8 +19,8 @@ MonoBehaviour:
   targetInfo:
   - targetName: "\uC2A4\uD06C\uB9AC\uBA38"
     targetCount: 5
-    CurTargetCount: 5
-  curQuestState: 2
+    CurTargetCount: 0
+  curQuestState: 0
   scriptsData:
     startScripts:
     - "\uBCF4\uAE09\uD488 \uD68C\uC218\uB3C4 \uC798 \uB9C8\uCCE4\uAD70. \uD558\uC9C0\uB9CC,
