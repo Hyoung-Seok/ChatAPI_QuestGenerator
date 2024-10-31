@@ -19,7 +19,7 @@ public class NpcController : Interactable
     [Header("Quest")] 
     [SerializeField] private List<QuestContainer> questContainer;
 
-    public string NpcName { get; private set; }
+    [field: SerializeField]public string NpcName { get; private set; }
     private PlayerController _playerController;
     private IEnumerator _headWeight;
     private WaitForEndOfFrame _waitForEndOfFrame;
@@ -33,6 +33,8 @@ public class NpcController : Interactable
         {
             NpcName = questContainer[0].QuestData[0].NpcName;
         }
+        
+        GameManager.Instance.NpcManager.AddNpcControllerInDictionary(NpcName, this);
     }
 
     protected override void OnTriggerEnterEvent()
@@ -122,13 +124,13 @@ public class NpcController : Interactable
             foreach (var quest in questContainer)
             {
                 if (quest.QuestData.Count != 0)
-                { 
-                    curQuest.Add(quest.QuestData[0]);   
+                {
+                    curQuest.Add(quest.QuestData[0]);
                 }
             }
             
             GameManager.Instance.UIManager.UpdateDefaultText(defaultText);
-            GameManager.Instance.UIManager.EnableNpcUI(curQuest, this);
+            GameManager.Instance.UIManager.EnableNpcUI(curQuest, NpcName);
         }
     }
 }

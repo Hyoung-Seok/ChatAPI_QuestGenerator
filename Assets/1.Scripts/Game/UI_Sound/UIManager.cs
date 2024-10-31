@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
     private string _defaultText;
     private Queue<QuestButton> _questListPool;
     private List<QuestButton> _currentQuestDisplay;
-    private NpcController _curNpcController;
+    private string _curNpcName;
     private QuestButton _curSelectedQuestData;
     private IEnumerator _textPrintRoutine;
     
@@ -64,19 +64,24 @@ public class UIManager : MonoBehaviour
         textField.text = _defaultText;
     }
 
-    public void EnableNpcUI(List<QuestData> questData, NpcController controller)
+    public void EnableNpcUI(List<QuestData> questData, string name)
     {
-        _curNpcController = controller;
+        _curNpcName = name;
         
         _isMagUIEnabled = magazineUI.activeSelf;
         if(_isMagUIEnabled == true) magazineUI.SetActive(false);
 
-        npcField.text = controller.NpcName;
+        npcField.text = _curNpcName;
         textField.text = _defaultText;
         npcUI.SetActive(true);
         
         GameManager.Instance.UnlockCursor();
 
+        if (questData.Count <= 0)
+        {
+            return;
+        }
+        
         foreach (var data in questData)
         {
             GetQuestDisplay(data);
@@ -91,7 +96,7 @@ public class UIManager : MonoBehaviour
         npcUI.SetActive(false);
         if(_isMagUIEnabled == true) magazineUI.SetActive(true);
 
-        _curNpcController = null;
+        _curNpcName = string.Empty;
     }
 
     public void UpdateQuestPanel(List<QuestData> questData)
@@ -131,7 +136,7 @@ public class UIManager : MonoBehaviour
                 PrintText(_curSelectedQuestData.QuestData.ScriptsData.ClearScript).Forget();
                 
                 ReturnToPoolQuestDisplay(index);
-                _curNpcController.RemoveQuestData(index);
+                GameManager.Instance.NpcManager.GetNpcControllerOrNull(_curNpcName)?.RemoveQuestData(index);
                 GameManager.Instance.QuestManager.RemoveQuestData(_curSelectedQuestData.QuestData.Title);
                 
                 _curSelectedQuestData = null;
@@ -178,6 +183,8 @@ public class UIManager : MonoBehaviour
     private void OnAcceptButtonClickEvent()
     {
         _isInputAcceptButton = true;
+        
+        // TODO : 여기서 타입을 확인하고 전달?
     }
 
     private void OnRefuseButtonClickEvent()
