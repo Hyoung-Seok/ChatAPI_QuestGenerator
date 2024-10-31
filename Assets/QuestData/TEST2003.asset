@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
-  m_Name: MFS001
+  m_Name: TEST2003
   m_EditorClassIdentifier: 
-  questID: MFS001
-  title: "\uD30C\uC774\uC5B4\uBCF4\uC5B4 \uCC98\uCE58"
+  questID: TEST1003
+  title: "\uBCC0\uC774\uCCB4 \uC2B5\uACA9"
   questType: 0
-  npcName: "\uBBF8\uCCBC"
+  npcName: "\uCC30\uB9AC\uC911\uB839"
   targetInfo:
   - targetName: "\uBCC0\uC774\uCCB41\uD638"
-    targetCount: 5
-    CurTargetCount: 0
-  curQuestState: 2
+    targetCount: 10
+    CurTargetCount: 6
+  curQuestState: 0
   scriptsData:
     startScripts:
     - "\uC774 \uC9C0\uC5ED\uC744 \uB108\uBB34\uB098\uB3C4 \uACE0\uD1B5\uC2A4\uB7FD\uAC8C

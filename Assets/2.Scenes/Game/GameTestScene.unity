@@ -2732,6 +2732,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 4c752b2d85bb2814580ba275d406e580, type: 2}
   - QuestData:
     - {fileID: 11400000, guid: f28cded728a4d5a44962d293f5a8db2b, type: 2}
+    - {fileID: 11400000, guid: 029fe780c684a3a4781cf2d35750fa8c, type: 2}
+    - {fileID: 11400000, guid: 9f403dc53074b5a41b04b5926eaedc2d, type: 2}
   <NpcName>k__BackingField: 
 --- !u!1 &625209690
 GameObject:
@@ -7865,7 +7867,7 @@ MonoBehaviour:
   defaultText: "\uC0C8\uB85C\uC624\uC2E0 \uC6A9\uBCD1\uBD84\uC778\uAC00\uC694? \uB3C4\uC6C0\uC774
     \uD544\uC694\uD558\uBA74 \uB9D0\uD574\uC8FC\uC138\uC694."
   questContainer: []
-  <NpcName>k__BackingField: 
+  <NpcName>k__BackingField: "\uB9AC\uC544"
 --- !u!1 &1541989494
 GameObject:
   m_ObjectHideFlags: 0

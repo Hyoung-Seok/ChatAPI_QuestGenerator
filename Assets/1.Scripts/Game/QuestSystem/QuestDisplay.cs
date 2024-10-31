@@ -14,10 +14,27 @@ public class QuestDisplay : MonoBehaviour
         questTitle.text = title;
         questCount.text = string.Empty;
 
-        foreach (var target in targets)
+        switch (type)
         {
-            questCount.text +=
-                $"{target.TargetName} : {target.CurTargetCount} / {target.TargetCount} \n";
+            case EQuestType.Fight:
+            case EQuestType.Get:
+                foreach (var target in targets)
+                {
+                    questCount.text +=
+                        $"{target.TargetName} : {target.CurTargetCount} / {target.TargetCount} \n";
+                }
+                break;
+            
+            case EQuestType.Deliver:
+                foreach (var target in targets)
+                {
+                    questCount.text +=
+                        $"{target.TargetName} 에게 물건 전해주기. \n";
+                }
+                break;
+            
+            default:
+                return;
         }
     }
 

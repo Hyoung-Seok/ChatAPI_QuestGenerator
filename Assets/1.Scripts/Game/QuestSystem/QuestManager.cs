@@ -7,7 +7,8 @@ public enum EQuestState
 {
     Start,
     Processing,
-    Completion
+    Completion,
+    Finish
 }
 public class QuestManager : MonoBehaviour
 {
