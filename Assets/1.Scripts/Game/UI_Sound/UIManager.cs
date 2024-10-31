@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
                 break;
             
             case EQuestState.Completion:
-                PrintText(_curSelectedQuestData.QuestData.ScriptsData.ClearScript).Forget();
+                PrintText("", _curSelectedQuestData.QuestData.ScriptsData.ClearScript).Forget();
                 
                 ReturnToPoolQuestDisplay(index);
                 GameManager.Instance.NpcManager.GetNpcControllerOrNull(_curNpcName)?.RemoveQuestData(index);
@@ -265,25 +265,55 @@ public class UIManager : MonoBehaviour
         await UniTask.WaitUntil(() => _isInputAcceptButton || _isInputRefuseButton);
     }
 
-    private async UniTask PrintText(string text)
+    private async UniTask PrintText(string text, List<string> texts = null)
     {
-        textField.text = string.Empty;
-        EnableButton(EButtonType.Next);
-        
-        foreach (var c in text)
+        if (texts == null)
         {
-            textField.text += c;
+            textField.text = string.Empty;
+            EnableButton(EButtonType.Next);
 
-            if (_isInputNextButton)
+            foreach (var c in text)
             {
-                textField.text = text;
-                _isInputNextButton = false;
-                break;
+                textField.text += c;
+
+                if (_isInputNextButton)
+                {
+                    textField.text = text;
+                    _isInputNextButton = false;
+                    break;
+                }
+
+                await UniTask.Delay(textSpeed);
             }
-            
-            await UniTask.Delay(textSpeed);
         }
-        
+        else
+        {
+            textField.text = string.Empty;
+            EnableButton(EButtonType.Next);
+
+            foreach (var script in texts)
+            {
+                foreach (var c in script)
+                {
+                    textField.text += c;
+
+                    if (_isInputNextButton)
+                    {
+                        textField.text = script;
+                        _isInputNextButton = false;
+                        break;
+                    }
+
+                    await UniTask.Delay(textSpeed);
+                }
+
+                await UniTask.WaitUntil(() => _isInputNextButton == true);
+            
+                _isInputNextButton = false;
+                textField.text = string.Empty;
+            }
+        }
+
         await UniTask.WaitUntil(() => _isInputNextButton == true);
         
         questPanel.gameObject.SetActive(true);

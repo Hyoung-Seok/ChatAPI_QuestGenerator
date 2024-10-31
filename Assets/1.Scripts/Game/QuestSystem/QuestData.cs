@@ -107,17 +107,18 @@ public class ScriptsData
     [SerializeField] private string processScript;
 
     [Header("완료 대사")] 
-    [SerializeField] private string clearScript;
+    [SerializeField] private List<string> clearScript;
     
     public List<string> StartScripts => startScripts;
     public string AcceptScript => acceptScript;
     public string RefuseScript => refuseScript;
     public string ProcessScript => processScript;
-    public string ClearScript => clearScript;
+    public List<string> ClearScript => clearScript;
 
     public ScriptsData(string json)
     {
         startScripts = new List<string>();
+        clearScript = new List<string>();
 
         var jObj = JObject.Parse(json);
 
@@ -140,11 +141,11 @@ public class ScriptsData
                     break;
                 
                 case "OnProcess":
-                    processScript = value;
+                    processScript = value; 
                     break;
                 
                 case "OnClear":
-                    clearScript = value;
+                    clearScript.AddRange(value.Split('*'));
                     break;
                 
                 default:

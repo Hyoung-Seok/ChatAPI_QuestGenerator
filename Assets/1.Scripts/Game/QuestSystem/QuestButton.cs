@@ -55,7 +55,6 @@ public class QuestButton : MonoBehaviour
             EQuestState.Start => "<시작 가능>",
             EQuestState.Processing => "<진행중>",
             EQuestState.Completion => "<완료가능>",
-            EQuestState.Finish => "<완료가능>",
             _ => " "
         };
     }
