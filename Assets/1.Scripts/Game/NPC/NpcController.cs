@@ -21,8 +21,7 @@ public class NpcController : Interactable
 
     [Header("Quest")] 
     [SerializeField] private List<QuestContainer> questContainer;
-    public event Action<List<QuestData>> OnQuestDisplay;
-
+    
     private void Start()
     {
         if (questContainer.Count > 0)
@@ -67,7 +66,7 @@ public class NpcController : Interactable
             curQuest.Add(quest.QuestData[0]);   
         }
             
-        GameManager.Instance.UIManager.UpdateQuestPanel(curQuest);
+        GameManager.Instance.QuestUIManager.UpdateQuestPanel(curQuest);
     }
 
     public void SetDeliverQuestData(QuestData data)
@@ -155,12 +154,14 @@ public class NpcController : Interactable
                 }
 
                 headRig.weight = 1;
-                GameManager.Instance.QuestUIManager.EnableQuestDisplay(GetFirstQuestDataList(),
-                    NpcName, defaultText);
+                
+                GameManager.Instance.QuestUIManager.EnableQuestDisplay(GetFirstQuestDataList(), NpcName, defaultText);
+                GameManager.Instance.QuestManager.CurInteractionNpc = this;
                 break;
             
             case false:
                 GameManager.Instance.QuestUIManager.DisableQuestDisplay();
+                GameManager.Instance.QuestManager.CurInteractionNpc = null;
                 
                 while (curTime < headWeightTime)
                 {

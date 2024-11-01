@@ -9,33 +9,25 @@ public class QuestButton : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questStateText;
     [SerializeField] private TextMeshProUGUI questTitleText;
     [SerializeField] private Image questStateImg;
+    public event Action<int> OnClickAction;
 
-    public QuestData QuestData { get; private set; }
-    public event Action<QuestData> OnClickAction;
-
-    public void SetQuestData(QuestData data)
+    public void SetButtonData(QuestData data)
     {
-        QuestData = data;
-        gameObject.GetComponent<Button>().onClick.AddListener(() => OnClickAction?.Invoke(QuestData));
+        gameObject.GetComponent<Button>().onClick.AddListener(() => OnClickAction?.Invoke(transform.GetSiblingIndex()));
         
-        questStateImg.sprite =
-            GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
-        QuestStateTextUpdate(QuestData.CurQuestState);
+        questStateImg.sprite = GameManager.Instance.QuestUIManager.GetQuestStateSprite(data.CurQuestState);
+        QuestStateTextUpdate(data.CurQuestState);
         
-        questTitleText.text = QuestData.Title;
+        questTitleText.text = data.Title;
     }
 
-    public void UpdateQuestState(EQuestState state)
+    public void UpdateButtonState(EQuestState state)
     {
-        QuestData.CurQuestState = state;
-        
-        questStateImg.sprite =
-            GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
-
+        questStateImg.sprite = GameManager.Instance.QuestUIManager.GetQuestStateSprite(state);
         QuestStateTextUpdate(state);
     }
     
-    public void ResetQuestData()
+    public void ResetButtonData()
     {
         questStateText.text = string.Empty;
         questTitleText.text = string.Empty;

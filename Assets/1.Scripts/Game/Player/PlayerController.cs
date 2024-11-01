@@ -181,14 +181,14 @@ public class PlayerController : UnitStateController
             IsEquipped = false;
             Animator.SetBool(_equippedKey, IsEquipped);
             Animator.SetTrigger(_quippedTriggerKey);
-            GameManager.Instance.UIManager.SetActiveMagazineUI(false);
+            GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(false);
             return;
         }
 
         IsEquipped = true;
         Animator.SetBool(_equippedKey, IsEquipped);
         Animator.SetTrigger(_quippedTriggerKey);
-        GameManager.Instance.UIManager.SetActiveMagazineUI(true);
+        GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(true);
     }
 
     private void OnMoveValueChangeEvent(PlayerStatus data)
@@ -217,12 +217,12 @@ public class PlayerController : UnitStateController
         
         if (context.performed == true)
         {
-            GameManager.Instance.UIManager.SetActiveCrossHair(true);
+            GameManager.Instance.PlayerUIManger.SetActiveCrossHair(true);
             ChangePlayerInputState(EPlayerInputState.AIM);
         }
         else if (context.canceled)
         {
-            GameManager.Instance.UIManager.SetActiveCrossHair(false);
+            GameManager.Instance.PlayerUIManger.SetActiveCrossHair(false);
             GameManager.Instance.CameraController.IsRecoil = false;
             
             ChangePlayerInputState(EPlayerInputState.IDLE);

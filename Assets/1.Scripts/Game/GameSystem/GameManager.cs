@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Manager")] 
     [SerializeField] private AudioManager audioManager;
-    [SerializeField] private UIManager uiManager;
+    [FormerlySerializedAs("uiManager")] [SerializeField] private PlayerUIManger playerUIManger;
     [SerializeField] private QuestManager questManager;
     [SerializeField] private QuestUIManager questUIManger;
     public NpcManager NpcManager { get; private set; }
@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     public PlayerController Player { get; private set; }
     public PlayerCameraController CameraController { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
-    public UIManager UIManager => uiManager;
+    public PlayerUIManger PlayerUIManger => playerUIManger;
     public AudioManager AudioManager => audioManager;
     public PlayerInput PlayerInput { get; private set; }
     public QuestManager QuestManager => questManager;
@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
         PlayerInput = playerComponentData.PlayerInput;
         
         NpcManager = new NpcManager();
-        UIManager.Init();
         questManager.Init();
         QuestUIManager.Init();
         

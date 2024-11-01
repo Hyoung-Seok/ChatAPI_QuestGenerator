@@ -14,13 +14,23 @@ public class QuestManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private List<QuestData> curProcessQuest;
     [SerializeField] private List<QuestDisplay> curQuestDisplay;
+    [field: SerializeField] public NpcController CurInteractionNpc { get; set; }
 
+    public List<QuestData> CurrentProcessQuest => curProcessQuest;
+    public List<QuestDisplay> CurQuestDisplay => curQuestDisplay;
+    
     public void Init()
     {
         curProcessQuest = new List<QuestData>();
         curQuestDisplay = new List<QuestDisplay>();
         
         EnemyBaseController.OnQuestUpdate += CheckEnemy;
+    }
+
+    public void RemoveClearQuest(int index, QuestData data)
+    {
+        curProcessQuest.Remove(data);
+        CurInteractionNpc.RemoveQuestData(index);
     }
     
     private void CheckEnemy(string enemyName)

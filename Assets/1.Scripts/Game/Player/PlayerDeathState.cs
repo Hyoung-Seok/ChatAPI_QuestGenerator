@@ -10,7 +10,7 @@ public class PlayerDeathState : PlayerBaseState
     {
         if (Controller.CurInputState == EPlayerInputState.AIM)
         {
-            GameManager.Instance.UIManager.SetActiveCrossHair(false);
+            GameManager.Instance.PlayerUIManger.SetActiveCrossHair(false);
             GameManager.Instance.CameraController.IsRecoil = false;
             
             Controller.ChangePlayerInputState(EPlayerInputState.IDLE);
