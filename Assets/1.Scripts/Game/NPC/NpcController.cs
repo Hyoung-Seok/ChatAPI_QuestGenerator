@@ -48,6 +48,7 @@ public class NpcController : Interactable
     {
         if (questContainer[index].QuestData[0].QuestType == EQuestType.Deliver)
         {
+            // 연결된 체인 퀘스트 삭제
             var pair = questContainer[index].QuestData[0].ChainQuest;
             GameManager.Instance.NpcManager.GetNpcControllerOrNull(pair.Key)?.RemoveDeliverQuest(pair.Value);
         }
@@ -71,10 +72,12 @@ public class NpcController : Interactable
 
     public void SetDeliverQuestData(QuestData data)
     {
+        // 전달하기 퀘스트의 타겟이 되는 NpcController 얻어오기
         var target = GameManager.Instance.NpcManager.GetNpcControllerOrNull(data.TargetInfos[0].TargetName);
         int num;
         var index = -1;
 
+        // 컨테이너를 순회하며 전달 퀘스트와 전달 완료 퀘스트 얻어오기
         for (num = 0; num < questContainer.Count; ++num)
         {
             index = questContainer[num].QuestData.IndexOf(data);
@@ -84,9 +87,12 @@ public class NpcController : Interactable
             }
         }
         
+        // 타겟에 배달 퀘스트 추가
         target.AddDeliverQuest(questContainer[num].QuestData[index + 1]);
         
-        questContainer[num].QuestData[index + 1].AddChainQuest(NpcName, questContainer[num].QuestData[index]);
+        // 퀘스트 데이터의 전달 완료 퀘스트에 현재 전달 퀘스트 등록
+        questContainer[num].QuestData[index + 1].ChainQuest = new KeyValuePair<string, QuestData>(NpcName, questContainer[num].QuestData[index]);
+        // 내가 가지고 있는 전달 완료 퀘스트 삭제
         questContainer[num].QuestData.RemoveAt(index + 1);
     }
 

@@ -16,8 +16,6 @@ public class QuestData : ScriptableObject
     [Header("Scripts")] 
     [SerializeField] private ScriptsData scriptsData;
     
-    private KeyValuePair<string, QuestData> _chainQuest;
-    
     public EQuestState CurQuestState { get => curQuestState; set => curQuestState = value; }
     public string QuestID => questID;
     public string Title => title;
@@ -25,8 +23,7 @@ public class QuestData : ScriptableObject
     public string NpcName => npcName;
     public List<TargetInfo> TargetInfos => targetInfo;
     public ScriptsData ScriptsData => scriptsData;
-    public KeyValuePair<string, QuestData> ChainQuest => _chainQuest;
-
+    public KeyValuePair<string, QuestData> ChainQuest { get; set; }
     
     public void InitQuestData(List<string> valueList)
     {
@@ -50,11 +47,6 @@ public class QuestData : ScriptableObject
         
         scriptsData = new ScriptsData(valueList[6]);
         CurQuestState = EQuestState.Start;
-    }
-
-    public void AddChainQuest(string key, QuestData value)
-    {
-        _chainQuest = new KeyValuePair<string, QuestData>(key, value);
     }
     
     private EQuestType ConvertQuestType(string type)

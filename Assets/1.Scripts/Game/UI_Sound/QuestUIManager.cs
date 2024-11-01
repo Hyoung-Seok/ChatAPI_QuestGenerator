@@ -162,8 +162,7 @@ public class QuestUIManager : MonoBehaviour
             
             if (data.QuestType == EQuestType.Deliver)
             {
-                GameManager.Instance.NpcManager.GetNpcControllerOrNull(_curInteractionNpcName)
-                         ?.SetDeliverQuestData(data);
+                GameManager.Instance.QuestManager.CurInteractionNpc.SetDeliverQuestData(data);
             }
        
             RegisterProcessQuest(_curDisplayQuest[index]);
