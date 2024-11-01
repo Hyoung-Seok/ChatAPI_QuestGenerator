@@ -9,6 +9,8 @@ public class QuestDisplay : MonoBehaviour
     [SerializeField] private TextMeshProUGUI questTitle;
     [SerializeField] private TextMeshProUGUI questCount;
 
+    public string Title => questTitle.text;
+
     public void UpdateQuestDisplay(string title, List<TargetInfo> targets, EQuestType type)
     {
         questTitle.text = title;

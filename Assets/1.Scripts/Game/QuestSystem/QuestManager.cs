@@ -14,10 +14,6 @@ public class QuestManager : MonoBehaviour
     [Header("Data")]
     [SerializeField] private List<QuestData> curProcessQuest;
     [SerializeField] private List<QuestDisplay> curQuestDisplay;
-    
-    [Header("Component")]
-    [SerializeField] private GameObject curQuestPanel;
-    [SerializeField] private Transform questPanelParent;
 
     public void Init()
     {
@@ -26,37 +22,7 @@ public class QuestManager : MonoBehaviour
         
         EnemyBaseController.OnQuestUpdate += CheckEnemy;
     }
-
-    public void AddQuest(QuestData data)
-    {
-        curProcessQuest.Add(data);
-
-        var obj = Instantiate(curQuestPanel, questPanelParent).GetComponent<QuestDisplay>();
-        obj.UpdateQuestDisplay(data.Title, data.TargetInfos, data.QuestType);
-        
-        curQuestDisplay.Add(obj);
-    }
-
-    public void RemoveQuestData(string key)
-    {
-        var index = 0;
-
-        for (index = 0; index < curProcessQuest.Count; ++index)
-        {
-            if (string.Equals(curProcessQuest[index].Title, key) == false)
-            {
-                continue;
-            }
-
-            var obj = curQuestDisplay[index];
-            Destroy(obj.gameObject);
-            curProcessQuest.RemoveAt(index);
-            curQuestDisplay.RemoveAt(index);
-
-            break;
-        }
-    }
-
+    
     private void CheckEnemy(string enemyName)
     {
         if (curProcessQuest.Count <= 0)

@@ -137,7 +137,7 @@ public class UIManager : MonoBehaviour
                 
                 ReturnToPoolQuestDisplay(index);
                 GameManager.Instance.NpcManager.GetNpcControllerOrNull(_curNpcName)?.RemoveQuestData(index);
-                GameManager.Instance.QuestManager.RemoveQuestData(_curSelectedQuestData.QuestData.Title);
+                //GameManager.Instance.QuestManager.RemoveQuestData(_curSelectedQuestData.QuestData.Title);
                 
                 _curSelectedQuestData = null;
                 break;
@@ -203,7 +203,7 @@ public class UIManager : MonoBehaviour
         if (_isInputAcceptButton == true)
         {
             _curSelectedQuestData.UpdateQuestState(EQuestState.Processing);
-            GameManager.Instance.QuestManager.AddQuest(_curSelectedQuestData.QuestData);
+            //GameManager.Instance.QuestManager.AddQuest(_curSelectedQuestData.QuestData);
             
             await PrintText(scripts.AcceptScript);
             

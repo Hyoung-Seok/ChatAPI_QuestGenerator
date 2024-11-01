@@ -3,32 +3,28 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cinemachine;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
 public class NpcController : Interactable
 {
+    [field: SerializeField] public string NpcName { get; private set; }
+    
     [Header("Component")] 
     [SerializeField] private CinemachineVirtualCamera npcCamera;
     [SerializeField] private MultiAimConstraint headRig;
-
+    
     [Header("Setting")] 
     [SerializeField] private float headWeightTime = 1.0f;
     [SerializeField] private string defaultText;
 
     [Header("Quest")] 
     [SerializeField] private List<QuestContainer> questContainer;
-
-    [field: SerializeField] public string NpcName { get; private set; }
-    private PlayerController _playerController;
-    private IEnumerator _headWeight;
-    private WaitForEndOfFrame _waitForEndOfFrame;
+    public event Action<List<QuestData>> OnQuestDisplay;
 
     private void Start()
     {
-        _playerController = GameManager.Instance.Player;
-        _waitForEndOfFrame = new WaitForEndOfFrame();
-
         if (questContainer.Count > 0)
         {
             NpcName = questContainer[0].QuestData[0].NpcName;
@@ -39,16 +35,14 @@ public class NpcController : Interactable
 
     protected override void OnTriggerEnterEvent()
     {
-        GameManager.Instance.NpcManager.EnterInteraction += OnInteractionStart;
-        GameManager.Instance.NpcManager.ExitInteraction += OnInteractionEnd;
+        GameManager.Instance.NpcManager.InteractionEvent += OnInteractionEvent;
     }
     
     protected override void OnTriggerStayEvent() { }
 
     protected override void OnTriggerExitEvent()
     {
-        GameManager.Instance.NpcManager.EnterInteraction -= OnInteractionStart;
-        GameManager.Instance.NpcManager.ExitInteraction -= OnInteractionEnd;
+        GameManager.Instance.NpcManager.InteractionEvent -= OnInteractionEvent;
     }
 
     public void RemoveQuestData(int index)
@@ -119,71 +113,79 @@ public class NpcController : Interactable
             }
             
             container.QuestData.RemoveAt(index);
-            GameManager.Instance.QuestManager.RemoveQuestData(data.Title);
+            GameManager.Instance.QuestUIManager.DeregisterProcessQuest(data.Title);
         }
     }
 
-    private void OnInteractionStart()
+    private void OnInteractionEvent(bool enable)
     {
-        npcCamera.gameObject.SetActive(true);
-        _playerController.ChangeMainState(_playerController.InteractionState);
-        
-        StartHeadWeightRoutine(1);
-    }
-
-    private void OnInteractionEnd()
-    {
-        if (npcCamera.gameObject.activeSelf == false)
+        if (enable == true)
         {
-            return;
-        }
-        
-        npcCamera.gameObject.SetActive(false);
-        _playerController.ChangeMainState(_playerController.MoveState);
-        StartHeadWeightRoutine(0);
-    }
-
-    private void StartHeadWeightRoutine(float target)
-    {
-        if (_headWeight != null)
-        {
-            StopCoroutine(_headWeight);
-        }
-        
-        _headWeight = HeadWeight(target);
-        StartCoroutine(_headWeight);
-    }
-
-    private IEnumerator HeadWeight(float target)
-    {
-        var curTime = 0.0f;
-
-        while (curTime < headWeightTime)
-        {
-            curTime += Time.deltaTime;
-            headRig.weight = Mathf.Lerp(headRig.weight, target, curTime / headWeightTime);
-
-            yield return _waitForEndOfFrame;
-        }
-
-        headRig.weight = target;
-        if (target <= 0)
-        {
-            GameManager.Instance.UIManager.DisableNpcUI();
+            npcCamera.gameObject.SetActive(true);
+            GameManager.Instance.ChangePlayerState("Interaction");
+            
+            OnInteractionStartRoutine(true).Forget();   
         }
         else
         {
-            var curQuest = new List<QuestData>();
-            foreach (var quest in questContainer)
+            if (npcCamera.gameObject.activeSelf == false)
             {
-                if (quest.QuestData.Count != 0)
-                {
-                    curQuest.Add(quest.QuestData[0]);
-                }
+                return;
             }
             
-            GameManager.Instance.UIManager.UpdateDefaultText(defaultText);
-            GameManager.Instance.UIManager.EnableNpcUI(curQuest, NpcName);
+            GameManager.Instance.ChangePlayerState("Move");
+            OnInteractionStartRoutine(false).Forget();
         }
+    }
+    
+    private async UniTask OnInteractionStartRoutine(bool enable)
+    {
+        var curTime = 0.0f;
+        npcCamera.gameObject.SetActive(enable);
+        
+        switch (enable)
+        {
+            case true:
+                while (curTime < headWeightTime)
+                {
+                    curTime += Time.deltaTime;
+                    headRig.weight = Mathf.Lerp(headRig.weight, 1, curTime / headWeightTime);
+
+                    await UniTask.WaitForEndOfFrame(this);
+                }
+
+                headRig.weight = 1;
+                GameManager.Instance.QuestUIManager.EnableQuestDisplay(GetFirstQuestDataList(),
+                    NpcName, defaultText);
+                break;
+            
+            case false:
+                GameManager.Instance.QuestUIManager.DisableQuestDisplay();
+                
+                while (curTime < headWeightTime)
+                {
+                    curTime += Time.deltaTime;
+                    headRig.weight = Mathf.Lerp(headRig.weight, 1, curTime / headWeightTime);
+
+                    await UniTask.WaitForEndOfFrame(this);
+                }
+                headRig.weight = 0;
+                break;
+        }
+    }
+
+    private List<QuestData> GetFirstQuestDataList()
+    {
+        var questList = new List<QuestData>();
+
+        foreach (var container in questContainer)
+        {
+            if (container.QuestData.Count != 0)
+            {
+                questList.Add(container.QuestData[0]);
+            }
+        }
+
+        return questList;
     }
 }

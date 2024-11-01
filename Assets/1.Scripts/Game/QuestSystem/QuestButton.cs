@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,12 +11,12 @@ public class QuestButton : MonoBehaviour
     [SerializeField] private Image questStateImg;
 
     public QuestData QuestData { get; private set; }
-    private Button _button;
+    public event Action<QuestData> OnClickAction;
 
     public void SetQuestData(QuestData data)
     {
         QuestData = data;
-        gameObject.GetComponent<Button>().onClick.AddListener(QuestClickEvent);
+        gameObject.GetComponent<Button>().onClick.AddListener(() => OnClickAction?.Invoke(QuestData));
         
         questStateImg.sprite =
             GameManager.Instance.UIManager.GetQuestStateSprite(QuestData.CurQuestState);
@@ -38,16 +39,12 @@ public class QuestButton : MonoBehaviour
     {
         questStateText.text = string.Empty;
         questTitleText.text = string.Empty;
-        
         questStateImg.sprite = null;
+
+        OnClickAction = null;
         gameObject.GetComponent<Button>().onClick.RemoveAllListeners();
     }
-
-    private void QuestClickEvent()
-    {
-        GameManager.Instance.UIManager.OnQuestClickEvent(transform.GetSiblingIndex());
-    }
-
+    
     private void QuestStateTextUpdate(EQuestState state)
     {
         questStateText.text = state switch

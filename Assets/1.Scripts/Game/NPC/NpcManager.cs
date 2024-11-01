@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 
 public class NpcManager
 {
-    public event Action EnterInteraction = null;
-    public event Action ExitInteraction = null;
+    public event Action<bool> InteractionEvent = null;
     
     private readonly Dictionary<string, NpcController> _npcDic;
     
@@ -35,7 +34,7 @@ public class NpcManager
             return;
         }
         
-        EnterInteraction?.Invoke();
+        InteractionEvent?.Invoke(true);
     }
 
     private void OnExitInteraction(InputAction.CallbackContext context)
@@ -45,6 +44,6 @@ public class NpcManager
             return;
         }
         
-        ExitInteraction?.Invoke();
+        InteractionEvent?.Invoke(false);
     }
 }

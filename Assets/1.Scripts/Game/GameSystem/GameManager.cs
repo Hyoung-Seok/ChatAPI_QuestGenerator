@@ -69,6 +69,7 @@ public class GameManager : MonoBehaviour
         NpcManager = new NpcManager();
         UIManager.Init();
         questManager.Init();
+        QuestUIManager.Init();
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;
@@ -82,6 +83,20 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         _isLockMouse = false;
+    }
+
+    public void ChangePlayerState(string state)
+    {
+        switch (state)
+        {
+            case "Move":
+                Player.ChangeMainState(Player.MoveState);
+                break;
+            
+            case "Interaction":
+                Player.ChangeMainState(Player.InteractionState);
+                break;
+        }
     }
 
     private void OnEscapeAction(InputAction.CallbackContext context)
