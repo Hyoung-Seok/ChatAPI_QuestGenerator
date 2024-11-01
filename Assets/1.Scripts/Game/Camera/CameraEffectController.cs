@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -22,9 +23,9 @@ public class CameraEffectController
     private readonly CinemachineImpulseSource[] _aimImpulseSource;
     
     // Vignette
-    private readonly WaitForEndOfFrame _waitForEndOfFrame;
-    private float _maxIntensity;
-    private float _fadeSpeed;
+    private readonly float _maxIntensity;
+    private readonly float _fadeSpeed;
+    private bool _isHealthWarning;
     private float _curTime;
     
     public CameraEffectController(PlayerCameraData data)
@@ -43,7 +44,6 @@ public class CameraEffectController
 
         _fadeSpeed = data.FadeSpeed;
         _maxIntensity = data.MaxVignetteIntensity;
-        _waitForEndOfFrame = new WaitForEndOfFrame();
     }
 
     public void TransitionCamera(EPlayerInputState state)
@@ -85,7 +85,7 @@ public class CameraEffectController
         }
     }
 
-    public IEnumerator HitCameraEffect()
+    public async UniTask HitCameraEffectRoutine()
     {
         _vignette.intensity.value = _maxIntensity;
         
@@ -94,25 +94,32 @@ public class CameraEffectController
             _vignette.intensity.value =
                 Mathf.MoveTowards(_vignette.intensity.value, 0, Time.deltaTime * _fadeSpeed);
 
-            yield return _waitForEndOfFrame;
+            await UniTask.Yield(PlayerLoopTiming.Update);
         }
     }
 
-    public IEnumerator HealthWarningEffect()
+    public void StartHealthWarningEffect()
     {
-        while (true)
+        _isHealthWarning = true;
+        HealthWarningEffect().Forget();
+    }
+
+    public void StopHealthWarningEffect()
+    {
+        _isHealthWarning = false;
+    }
+
+    private async UniTask HealthWarningEffect()
+    {
+        while (_isHealthWarning)
         {
             _curTime += Time.deltaTime * _fadeSpeed * 2;
             var intensity = Mathf.Abs(Mathf.Sin(_curTime) * _maxIntensity);
 
             _vignette.intensity.value = intensity;
-            yield return _waitForEndOfFrame;
+            await UniTask.Yield(PlayerLoopTiming.Update);
         }
-    }
 
-    public void ResetVignetteValue()
-    {
         _vignette.intensity.value = 0;
     }
-    
 }
