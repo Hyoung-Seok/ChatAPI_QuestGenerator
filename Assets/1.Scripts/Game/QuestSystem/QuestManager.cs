@@ -11,15 +11,18 @@ public enum EQuestState
 }
 public class QuestManager : MonoBehaviour
 {
+    [Header("Data")]
     [SerializeField] private List<QuestData> curProcessQuest;
+    [SerializeField] private List<QuestDisplay> curQuestDisplay;
+    
+    [Header("Component")]
     [SerializeField] private GameObject curQuestPanel;
     [SerializeField] private Transform questPanelParent;
-    [SerializeField] private List<QuestDisplay> _curQuestDisplay;
 
     public void Init()
     {
         curProcessQuest = new List<QuestData>();
-        _curQuestDisplay = new List<QuestDisplay>();
+        curQuestDisplay = new List<QuestDisplay>();
         
         EnemyBaseController.OnQuestUpdate += CheckEnemy;
     }
@@ -31,7 +34,7 @@ public class QuestManager : MonoBehaviour
         var obj = Instantiate(curQuestPanel, questPanelParent).GetComponent<QuestDisplay>();
         obj.UpdateQuestDisplay(data.Title, data.TargetInfos, data.QuestType);
         
-        _curQuestDisplay.Add(obj);
+        curQuestDisplay.Add(obj);
     }
 
     public void RemoveQuestData(string key)
@@ -45,10 +48,10 @@ public class QuestManager : MonoBehaviour
                 continue;
             }
 
-            var obj = _curQuestDisplay[index];
+            var obj = curQuestDisplay[index];
             Destroy(obj.gameObject);
             curProcessQuest.RemoveAt(index);
-            _curQuestDisplay.RemoveAt(index);
+            curQuestDisplay.RemoveAt(index);
 
             break;
         }
@@ -70,7 +73,7 @@ public class QuestManager : MonoBehaviour
                 if (quest.CurQuestState == EQuestState.Completion) continue;
                 
                 target.CurTargetCount++;
-                _curQuestDisplay[index].UpdateQuestDisplay(quest.TargetInfos, quest.QuestType);
+                curQuestDisplay[index].UpdateQuestDisplay(quest.TargetInfos, quest.QuestType);
                 
                 if (target.CurTargetCount == target.TargetCount)
                 {
