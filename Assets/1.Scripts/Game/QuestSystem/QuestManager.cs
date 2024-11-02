@@ -61,7 +61,7 @@ public class QuestManager : MonoBehaviour
     public void SetDeliverQuest(int index)
     {
         var deliverQuestData = CurNpcQuest[index];
-        var deliverFinishQuest = CurInteractionNpc.GetNextQuestAndRemoveCurrentQuest(deliverQuestData);
+        var deliverFinishQuest = CurInteractionNpc.GetNextQuestAndRemove(deliverQuestData);
         
         // 체인 퀘스트 등록
         deliverFinishQuest.ChainQuest = new KeyValuePair<string, QuestData>(deliverQuestData.Title, deliverQuestData);

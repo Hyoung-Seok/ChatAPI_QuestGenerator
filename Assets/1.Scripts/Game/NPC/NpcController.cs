@@ -82,7 +82,7 @@ public class NpcController : Interactable
         }
     }
 
-    public QuestData GetNextQuestAndRemoveCurrentQuest(QuestData data)
+    public QuestData GetNextQuestAndRemove(QuestData data)
     {
         QuestData result = null;
         

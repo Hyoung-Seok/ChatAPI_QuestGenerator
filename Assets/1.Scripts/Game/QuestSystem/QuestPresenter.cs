@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class QuestPresenter
 {
-    private QuestUIManager _questUIManager;
-    private QuestManager _questManager;
-    private PlayerInventory _playerInventory;
+    private readonly QuestUIManager _questUIManager;
+    private readonly QuestManager _questManager;
+    private readonly PlayerInventory _playerInventory;
     private int _index = 0;
     
     public QuestPresenter(QuestUIManager uiManager, QuestManager questManager, PlayerInventory inventory)

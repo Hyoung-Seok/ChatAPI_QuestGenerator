@@ -17,7 +17,7 @@ MonoBehaviour:
   questType: 2
   npcName: "\uCC30\uB9AC\uC911\uB839"
   targetInfo: []
-  curQuestState: 0
+  curQuestState: 2
   scriptsData:
     startScripts: []
     acceptScript: 
