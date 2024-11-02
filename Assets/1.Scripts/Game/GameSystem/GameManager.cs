@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Manager")] 
     [SerializeField] private AudioManager audioManager;
-    [FormerlySerializedAs("uiManager")] [SerializeField] private PlayerUIManger playerUIManger;
+    [SerializeField] private PlayerUIManger playerUIManger;
     [SerializeField] private QuestManager questManager;
     [SerializeField] private QuestUIManager questUIManger;
     public NpcManager NpcManager { get; private set; }
@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public WeaponManager WeaponManager => weaponManager;
     public PlayerController Player { get; private set; }
     public PlayerCameraController CameraController { get; private set; }
+    public PlayerInventory PlayerInventory { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
     public PlayerUIManger PlayerUIManger => playerUIManger;
     public AudioManager AudioManager => audioManager;
@@ -66,15 +67,17 @@ public class GameManager : MonoBehaviour
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
         PlayerInput = playerComponentData.PlayerInput;
+        PlayerInventory = new PlayerInventory();
         
         NpcManager = new NpcManager();
         questManager.Init();
         QuestUIManager.Init();
-        QuestPresenter = new QuestPresenter(questUIManger, questManager);
+        QuestPresenter = new QuestPresenter(questUIManger, questManager, PlayerInventory);
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;
         PlayerInput.actions["Escape"].performed += OnEscapeAction;
+        PlayerInventory.CheckQuestAction += questManager.CheckItem;
         
         Cursor.lockState = CursorLockMode.Locked;
         _isLockMouse = true;

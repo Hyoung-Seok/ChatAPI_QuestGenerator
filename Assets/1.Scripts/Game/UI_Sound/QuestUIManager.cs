@@ -28,6 +28,7 @@ public class QuestUIManager : MonoBehaviour
     private Dictionary<string, QuestDisplay> _questDisplayViewDic;
     private string _npcName;
     private string _defaultText;
+    private bool _isMagazineUIEnable;
 
     public event Action OnQuestAcceptClickEvent;
     public event Action OnQuestRefuseClickEvent;
@@ -53,8 +54,14 @@ public class QuestUIManager : MonoBehaviour
     {
         textField.text = _defaultText = text;
         npcField.text = _npcName = name;
+        
         questView.SetActive(true);
+        processQuestPanel.SetActive(false);
+
+        _isMagazineUIEnable = GameManager.Instance.PlayerUIManger.MagazineUIEnable;
+        GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(false);
         GameManager.Instance.SetCursorState(CursorLockMode.None);
+        
 
         if (questContent.childCount != 0)
         {
@@ -124,6 +131,13 @@ public class QuestUIManager : MonoBehaviour
     public void DisableQuestDisplay()
     {
         questView.SetActive(false);
+        processQuestPanel.SetActive(true);
+
+        if (_isMagazineUIEnable == true)
+        {
+            GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(true);
+        }
+        
         GameManager.Instance.SetCursorState(CursorLockMode.Locked);
     }
 

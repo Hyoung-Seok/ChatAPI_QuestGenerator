@@ -8,12 +8,14 @@ public class QuestPresenter
 {
     private QuestUIManager _questUIManager;
     private QuestManager _questManager;
+    private PlayerInventory _playerInventory;
     private int _index = 0;
     
-    public QuestPresenter(QuestUIManager uiManager, QuestManager questManager)
+    public QuestPresenter(QuestUIManager uiManager, QuestManager questManager, PlayerInventory inventory)
     {
         _questUIManager = uiManager;
         _questManager = questManager;
+        _playerInventory = inventory;
 
         _questManager.UpdateProcessQuest += UpdateProcessQuestView;
     }
@@ -112,6 +114,11 @@ public class QuestPresenter
             if (_questManager.RemoveClearQuest(data) == false)
             {
                 return;
+            }
+
+            if (data.QuestType == EQuestType.Get)
+            {
+                _playerInventory.RemoveItem(data);
             }
         
             _questUIManager.RemoveProcessQuest(data.Title);

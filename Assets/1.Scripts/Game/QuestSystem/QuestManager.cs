@@ -77,8 +77,7 @@ public class QuestManager : MonoBehaviour
         {
             return;
         }
-
-        var index = 0;
+        
         foreach (var quest in curProcessQuest)
         {
             foreach (var target in quest.TargetInfos)
@@ -94,8 +93,30 @@ public class QuestManager : MonoBehaviour
                     quest.CurQuestState = EQuestState.Completion;
                 }
             }
-            
-            index++;
+        }
+    }
+
+    public void CheckItem(ItemData data)
+    {
+        if (curProcessQuest.Count <= 0)
+        {
+            return;
+        }
+
+        foreach (var questData in curProcessQuest)
+        {
+            foreach (var target in questData.TargetInfos)
+            {
+                if(string.Equals(data.ItemName, target.TargetName) == false) continue;
+
+                target.CurTargetCount = data.Count;
+                UpdateProcessQuest?.Invoke(questData);
+                
+                if (target.CurTargetCount == target.TargetCount)
+                {
+                    questData.CurQuestState = EQuestState.Completion;
+                }
+            }
         }
     }
 }
