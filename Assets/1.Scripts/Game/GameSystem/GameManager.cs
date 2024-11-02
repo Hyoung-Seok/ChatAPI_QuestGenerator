@@ -107,7 +107,6 @@ public class GameManager : MonoBehaviour
             return;
         }
         
-        _isLockMouse = !_isLockMouse;
         Cursor.lockState = (_isLockMouse) ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
