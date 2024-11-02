@@ -6,6 +6,7 @@ using Cinemachine;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Serialization;
 
 public class NpcController : Interactable
 {
@@ -17,10 +18,13 @@ public class NpcController : Interactable
     
     [Header("Setting")] 
     [SerializeField] private float headWeightTime = 1.0f;
-    [SerializeField] private string defaultText;
+    [field: SerializeField] public string DefaultText { get; private set; }
 
     [Header("Quest")] 
     [SerializeField] private List<QuestContainer> questContainer;
+
+    public event Action OnEnableQuestUIAction;
+    public event Action OnDisableQuestUIAction;
     
     private void Start()
     {
@@ -43,60 +47,58 @@ public class NpcController : Interactable
     {
         GameManager.Instance.NpcManager.InteractionEvent -= OnInteractionEvent;
     }
-
-    public void RemoveQuestData(int index)
+    
+    public List<QuestData> GetFirstQuestDataList()
     {
-        if (questContainer[index].QuestData[0].QuestType == EQuestType.Deliver)
-        {
-            // 연결된 체인 퀘스트 삭제
-            var pair = questContainer[index].QuestData[0].ChainQuest;
-            GameManager.Instance.NpcManager.GetNpcControllerOrNull(pair.Key)?.RemoveDeliverQuest(pair.Value);
-        }
-        
-        questContainer[index].QuestData.RemoveAt(0);
+        var questList = new List<QuestData>();
 
-        if (questContainer[index].QuestData.Count <= 0)
+        foreach (var container in questContainer)
         {
-            questContainer.RemoveAt(index);
-            return;
-        }
-        
-        var curQuest = new List<QuestData>();
-        foreach (var quest in questContainer)
-        {
-            curQuest.Add(quest.QuestData[0]);   
-        }
-            
-        GameManager.Instance.QuestUIManager.UpdateQuestPanel(curQuest);
-    }
-
-    public void SetDeliverQuestData(QuestData data)
-    {
-        // 전달하기 퀘스트의 타겟이 되는 NpcController 얻어오기
-        var target = GameManager.Instance.NpcManager.GetNpcControllerOrNull(data.TargetInfos[0].TargetName);
-        int num;
-        var index = -1;
-
-        // 컨테이너를 순회하며 전달 퀘스트와 전달 완료 퀘스트 얻어오기
-        for (num = 0; num < questContainer.Count; ++num)
-        {
-            index = questContainer[num].QuestData.IndexOf(data);
-            if (index >= 0 && index <= questContainer[num].QuestData.Count - 1)
+            if (container.QuestData.Count != 0)
             {
-                break;
+                questList.Add(container.QuestData[0]);
             }
         }
-        
-        // 타겟에 배달 퀘스트 추가
-        target.AddDeliverQuest(questContainer[num].QuestData[index + 1]);
-        
-        // 퀘스트 데이터의 전달 완료 퀘스트에 현재 전달 퀘스트 등록
-        questContainer[num].QuestData[index + 1].ChainQuest = new KeyValuePair<string, QuestData>(NpcName, questContainer[num].QuestData[index]);
-        // 내가 가지고 있는 전달 완료 퀘스트 삭제
-        questContainer[num].QuestData.RemoveAt(index + 1);
+
+        return questList;
     }
 
-    private void AddDeliverQuest(QuestData data)
+    public void RemoveQuestData(QuestData data)
+    {
+        foreach (var container in questContainer)
+        {
+            if (container.QuestData.Contains(data) == false)
+            {
+                continue;
+            }
+            
+            container.QuestData.Remove(data);
+
+            if (container.QuestData.Count <= 0)
+            {
+                questContainer.Remove(container);
+            }
+            break;
+        }
+    }
+
+    public QuestData GetNextQuestAndRemoveCurrentQuest(QuestData data)
+    {
+        QuestData result = null;
+        
+        foreach (var quest in questContainer)
+        {
+            if(quest.QuestData.Contains(data) == false) continue;
+
+            var index = quest.QuestData.IndexOf(data);
+            result = quest.QuestData[index + 1];
+            quest.QuestData.RemoveAt(index + 1);
+        }
+
+        return result;
+    }
+    
+    public void AddDeliverQuest(QuestData data)
     {
         data.CurQuestState = EQuestState.Completion;
         var container = new QuestContainer
@@ -106,22 +108,7 @@ public class NpcController : Interactable
 
         questContainer.Add(container);
     }
-
-    private void RemoveDeliverQuest(QuestData data)
-    {
-        foreach (var container in questContainer)
-        {
-            var index = container.QuestData.IndexOf(data);
-            if (index <= -1)
-            {
-                continue;
-            }
-            
-            container.QuestData.RemoveAt(index);
-            GameManager.Instance.QuestUIManager.DeregisterProcessQuest(data.Title);
-        }
-    }
-
+    
     private void OnInteractionEvent(bool enable)
     {
         if (enable == true)
@@ -160,14 +147,18 @@ public class NpcController : Interactable
                 }
 
                 headRig.weight = 1;
-                
-                GameManager.Instance.QuestUIManager.EnableQuestDisplay(GetFirstQuestDataList(), NpcName, defaultText);
-                GameManager.Instance.QuestManager.CurInteractionNpc = this;
+       
+                GameManager.Instance.QuestManager.UpdateQuestManagerData(this);
+                GameManager.Instance.QuestPresenter.Init();
+       
+                OnEnableQuestUIAction?.Invoke();
                 break;
             
             case false:
-                GameManager.Instance.QuestUIManager.DisableQuestDisplay();
-                GameManager.Instance.QuestManager.CurInteractionNpc = null;
+                OnDisableQuestUIAction?.Invoke();
+                
+                GameManager.Instance.QuestPresenter.Clear();
+                GameManager.Instance.QuestManager.ResetQuestManagerData();
                 
                 while (curTime < headWeightTime)
                 {
@@ -179,20 +170,5 @@ public class NpcController : Interactable
                 headRig.weight = 0;
                 break;
         }
-    }
-
-    private List<QuestData> GetFirstQuestDataList()
-    {
-        var questList = new List<QuestData>();
-
-        foreach (var container in questContainer)
-        {
-            if (container.QuestData.Count != 0)
-            {
-                questList.Add(container.QuestData[0]);
-            }
-        }
-
-        return questList;
     }
 }

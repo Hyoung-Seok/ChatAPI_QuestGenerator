@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
     public PlayerInput PlayerInput { get; private set; }
     public QuestManager QuestManager => questManager;
     public QuestUIManager QuestUIManager => questUIManger;
+    public QuestPresenter QuestPresenter { get; set; }
     
     #endregion
     
@@ -69,6 +70,7 @@ public class GameManager : MonoBehaviour
         NpcManager = new NpcManager();
         questManager.Init();
         QuestUIManager.Init();
+        QuestPresenter = new QuestPresenter(questUIManger, questManager);
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;
@@ -78,10 +80,10 @@ public class GameManager : MonoBehaviour
         _isLockMouse = true;
     }
 
-    public void UnlockCursor()
+    public void SetCursorState(CursorLockMode mode)
     {
-        Cursor.lockState = CursorLockMode.None;
-        _isLockMouse = false;
+        Cursor.lockState = mode;
+        _isLockMouse = Cursor.lockState == CursorLockMode.Locked;
     }
 
     public void ChangePlayerState(string state)

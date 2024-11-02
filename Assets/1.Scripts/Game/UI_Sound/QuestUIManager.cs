@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,16 +24,14 @@ public class QuestUIManager : MonoBehaviour
     [SerializeField] private GameObject processQuestPanel;
     [SerializeField] private GameObject questTextPrefabs;
     [SerializeField] private Transform questTextParent;
-    
-    private Queue<QuestButton> _questButtonPool;
-    private List<QuestButton> _curDisplayButton;
-    private List<QuestData> _curDisplayQuest;
-    private QuestManager _questManager;
-    
-    private string _curInteractionNpcName;
-    private string _defaultText;
-    private bool _isMagazineUIEnable;
 
+    private Dictionary<string, QuestDisplay> _questDisplayViewDic;
+    private string _npcName;
+    private string _defaultText;
+
+    public event Action OnQuestAcceptClickEvent;
+    public event Action OnQuestRefuseClickEvent;
+    
     #region ButtonEvent
 
     private bool _isInputNextButton;
@@ -43,156 +42,102 @@ public class QuestUIManager : MonoBehaviour
 
     public void Init()
     {
-        _questButtonPool = new Queue<QuestButton>();
-        _curDisplayButton = new List<QuestButton>();
-        
-        CreateQuestButton(10);
+        _questDisplayViewDic = new Dictionary<string, QuestDisplay>();
         
         buttonList[(int)EButtonType.Next].onClick.AddListener(() => _isInputNextButton = true);
         buttonList[(int)EButtonType.Accept].onClick.AddListener(() => _isInputAcceptButton = true);
         buttonList[(int)EButtonType.Refuse].onClick.AddListener(() => _isInputRefuseButton = true);
-
-        _questManager = GameManager.Instance.QuestManager;
     }
-    
-    public void EnableQuestDisplay(List<QuestData> data, string npcName, string defaultText)
-    {
-        _curDisplayQuest = data;
-        npcField.text = _curInteractionNpcName = npcName;
-        textField.text = _defaultText = defaultText;
-        questView.SetActive(true);
-        
-        GameManager.Instance.UnlockCursor();
 
-        _isMagazineUIEnable = GameManager.Instance.PlayerUIManger.MagazineUIEnable;
-        GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(false);
+    public void EnableQuestDisplay(List<QuestData> data, string name, string text, Action<int> clickEvent)
+    {
+        textField.text = _defaultText = text;
+        npcField.text = _npcName = name;
+        questView.SetActive(true);
+        GameManager.Instance.SetCursorState(CursorLockMode.None);
+
+        if (questContent.childCount != 0)
+        {
+            foreach (Transform child in questContent)
+            {
+                Destroy(child.gameObject);
+            }
+        }
         
-        if (data.Count <= 0)
+        foreach (var quest in data)
+        {
+            var obj = Instantiate(questButtonPrefabs, questContent).GetComponent<QuestButton>();
+            
+            obj.OnClickAction += clickEvent;
+            obj.SetButtonData(quest);
+        }
+    }
+
+    public void UpdateQuestButton(List<QuestData> data, Action<int> clickEvent)
+    {
+        if (questContent.childCount != 0)
+        {
+            foreach (Transform child in questContent)
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        
+        foreach (var quest in data)
+        {
+            var obj = Instantiate(questButtonPrefabs, questContent).GetComponent<QuestButton>();
+            
+            obj.OnClickAction += clickEvent;
+            obj.SetButtonData(quest);
+        }
+    }
+
+    public void RegisterProcessQuest(QuestData data)
+    {
+        var questDisplay = Instantiate(questTextPrefabs, questTextParent).GetComponent<QuestDisplay>();
+        questDisplay.UpdateQuestDisplay(data.Title, data.TargetInfos, data.QuestType);
+        
+        _questDisplayViewDic.Add(data.Title, questDisplay);
+    }
+
+    public void UpdateProcessQuest(QuestData data)
+    {
+        if (_questDisplayViewDic.TryGetValue(data.Title, out var obj) == false)
         {
             return;
         }
-
-        foreach (var quest in _curDisplayQuest)
-        {
-            GetQuestButton(quest);
-        }
+        
+        obj.UpdateQuestDisplay(data);
     }
-
+    
+    public void RemoveProcessQuest(string key)
+    {
+        if (_questDisplayViewDic.TryGetValue(key, out var display) == false)
+        {
+            return;
+        }
+        
+        Destroy(display.gameObject);
+        _questDisplayViewDic.Remove(key);
+    }
+    
     public void DisableQuestDisplay()
     {
-        _curInteractionNpcName = string.Empty;
-        _curDisplayQuest.Clear();
         questView.SetActive(false);
-        
-        ReturnQuestButtonToPool();
-        GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(_isMagazineUIEnable);
+        GameManager.Instance.SetCursorState(CursorLockMode.Locked);
     }
 
-    public void UpdateQuestPanel(List<QuestData> data)
-    {
-        _curDisplayQuest.Clear();
-        _curDisplayQuest = data;
-        
-        if (data.Count <= 0)
-        {
-            return;
-        }
-
-        foreach (var quest in _curDisplayQuest)
-        {
-            GetQuestButton(quest);
-        }
-    }
-    
-    private void RegisterProcessQuest(QuestData data)
-    {
-        data.CurQuestState = EQuestState.Processing;
-        
-        var obj = Instantiate(questTextPrefabs, questTextParent).GetComponent<QuestDisplay>();
-        obj.UpdateQuestDisplay(data.Title, data.TargetInfos, data.QuestType);
-        
-        _questManager.CurQuestDisplay.Add(obj);
-    }
-
-    public void DeregisterProcessQuest(string key)
-    {
-        var questDisplay = _questManager.CurQuestDisplay.FirstOrDefault(x => string.Equals(x.Title, key));
-
-        if (questDisplay == null)
-        {
-            return;
-        }
-        
-        _questManager.CurQuestDisplay.Remove(questDisplay);
-        Destroy(questDisplay.gameObject);
-    }
-
-    private async void OnQuestButtonClickEvent(int index)
-    {
-        Debug.Log(index);
-        var data = _curDisplayQuest[index];
-        EnableButton(EButtonType.Next);
-        questListPanel.SetActive(false);
-
-        switch (data.CurQuestState)
-        {
-            case EQuestState.Start:
-                await PrintScriptsListTextRoutine(data.ScriptsData.StartScripts, true);
-                break;
-            
-            case EQuestState.Processing:
-                await PrintStringTextRoutine(data.ScriptsData.ProcessScript);
-                break;
-            
-            case EQuestState.Completion:
-                await PrintScriptsListTextRoutine(data.ScriptsData.ClearScript, false);
-                
-                DeregisterProcessQuest(data.Title);
-                ReturnToPoolQuestDisplay(index);
-                _questManager.RemoveClearQuest(index, data);
-                break;
-            
-            default:
-                return;
-        }
-
-        if (_isInputAcceptButton == true)
-        {
-            await PrintStringTextRoutine(data.ScriptsData.AcceptScript);
-            
-            if (data.QuestType == EQuestType.Deliver)
-            {
-                GameManager.Instance.QuestManager.CurInteractionNpc.SetDeliverQuestData(data);
-            }
-       
-            RegisterProcessQuest(_curDisplayQuest[index]);
-            questContent.GetChild(index).GetComponent<QuestButton>().UpdateButtonState(EQuestState.Processing);
-                
-            _questManager.CurrentProcessQuest.Add(data);   
-        }
-
-        if (_isInputRefuseButton == true)
-        {
-            await PrintStringTextRoutine(data.ScriptsData.RefuseScript);
-        }
-        
-        EnableButton(EButtonType.None);
-    }
-
-    public Sprite GetQuestStateSprite(EQuestState state)
-    {
-        return questStateSprite[(int)state];
-    }
-    
     #region PrintText
     
-    private async UniTask PrintScriptsListTextRoutine(IReadOnlyList<string> scripts, bool enableAcceptButton)
+    public async UniTask PrintText(List<string> scripts, bool enableAcceptBt)
     {
         textField.text = string.Empty;
+        EnableButton(EButtonType.Next);
+        questListPanel.SetActive(false);
         
-        if (enableAcceptButton == true)
+        if (enableAcceptBt == true)
         {
-            for(var i = 0; i < scripts.Count - 1; ++i)
+            for (var i = 0; i < scripts.Count - 1; ++i)
             {
                 foreach (var c in scripts[i])
                 {
@@ -209,33 +154,42 @@ public class QuestUIManager : MonoBehaviour
                 }
 
                 await UniTask.WaitUntil(() => _isInputNextButton == true);
-
                 _isInputNextButton = false;
                 textField.text = string.Empty;
             }
             
             EnableButton(EButtonType.Accept);
+            
             foreach (var c in scripts[^1])
             {
                 textField.text += c;
 
-                if (_isInputAcceptButton || _isInputRefuseButton)
+                if (_isInputAcceptButton == true || _isInputRefuseButton == true)
                 {
                     textField.text = scripts[^1];
-                    _isInputAcceptButton = _isInputRefuseButton = false;
+                    _isInputRefuseButton = _isInputAcceptButton = false;
                     break;
                 }
 
                 await UniTask.Delay(textSpeed);
             }
-        
-            await UniTask.WaitUntil(() => _isInputAcceptButton || _isInputRefuseButton);
+            
+            await UniTask.WaitUntil(() => _isInputAcceptButton == true || _isInputRefuseButton == true);
             
             textField.text = string.Empty;
             
+            if (_isInputAcceptButton)
+            {
+                OnQuestAcceptClickEvent?.Invoke();
+            }
+            else if (_isInputRefuseButton)
+            {
+                OnQuestRefuseClickEvent?.Invoke();
+            }
+            
             return;
         }
-        
+
         foreach (var str in scripts)
         {
             foreach (var c in str)
@@ -248,52 +202,50 @@ public class QuestUIManager : MonoBehaviour
                     _isInputNextButton = false;
                     break;
                 }
-
+                
                 await UniTask.Delay(textSpeed);
             }
             
             await UniTask.WaitUntil(() => _isInputNextButton == true);
-        
-            textField.text = string.Empty;
             _isInputNextButton = false;
+            textField.text = string.Empty;
         }
-    }
-
-    private async UniTask PrintStringTextRoutine(string text)
-    {
+        
         textField.text = string.Empty;
+        EnableButton(EButtonType.None);
+    }
+    
+    public async UniTask PrintText(string str)
+    {
+        questListPanel.SetActive(false);
         EnableButton(EButtonType.Next);
-
-        foreach (var c in text)
+        textField.text = string.Empty;
+        
+        foreach (var c in str)
         {
             textField.text += c;
 
-            if (_isInputNextButton)
+            if (_isInputNextButton == true)
             {
-                textField.text = text;
+                textField.text = str;
                 _isInputNextButton = false;
                 break;
             }
-
+            
             await UniTask.Delay(textSpeed);
         }
         
         await UniTask.WaitUntil(() => _isInputNextButton == true);
-        
-        _isInputNextButton = false;
+     
         textField.text = string.Empty;
+        EnableButton(EButtonType.None);
     }
     
     #endregion
     
-    private void AllButtonValueDisable()
-    {
-        _isInputNextButton = _isInputAcceptButton = _isInputRefuseButton = false;
-    }
-    
     private void EnableButton(EButtonType type)
     {
-        AllButtonValueDisable();
+        _isInputNextButton = _isInputAcceptButton = _isInputRefuseButton = false;
         
         switch (type)
         {
@@ -314,7 +266,6 @@ public class QuestUIManager : MonoBehaviour
             
             case EButtonType.None:
                 buttonList.ForEach(x => x.gameObject.SetActive(false));
-
                 questListPanel.gameObject.SetActive(true);
                 textField.text = _defaultText;
                 break;
@@ -324,64 +275,11 @@ public class QuestUIManager : MonoBehaviour
         }
     }
     
-
-    #region ObjectPoolFunction
-
-    private void CreateQuestButton(int count)
+    public Sprite GetQuestStateSprite(EQuestState state)
     {
-        for (var i = 0; i < count; ++i)
-        {
-            var obj = Instantiate(questButtonPrefabs, transform).GetComponent<QuestButton>();
-            obj.gameObject.SetActive(false);
-            _questButtonPool.Enqueue(obj);
-        }
+        return questStateSprite[(int)state];
     }
 
-    private void GetQuestButton(QuestData data)
-    {
-        if (_questButtonPool.Count < 0)
-        {
-            CreateQuestButton(5);
-        }
-
-        var obj = _questButtonPool.Dequeue();
-        obj.SetButtonData(data);
-        obj.OnClickAction += OnQuestButtonClickEvent;
-        
-        obj.gameObject.transform.SetParent(questContent);
-        obj.gameObject.SetActive(true);
-        
-        _curDisplayButton.Add(obj);
-    }
-
-    private void ReturnQuestButtonToPool()
-    {
-        foreach (Transform child in questContent)
-        {
-            var button = child.GetComponent<QuestButton>();
-            button.ResetButtonData();
-            button.gameObject.transform.SetParent(transform);
-            button.gameObject.SetActive(false);
-            
-            _questButtonPool.Enqueue(button);
-        }
-        
-        _curDisplayButton.Clear();
-    }
-    
-    private void ReturnToPoolQuestDisplay(int index)
-    {
-        var obj = _curDisplayButton[index];
-        _curDisplayQuest.RemoveAt(index);
-        
-        obj.ResetButtonData();
-        obj.transform.SetParent(transform);
-        obj.gameObject.SetActive(false);
-        
-        _questButtonPool.Enqueue(obj);
-    }
-
-    #endregion
 }
 
 public enum EButtonType

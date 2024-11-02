@@ -40,15 +40,15 @@ public class QuestDisplay : MonoBehaviour
         }
     }
 
-    public void UpdateQuestDisplay(List<TargetInfo> targets, EQuestType type)
+    public void UpdateQuestDisplay(QuestData data)
     {
         questCount.text = string.Empty;
         
-        switch (type)
+        switch (data.QuestType)
         {
             case EQuestType.Fight:
             case EQuestType.Get:
-                foreach (var target in targets)
+                foreach (var target in data.TargetInfos)
                 {
                     questCount.text +=
                         $"{target.TargetName} : {target.CurTargetCount} / {target.TargetCount} \n";
@@ -56,7 +56,7 @@ public class QuestDisplay : MonoBehaviour
                 break;
             
             case EQuestType.Deliver:
-                foreach (var target in targets)
+                foreach (var target in data.TargetInfos)
                 {
                     questCount.text +=
                         $"{target.TargetName} 에게 물건 전해주기. \n";
