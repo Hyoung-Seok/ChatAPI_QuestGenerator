@@ -1,3 +1,7 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,6 +10,8 @@ public class PlayerUIManger : MonoBehaviour
 {
     [Header("CrossHair")] 
     [SerializeField] private GameObject crossHair;
+    [SerializeField] private GameObject headShotCrossHair;
+    [SerializeField] private float delayTime = 0.02f;
 
     [Header("Magazine")] 
     [SerializeField] private GameObject magazineUI;
@@ -13,10 +19,6 @@ public class PlayerUIManger : MonoBehaviour
     [SerializeField] private TextMeshProUGUI maxBulletCount;
     [SerializeField] private TextMeshProUGUI magCount;
     
-    [Header("Animation Clip")] 
-    [SerializeField] private Animator crossHairAnimation;
-    
-    private readonly int _enableKey = Animator.StringToHash("Enable");
     public bool MagazineUIEnable => magazineUI.activeSelf;
     
     #region Aim&Shoot State
@@ -25,7 +27,7 @@ public class PlayerUIManger : MonoBehaviour
     {
         if (isHeadshot == true)
         {
-            crossHairAnimation.SetTrigger(_enableKey);
+            EnableHeadShotCrossHair().Forget();
         }
         else
         {
@@ -52,6 +54,15 @@ public class PlayerUIManger : MonoBehaviour
     {
         curBulletCount.text = cur.ToString();
         maxBulletCount.text = max.ToString();
+    }
+
+    private async UniTask EnableHeadShotCrossHair()
+    {
+        headShotCrossHair.SetActive(true);
+
+        await Task.Delay(TimeSpan.FromSeconds(delayTime));
+        
+        headShotCrossHair.SetActive(false);
     }
     
     #endregion
