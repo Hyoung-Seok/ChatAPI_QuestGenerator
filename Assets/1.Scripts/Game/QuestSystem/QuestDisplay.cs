@@ -67,4 +67,32 @@ public class QuestDisplay : MonoBehaviour
                 return;
         }
     }
+    
+    public void UpdateQuestDisplay(QuestData data, int count)
+    {
+        questCount.text = string.Empty;
+        
+        switch (data.QuestType)
+        {
+            case EQuestType.Fight:
+            case EQuestType.Get:
+                foreach (var target in data.TargetInfos)
+                {
+                    questCount.text +=
+                        $"{target.TargetName} : {count} / {target.TargetCount} \n";
+                }
+                break;
+            
+            case EQuestType.Deliver:
+                foreach (var target in data.TargetInfos)
+                {
+                    questCount.text +=
+                        $"{target.TargetName} 에게 물건 전해주기. \n";
+                }
+                break;
+            
+            default:
+                return;
+        }
+    }
 }

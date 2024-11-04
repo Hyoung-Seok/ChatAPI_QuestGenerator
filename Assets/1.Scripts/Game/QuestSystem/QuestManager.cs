@@ -19,6 +19,7 @@ public class QuestManager : MonoBehaviour
     [field: SerializeField] public NpcController CurInteractionNpc { get; private set; }
     
     public event Action<QuestData> UpdateProcessQuest;
+    public event Action<QuestData, int> UpdateItemProcessQuest; 
     
     public void Init()
     {
@@ -82,7 +83,10 @@ public class QuestManager : MonoBehaviour
         {
             foreach (var target in quest.TargetInfos)
             {
-                if (string.Equals(enemyName, target.TargetName) == false) continue;
+                var itemName = enemyName.Replace(" ", "");
+                var targetName = target.TargetName.Replace(" ", "");
+                
+                if (string.Equals(itemName, targetName) == false) continue;
                 if (quest.CurQuestState == EQuestState.Completion) continue;
                 
                 target.CurTargetCount++;
@@ -96,7 +100,7 @@ public class QuestManager : MonoBehaviour
         }
     }
 
-    public void CheckItem(ItemData data)
+    public void CheckItem(ItemData itemData, int count)
     {
         if (curProcessQuest.Count <= 0)
         {
@@ -107,10 +111,13 @@ public class QuestManager : MonoBehaviour
         {
             foreach (var target in questData.TargetInfos)
             {
-                if(string.Equals(data.ItemName, target.TargetName) == false) continue;
+                var splitItemName = itemData.ItemName.Replace(" ", "");
+                var targetName = target.TargetName.Replace(" ", "");
+                
+                if(string.Equals(splitItemName, targetName) == false) continue;
 
-                target.CurTargetCount = data.Count;
-                UpdateProcessQuest?.Invoke(questData);
+                target.CurTargetCount = count;
+                UpdateItemProcessQuest?.Invoke(questData, count);
                 
                 if (target.CurTargetCount == target.TargetCount)
                 {

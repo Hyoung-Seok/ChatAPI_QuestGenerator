@@ -7,7 +7,7 @@ using UnityEngine;
 public class PlayerInventory
 {
     private readonly Dictionary<string, int> _inventory = new Dictionary<string, int>();
-    public event Action<ItemData> CheckQuestAction; 
+    public event Action<ItemData, int> CheckQuestAction; 
     
     public void AddItem(ItemData data)
     {
@@ -17,7 +17,7 @@ public class PlayerInventory
         }
 
         _inventory[data.ItemName] += data.Count;
-        CheckQuestAction?.Invoke(data);
+        CheckQuestAction?.Invoke(data, _inventory[data.ItemName]);
         
         LogInventoryData();
     }

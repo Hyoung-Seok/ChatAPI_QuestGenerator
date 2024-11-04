@@ -117,6 +117,16 @@ public class QuestUIManager : MonoBehaviour
         obj.UpdateQuestDisplay(data);
     }
     
+    public void UpdateProcessQuest(QuestData data, int count)
+    {
+        if (_questDisplayViewDic.TryGetValue(data.Title, out var obj) == false)
+        {
+            return;
+        }
+        
+        obj.UpdateQuestDisplay(data, count);
+    }
+    
     public void RemoveProcessQuest(string key)
     {
         if (_questDisplayViewDic.TryGetValue(key, out var display) == false)

@@ -18,6 +18,7 @@ public class QuestPresenter
         _playerInventory = inventory;
 
         _questManager.UpdateProcessQuest += UpdateProcessQuestView;
+        _questManager.UpdateItemProcessQuest += UpdateProcessItemQuestView;
     }
 
     public void Init()
@@ -105,6 +106,11 @@ public class QuestPresenter
     private void UpdateProcessQuestView(QuestData data)
     {
         _questUIManager.UpdateProcessQuest(data);
+    }
+    
+    private void UpdateProcessItemQuestView(QuestData data, int count)
+    {
+        _questUIManager.UpdateProcessQuest(data, count);
     }
 
     private void RemoveClearQuest(QuestData data)
