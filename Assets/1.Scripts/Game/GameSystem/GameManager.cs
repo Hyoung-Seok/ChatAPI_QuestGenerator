@@ -20,8 +20,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Manager")] 
     [SerializeField] private AudioManager audioManager;
-    [SerializeField] private UIManager uiManager;
+    [SerializeField] private PlayerUIManger playerUIManger;
     [SerializeField] private QuestManager questManager;
+    [SerializeField] private QuestUIManager questUIManger;
     public NpcManager NpcManager { get; private set; }
 
     #region Property
@@ -31,16 +32,17 @@ public class GameManager : MonoBehaviour
     public WeaponManager WeaponManager => weaponManager;
     public PlayerController Player { get; private set; }
     public PlayerCameraController CameraController { get; private set; }
+    public PlayerInventory PlayerInventory { get; private set; }
     public CameraEffectController CameraEffect { get; private set; }
-    public UIManager UIManager => uiManager;
+    public PlayerUIManger PlayerUIManger => playerUIManger;
     public AudioManager AudioManager => audioManager;
     public PlayerInput PlayerInput { get; private set; }
     public QuestManager QuestManager => questManager;
+    public QuestUIManager QuestUIManager => questUIManger;
+    public QuestPresenter QuestPresenter { get; set; }
     
     #endregion
     
-    private IEnumerator _healthWarningEffect;
-    private bool _isPlaying = false;
     private bool _isLockMouse = false;
     
     private void Awake()
@@ -61,29 +63,44 @@ public class GameManager : MonoBehaviour
         // camera Init
         CameraController = new PlayerCameraController(playerCamData);
         CameraEffect = new CameraEffectController(playerCamData);
-
-        _healthWarningEffect = CameraEffect.HealthWarningEffect();
         
         // player Init
         Player = new PlayerController(playerStatus, playerComponentData);
         PlayerInput = playerComponentData.PlayerInput;
+        PlayerInventory = new PlayerInventory();
         
         NpcManager = new NpcManager();
-        UIManager.Init();
         questManager.Init();
+        QuestUIManager.Init();
+        QuestPresenter = new QuestPresenter(questUIManger, questManager, PlayerInventory);
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;
         PlayerInput.actions["Escape"].performed += OnEscapeAction;
+        PlayerInventory.CheckQuestAction += questManager.CheckItem;
         
         Cursor.lockState = CursorLockMode.Locked;
         _isLockMouse = true;
     }
 
-    public void UnlockCursor()
+    public void SetCursorState(CursorLockMode mode)
     {
-        Cursor.lockState = CursorLockMode.None;
-        _isLockMouse = false;
+        Cursor.lockState = mode;
+        _isLockMouse = Cursor.lockState == CursorLockMode.Locked;
+    }
+
+    public void ChangePlayerState(string state)
+    {
+        switch (state)
+        {
+            case "Move":
+                Player.ChangeMainState(Player.MoveState);
+                break;
+            
+            case "Interaction":
+                Player.ChangeMainState(Player.InteractionState);
+                break;
+        }
     }
 
     private void OnEscapeAction(InputAction.CallbackContext context)
@@ -93,7 +110,6 @@ public class GameManager : MonoBehaviour
             return;
         }
         
-        _isLockMouse = !_isLockMouse;
         Cursor.lockState = (_isLockMouse) ? CursorLockMode.Locked : CursorLockMode.None;
     }
 
@@ -116,32 +132,5 @@ public class GameManager : MonoBehaviour
 
     }
     
-    #endregion
-
-    #region Coroutine
-
-    public void StartHitCameraEffect()
-    {
-        StartCoroutine(CameraEffect.HitCameraEffect());
-    }
-
-    public void StartHealthEffect()
-    {
-        if (_isPlaying == true)
-        {
-            return;
-        }
-        
-        StartCoroutine(_healthWarningEffect);
-        _isPlaying = true;
-    }
-
-    public void StopHealthEffect()
-    {
-        StopCoroutine(_healthWarningEffect);
-        CameraEffect.ResetVignetteValue();
-        _isPlaying = false;
-    }
-
     #endregion
 }

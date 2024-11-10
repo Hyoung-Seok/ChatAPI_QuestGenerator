@@ -11,17 +11,19 @@ public class QuestData : ScriptableObject
     [SerializeField] private EQuestType questType;
     [SerializeField] private string npcName;
     [SerializeField] private List<TargetInfo> targetInfo;
+    [SerializeField] private EQuestState curQuestState;
 
     [Header("Scripts")] 
     [SerializeField] private ScriptsData scriptsData;
-
-    public EQuestState CurQuestState { get; set; }
+    
+    public EQuestState CurQuestState { get => curQuestState; set => curQuestState = value; }
     public string QuestID => questID;
     public string Title => title;
     public EQuestType QuestType => questType;
     public string NpcName => npcName;
     public List<TargetInfo> TargetInfos => targetInfo;
     public ScriptsData ScriptsData => scriptsData;
+    public KeyValuePair<string, QuestData> ChainQuest { get; set; }
     
     public void InitQuestData(List<string> valueList)
     {
@@ -47,7 +49,6 @@ public class QuestData : ScriptableObject
         CurQuestState = EQuestState.Start;
     }
     
-    
     private EQuestType ConvertQuestType(string type)
     {
         if (string.Equals(type, "Fight") == true)
@@ -69,6 +70,7 @@ public class TargetInfo
 {
     [SerializeField] private string targetName;
     [SerializeField] private int targetCount;
+    public int CurTargetCount;
 
     public string TargetName => targetName;
     public int TargetCount => targetCount;
@@ -77,6 +79,7 @@ public class TargetInfo
     {
         targetName = name;
         targetCount = count;
+        CurTargetCount = 0;
     }
 }
 
@@ -96,17 +99,18 @@ public class ScriptsData
     [SerializeField] private string processScript;
 
     [Header("완료 대사")] 
-    [SerializeField] private string clearScript;
+    [SerializeField] private List<string> clearScript;
     
     public List<string> StartScripts => startScripts;
     public string AcceptScript => acceptScript;
     public string RefuseScript => refuseScript;
     public string ProcessScript => processScript;
-    public string ClearScript => clearScript;
+    public List<string> ClearScript => clearScript;
 
     public ScriptsData(string json)
     {
         startScripts = new List<string>();
+        clearScript = new List<string>();
 
         var jObj = JObject.Parse(json);
 
@@ -129,11 +133,11 @@ public class ScriptsData
                     break;
                 
                 case "OnProcess":
-                    processScript = value;
+                    processScript = value; 
                     break;
                 
                 case "OnClear":
-                    clearScript = value;
+                    clearScript.AddRange(value.Split('*'));
                     break;
                 
                 default:

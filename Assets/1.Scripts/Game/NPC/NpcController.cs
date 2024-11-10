@@ -1,99 +1,174 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cinemachine;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.Serialization;
 
 public class NpcController : Interactable
 {
+    [field: SerializeField] public string NpcName { get; private set; }
+    
     [Header("Component")] 
     [SerializeField] private CinemachineVirtualCamera npcCamera;
     [SerializeField] private MultiAimConstraint headRig;
-
+    
     [Header("Setting")] 
     [SerializeField] private float headWeightTime = 1.0f;
-    [SerializeField] private string defaultText;
+    [field: SerializeField] public string DefaultText { get; private set; }
+
+    [Header("Quest")] 
+    [SerializeField] private List<QuestContainer> questContainer;
+
+    public event Action OnEnableQuestUIAction;
+    public event Action OnDisableQuestUIAction;
     
-    [Header("Quest")]
-    [SerializeField] private List<QuestData> questData;
-
-    private PlayerController _playerController;
-    private IEnumerator _headWeight;
-    private WaitForEndOfFrame _waitForEndOfFrame;
-
     private void Start()
     {
-        _playerController = GameManager.Instance.Player;
-        _waitForEndOfFrame = new WaitForEndOfFrame();
+        if (questContainer.Count > 0)
+        {
+            NpcName = questContainer[0].QuestData[0].NpcName;
+        }
+        
+        GameManager.Instance.NpcManager.AddNpcControllerInDictionary(NpcName, this);
     }
 
     protected override void OnTriggerEnterEvent()
     {
-        GameManager.Instance.NpcManager.EnterInteraction += OnInteractionStart;
-        GameManager.Instance.NpcManager.ExitInteraction += OnInteractionEnd;
+        GameManager.Instance.NpcManager.InteractionEvent += OnInteractionEvent;
     }
     
     protected override void OnTriggerStayEvent() { }
 
     protected override void OnTriggerExitEvent()
     {
-        GameManager.Instance.NpcManager.EnterInteraction -= OnInteractionStart;
-        GameManager.Instance.NpcManager.ExitInteraction -= OnInteractionEnd;
+        GameManager.Instance.NpcManager.InteractionEvent -= OnInteractionEvent;
     }
-
-    private void OnInteractionStart()
+    
+    public List<QuestData> GetFirstQuestDataList()
     {
-        npcCamera.gameObject.SetActive(true);
-        _playerController.ChangeMainState(_playerController.InteractionState);
-        
-        StartHeadWeightRoutine(1);
-    }
+        var questList = new List<QuestData>();
 
-    private void OnInteractionEnd()
-    {
-        if (npcCamera.gameObject.activeSelf == false)
+        foreach (var container in questContainer)
         {
-            return;
-        }
-        
-        npcCamera.gameObject.SetActive(false);
-        _playerController.ChangeMainState(_playerController.MoveState);
-        StartHeadWeightRoutine(0);
-    }
-
-    private void StartHeadWeightRoutine(float target)
-    {
-        if (_headWeight != null)
-        {
-            StopCoroutine(_headWeight);
-        }
-        
-        _headWeight = HeadWeight(target);
-        StartCoroutine(_headWeight);
-    }
-
-    private IEnumerator HeadWeight(float target)
-    {
-        var curTime = 0.0f;
-
-        while (curTime < headWeightTime)
-        {
-            curTime += Time.deltaTime;
-            headRig.weight = Mathf.Lerp(headRig.weight, target, curTime / headWeightTime);
-
-            yield return _waitForEndOfFrame;
+            if (container.QuestData.Count != 0)
+            {
+                questList.Add(container.QuestData[0]);
+            }
         }
 
-        headRig.weight = target;
-        if (target <= 0)
+        return questList;
+    }
+
+    public void RemoveQuestData(QuestData data)
+    {
+        foreach (var container in questContainer)
         {
-            GameManager.Instance.UIManager.DisableNpcUI();
+            if (container.QuestData.Contains(data) == false)
+            {
+                continue;
+            }
+            
+            container.QuestData.Remove(data);
+
+            if (container.QuestData.Count <= 0)
+            {
+                questContainer.Remove(container);
+            }
+            break;
+        }
+    }
+
+    public QuestData GetNextQuestAndRemove(QuestData data)
+    {
+        QuestData result = null;
+        
+        foreach (var quest in questContainer)
+        {
+            if(quest.QuestData.Contains(data) == false) continue;
+
+            var index = quest.QuestData.IndexOf(data);
+            result = quest.QuestData[index + 1];
+            quest.QuestData.RemoveAt(index + 1);
+        }
+
+        return result;
+    }
+    
+    public void AddDeliverQuest(QuestData data)
+    {
+        data.CurQuestState = EQuestState.Completion;
+        var container = new QuestContainer
+        {
+            QuestData = new List<QuestData> { data }
+        };
+
+        questContainer.Add(container);
+    }
+    
+    private void OnInteractionEvent(bool enable)
+    {
+        if (enable == true)
+        {
+            npcCamera.gameObject.SetActive(true);
+            GameManager.Instance.ChangePlayerState("Interaction");
+            
+            OnInteractionStartRoutine(true).Forget();   
         }
         else
         {
-            GameManager.Instance.UIManager.UpdateDefaultText(defaultText);
-            GameManager.Instance.UIManager.EnableNpcUI(questData);
+            if (npcCamera.gameObject.activeSelf == false)
+            {
+                return;
+            }
+            
+            GameManager.Instance.ChangePlayerState("Move");
+            OnInteractionStartRoutine(false).Forget();
+        }
+    }
+    
+    private async UniTask OnInteractionStartRoutine(bool enable)
+    {
+        var curTime = 0.0f;
+        npcCamera.gameObject.SetActive(enable);
+        
+        switch (enable)
+        {
+            case true:
+                while (curTime < headWeightTime)
+                {
+                    curTime += Time.deltaTime;
+                    headRig.weight = Mathf.Lerp(headRig.weight, 1, curTime / headWeightTime);
+
+                    await UniTask.WaitForEndOfFrame(this);
+                }
+
+                headRig.weight = 1;
+       
+                GameManager.Instance.QuestManager.UpdateQuestManagerData(this);
+                GameManager.Instance.QuestPresenter.Init();
+       
+                OnEnableQuestUIAction?.Invoke();
+                break;
+            
+            case false:
+                OnDisableQuestUIAction?.Invoke();
+                
+                GameManager.Instance.QuestPresenter.Clear();
+                GameManager.Instance.QuestManager.ResetQuestManagerData();
+                
+                while (curTime < headWeightTime)
+                {
+                    curTime += Time.deltaTime;
+                    headRig.weight = Mathf.Lerp(headRig.weight, 1, curTime / headWeightTime);
+
+                    await UniTask.WaitForEndOfFrame(this);
+                }
+                headRig.weight = 0;
+                break;
         }
     }
 }

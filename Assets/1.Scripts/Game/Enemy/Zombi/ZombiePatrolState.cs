@@ -10,7 +10,7 @@ public class ZombiePatrolState : ZombieBaseState
     private readonly float _patrolRange = 0.0f;
     private Vector3 _targetPos = Vector3.zero;
     
-    public ZombiePatrolState(ZombieController controller, ZombieStatus status) : base(controller)
+    public ZombiePatrolState(ZombieController controller, EnemyStatus status) : base(controller)
     {
         _patrolRange = status.PatrolRange;
         Controller.ChangeSpeed(false);

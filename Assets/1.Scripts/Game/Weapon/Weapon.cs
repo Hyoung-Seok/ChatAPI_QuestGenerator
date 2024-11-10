@@ -78,8 +78,8 @@ public class Weapon : MonoBehaviour
         }
         CanReload = true;
         
-        GameManager.Instance.UIManager.SetMagazineCountUI(_magazineList.Count - 1);
-        GameManager.Instance.UIManager.SetMagazineInfoUI(weaponData.Magazine,weaponData.Magazine);
+        GameManager.Instance.PlayerUIManger.SetMagazineCountUI(_magazineList.Count - 1);
+        GameManager.Instance.PlayerUIManger.SetMagazineInfoUI(weaponData.Magazine,weaponData.Magazine);
         GameManager.Instance.CameraController.SetRecoil(weaponData);
         
         var playerInput = GameManager.Instance.PlayerInput;
@@ -97,7 +97,7 @@ public class Weapon : MonoBehaviour
         if (_magazineList[_curMagIndex] <= 0)
         {
             _magazineList.RemoveAt(_curMagIndex);
-            GameManager.Instance.UIManager.SetMagazineCountUI(_magazineList.Count - 1);
+            GameManager.Instance.PlayerUIManger.SetMagazineCountUI(_magazineList.Count - 1);
 
             if (_magazineList.Count - 1 <= 0)
             {
@@ -106,7 +106,7 @@ public class Weapon : MonoBehaviour
         }
 
         _curMagIndex = (_curMagIndex + 1 < _magazineList.Count) ? ++_curMagIndex : 0;
-        GameManager.Instance.UIManager.SetCurrentBulletInfoUI(_magazineList[_curMagIndex]);
+        GameManager.Instance.PlayerUIManger.SetCurrentBulletInfoUI(_magazineList[_curMagIndex]);
     }
 
     private void Fire()
@@ -130,7 +130,7 @@ public class Weapon : MonoBehaviour
             
         GameManager.Instance.CameraEffect.ShakeCamera(ECameraShake.RECOIL);
         GameManager.Instance.CameraController.IsRecoil = true;
-        GameManager.Instance.UIManager.SetCurrentBulletInfoUI(--_magazineList[_curMagIndex]);
+        GameManager.Instance.PlayerUIManger.SetCurrentBulletInfoUI(--_magazineList[_curMagIndex]);
     }
 
     private void ShootRayFormCenter()
@@ -151,10 +151,10 @@ public class Weapon : MonoBehaviour
         else if (hit.collider.CompareTag("Head"))
         {
             _hitPoint.Init(hit);
-            hit.collider.gameObject.GetComponent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage * 1.5f, _hitPoint);
+            hit.collider.gameObject.GetComponentInParent<OnPhysicsEvent>()?.TakeDamage(weaponData.Damage * 1.5f, _hitPoint);
             
             GameManager.Instance.AudioManager.PlaySound(ESoundType.EFFECT, "HeadShot", false);
-            GameManager.Instance.UIManager.SetActiveCrossHair(true, true);
+            GameManager.Instance.PlayerUIManger.SetActiveCrossHair(true, true);
         }
     }
 

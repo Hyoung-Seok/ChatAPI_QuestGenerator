@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
@@ -85,19 +86,21 @@ public class PlayerController : UnitStateController
         PlayAudio(AudioSource, _hitClips[Random.Range(0, _hitClips.Length)]);
         _instance.AudioManager.PlaySound(ESoundType.EFFECT, "HitSound", true, Transform.position);
         _instance.CameraEffect.ShakeCamera(ECameraShake.HIT, 1.5f);
-        
-        if (_currentHp > 30)
+
+        switch (_currentHp)
         {
-            _instance.StartHitCameraEffect();
-        }
-        else if (_currentHp <= 30 && _currentHp > 0)
-        {
-            _instance.StartHealthEffect();
-        }
-        else
-        {
-            Animator.SetBool(_deathKey, true);
-            ChangeMainState(_deathState);
+            case > 30:
+                _instance.CameraEffect.HitCameraEffectRoutine().Forget();
+                break;
+            
+            case <= 30 and > 0:
+                _instance.CameraEffect.StartHealthWarningEffect();
+                break;
+            
+            case <= 0:
+                Animator.SetBool(_deathKey, true);
+                ChangeMainState(_deathState);
+                break;
         }
     }
 
@@ -178,14 +181,14 @@ public class PlayerController : UnitStateController
             IsEquipped = false;
             Animator.SetBool(_equippedKey, IsEquipped);
             Animator.SetTrigger(_quippedTriggerKey);
-            GameManager.Instance.UIManager.SetActiveMagazineUI(false);
+            GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(false);
             return;
         }
 
         IsEquipped = true;
         Animator.SetBool(_equippedKey, IsEquipped);
         Animator.SetTrigger(_quippedTriggerKey);
-        GameManager.Instance.UIManager.SetActiveMagazineUI(true);
+        GameManager.Instance.PlayerUIManger.SetActiveMagazineUI(true);
     }
 
     private void OnMoveValueChangeEvent(PlayerStatus data)
@@ -214,12 +217,12 @@ public class PlayerController : UnitStateController
         
         if (context.performed == true)
         {
-            GameManager.Instance.UIManager.SetActiveCrossHair(true);
+            GameManager.Instance.PlayerUIManger.SetActiveCrossHair(true);
             ChangePlayerInputState(EPlayerInputState.AIM);
         }
         else if (context.canceled)
         {
-            GameManager.Instance.UIManager.SetActiveCrossHair(false);
+            GameManager.Instance.PlayerUIManger.SetActiveCrossHair(false);
             GameManager.Instance.CameraController.IsRecoil = false;
             
             ChangePlayerInputState(EPlayerInputState.IDLE);

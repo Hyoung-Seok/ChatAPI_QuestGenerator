@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: CM0001
+  m_EditorClassIdentifier: 
+  questID: CM0001
+  title: "\uBCA0\uC774\uC2A4 \uCEA0\uD504 \uC8FC\uBCC0\uC758 \uBCC0\uC774\uCCB4 \uCCAD\uC18C"
+  questType: 0
+  npcName: "\uCC30\uB9AC\uC911\uB839"
+  targetInfo:
+  - targetName: "\uBCC0\uC774\uCCB41\uD638"
+    targetCount: 10
+    CurTargetCount: 0
+  curQuestState: 0
+  scriptsData:
+    startScripts:
+    - "\uC774\uACF3\uC740 \uC774\uC81C \uB9C9 \uAC74\uC124\uD558\uACE0 \uC788\uB294
+      \uBCA0\uC774\uC2A4 \uCEA0\uD504\uC57C. "
+    - " \uC6B0\uB9AC\uC758 \uC548\uC804\uC744 \uC704\uD574\uC11C\uB294 \uC8FC\uBCC0\uC758
+      \uBCC0\uC774\uCCB4\uB97C \uCCAD\uC18C\uD558\uB294 \uAC83\uC774 \uAE09\uC120\uBB34\uC9C0. "
+    - " \uB124\uAC00 \uC5EC\uAE30\uAE4C\uC9C0 \uC628 \uAC78 \uBCF4\uBA74 \uC5B4\uB290
+      \uC815\uB3C4 \uC2F8\uC6B8 \uC904 \uC548\uB2E4\uACE0 \uBCF4\uB294\uB370, \uC5B4\uB54C? "
+    - " \uC8FC\uBCC0\uC5D0 \uBCC0\uC774\uCCB41\uD638\uAC00 10\uB9C8\uB9AC \uC815\uB3C4
+      \uC788\uB294 \uAC83\uC73C\uB85C \uD655\uC778\uB410\uC5B4. "
+    - " \uC774\uB4E4\uC744 \uBAA8\uB450 \uCC98\uCE58\uD574\uC904 \uC218 \uC788\uACA0\uC5B4?"
+    acceptScript: "\uC88B\uC544, \uADF8\uB7FC \uC77C\uC744 \uC2DC\uC791\uD574\uBCF4\uC790."
+    refuseScript: "\uC774\uB7F0 \uC911\uC694\uD55C \uC77C\uC870\uCC28 \uAC70\uBD80\uD55C\uB2E4\uBA74,
+      \uC5EC\uAE30\uC5D0 \uC788\uC744 \uC774\uC720\uAC00 \uC5C6\uACA0\uC9C0."
+    processScript: "\uC544\uC9C1 \uBCC0\uC774\uCCB4\uB4E4\uC774 \uB0A8\uC544 \uC788\uB294
+      \uAC83 \uAC19\uC740\uB370... \uB2E4\uC2DC \uD655\uC778\uD574\uBCFC\uB798?"
+    clearScript:
+    - "\uBCC0\uC774\uCCB4\uB4E4\uC744 \uBAA8\uB450 \uCC98\uB9AC\uD588\uAD70. \uC0DD\uAC01\uBCF4\uB2E4
+      \uBBFF\uC744 \uB9CC\uD558\uC796\uC544?"
