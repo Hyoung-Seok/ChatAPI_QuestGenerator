@@ -1321,7 +1321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   crossHair: {fileID: 603049028}
   headShotCrossHair: {fileID: 30834237}
-  delayTime: 2
+  delayTime: 0.05
   magazineUI: {fileID: 1412216299}
   curBulletCount: {fileID: 784778158}
   maxBulletCount: {fileID: 257685801}
@@ -2315,7 +2315,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &538159829
 Transform:
   m_ObjectHideFlags: 0
@@ -2325,7 +2325,7 @@ Transform:
   m_GameObject: {fileID: 538159828}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 22.6, y: 0, z: 35.9}
+  m_LocalPosition: {x: -42.2, y: 0, z: 93.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2343,13 +2343,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2038966711523483619, guid: 23b8b4bf047a73046a7c8a93a9e7deee,
+  enemyPrefab: {fileID: 4469433113143549368, guid: cd2f8145f27046845b0b7dfd17b7d9c2,
     type: 3}
-  spawnRange: 30
+  spawnRange: 20
   firstCreateCount: 5
-  firstSpawnCount: 1
+  firstSpawnCount: 5
   maxTryCount: 10
-  normalEnemyStatus: {fileID: 11400000, guid: 04bbd2ea4d0ffbc4485ed429a73f2649, type: 2}
+  normalEnemyStatus: {fileID: 11400000, guid: 8999486a380077e45af27561be384c44, type: 2}
 --- !u!1 &554136428
 GameObject:
   m_ObjectHideFlags: 0
@@ -7744,7 +7744,7 @@ Transform:
   m_GameObject: {fileID: 1519019939}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 22.6, y: 0, z: 99.8}
+  m_LocalPosition: {x: 22.6, y: 0, z: 96.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7946,7 +7946,7 @@ MonoBehaviour:
   npcCamera: {fileID: 963982373}
   headRig: {fileID: 1228489619}
   headWeightTime: 1
-  <DefaultText>k__BackingField: "\uB3C4\uC6C0\uC774 \uD544\uC694\uD558\uC2E0\uAC00\uC694?"
+  <DefaultText>k__BackingField: "\uC548\uB155!!"
   questContainer:
   - QuestData:
     - {fileID: 11400000, guid: 92604b43a0995f74e9142fdfbee4fb8f, type: 2}
@@ -11387,7 +11387,7 @@ PrefabInstance:
     - target: {fileID: 3219040989430017987, guid: 7bd66507ffa1c1c4d9081178ec706fe2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.7
+      value: 10.33
       objectReference: {fileID: 0}
     - target: {fileID: 3219040989430017987, guid: 7bd66507ffa1c1c4d9081178ec706fe2,
         type: 3}
@@ -11397,7 +11397,7 @@ PrefabInstance:
     - target: {fileID: 3219040989430017987, guid: 7bd66507ffa1c1c4d9081178ec706fe2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.38
+      value: 31.57
       objectReference: {fileID: 0}
     - target: {fileID: 3219040989430017987, guid: 7bd66507ffa1c1c4d9081178ec706fe2,
         type: 3}

@@ -20,7 +20,7 @@ MonoBehaviour:
   - targetName: "\uCC30\uB9AC\uC911\uB839"
     targetCount: 1
     CurTargetCount: 0
-  curQuestState: 1
+  curQuestState: 0
   scriptsData:
     startScripts:
     - "\uC815\uB9D0 \uACE0\uB9C8\uC6CC, \uC5B8\uB2C8. \uC774 \uBC29\uB3C5\uBA74 \uD544\uD130\uB97C
