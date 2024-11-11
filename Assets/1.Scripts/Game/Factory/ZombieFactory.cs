@@ -6,7 +6,6 @@ using UnityEngine.Serialization;
 
 public class ZombieFactory : EnemyFactory
 {
-    [FormerlySerializedAs("normalZombieStatus")]
     [Header("Data")]
     [SerializeField] private EnemyStatus normalEnemyStatus;
     
