@@ -83,9 +83,18 @@ public class QuestPresenter
         var quest = _questManager.CurNpcQuest[_index];
         _questUIManager.PrintText(quest.ScriptsData.AcceptScript).Forget();
 
-        if (quest.QuestType == EQuestType.Deliver)
+        switch (quest.QuestType)
         {
-            _questManager.SetDeliverQuest(_index);
+            case EQuestType.Deliver:
+                _questManager.SetDeliverQuest(_index);
+                break;
+            
+            case EQuestType.Get:
+                foreach (var target in quest.TargetInfos)
+                {
+                    GameManager.Instance.ItemSpawner.LoadItem(target.TargetName, target.TargetCount).Forget();   
+                }
+                break;
         }
 
         _questManager.UpdateQuest(_index, EQuestState.Processing);

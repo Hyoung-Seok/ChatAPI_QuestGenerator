@@ -1,0 +1,19 @@
+ManifestFileVersion: 0
+CRC: 2221444428
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: "item.\uBC29\uB3C5\uBA74\uD544\uD130"
+      Dependencies: {}
+    Info_1:
+      Name: "item.\uBC84\uB824\uC9C4\uD0C4\uC57D\uC0C1\uC790"
+      Dependencies: {}
+    Info_2:
+      Name: "item.\uBE44\uC0C1\uC57D\uD488\uC0C1\uC790"
+      Dependencies: {}
+    Info_3:
+      Name: "item.\uC5F0\uAD6C\uC77C\uC9C0"
+      Dependencies: {}
+    Info_4:
+      Name: "item.\uD56D\uC0DD\uC81C"
+      Dependencies: {}

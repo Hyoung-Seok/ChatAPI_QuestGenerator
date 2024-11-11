@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerUIManger playerUIManger;
     [SerializeField] private QuestManager questManager;
     [SerializeField] private QuestUIManager questUIManger;
+    [SerializeField] private ItemSpawner itemSpawner;
     public NpcManager NpcManager { get; private set; }
 
     #region Property
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
     public QuestManager QuestManager => questManager;
     public QuestUIManager QuestUIManager => questUIManger;
     public QuestPresenter QuestPresenter { get; set; }
+    public ItemSpawner ItemSpawner => itemSpawner;
     
     #endregion
     

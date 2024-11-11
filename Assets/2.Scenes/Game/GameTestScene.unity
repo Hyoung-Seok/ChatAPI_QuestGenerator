@@ -1644,9 +1644,9 @@ GameObject:
   - component: {fileID: 377713811}
   - component: {fileID: 377713810}
   - component: {fileID: 377713813}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (6)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2024,9 +2024,9 @@ GameObject:
   - component: {fileID: 474151004}
   - component: {fileID: 474151003}
   - component: {fileID: 474151006}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (1)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3334,6 +3334,37 @@ MonoBehaviour:
     m_DissipationDistance: 12
     m_PropagationSpeed: 343
   m_DefaultVelocity: {x: 0.05, y: 0.05, z: 0.03}
+--- !u!1 &762243075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 762243076}
+  m_Layer: 0
+  m_Name: RightTop
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &762243076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762243075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 69.6, y: 0, z: 181.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 939688333}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &762715100
 GameObject:
   m_ObjectHideFlags: 3
@@ -3391,9 +3422,9 @@ GameObject:
   - component: {fileID: 770123677}
   - component: {fileID: 770123676}
   - component: {fileID: 770123679}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (2)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3584,9 +3615,9 @@ GameObject:
   - component: {fileID: 775414735}
   - component: {fileID: 775414734}
   - component: {fileID: 775414737}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (7)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4431,12 +4462,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 939688332}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.740786, y: -3.2109585, z: 10.873772}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
+  m_Children:
+  - {fileID: 1455973244}
+  - {fileID: 762243076}
+  m_Father: {fileID: 1040478634}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &939688334
 MonoBehaviour:
@@ -4450,6 +4483,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b8ba64062027c4ebfa86a29b96b497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leftDown: {fileID: 1455973244}
+  rightTop: {fileID: 762243076}
+  checkRadius: 2
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!4 &952204536 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7934756007121485630, guid: 4cb4d207839c5954ea75b1248eee6271,
@@ -4900,6 +4939,7 @@ Transform:
   - {fileID: 1591853549}
   - {fileID: 297520513}
   - {fileID: 1939347825}
+  - {fileID: 939688333}
   m_Father: {fileID: 102615380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1040478636
@@ -4923,6 +4963,7 @@ MonoBehaviour:
   playerUIManger: {fileID: 297520514}
   questManager: {fileID: 1040478637}
   questUIManger: {fileID: 1582344978}
+  itemSpawner: {fileID: 939688334}
 --- !u!114 &1040478637
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5375,9 +5416,9 @@ GameObject:
   - component: {fileID: 1160899886}
   - component: {fileID: 1160899885}
   - component: {fileID: 1160899888}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6421,9 +6462,9 @@ GameObject:
   - component: {fileID: 1390174636}
   - component: {fileID: 1390174635}
   - component: {fileID: 1390174638}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (3)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6799,6 +6840,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 2010772187}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1455973243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1455973244}
+  m_Layer: 0
+  m_Name: LeftDown
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1455973244
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455973243}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -68.2, y: 0, z: 4.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 939688333}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1461152036 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8021001004253913084, guid: 4cb4d207839c5954ea75b1248eee6271,
@@ -8376,9 +8448,9 @@ GameObject:
   - component: {fileID: 1612595197}
   - component: {fileID: 1612595196}
   - component: {fileID: 1612595199}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (1)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8794,9 +8866,9 @@ GameObject:
   - component: {fileID: 1687797968}
   - component: {fileID: 1687797967}
   - component: {fileID: 1687797970}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (4)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9239,9 +9311,9 @@ GameObject:
   - component: {fileID: 1773346466}
   - component: {fileID: 1773346465}
   - component: {fileID: 1773346468}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (5)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9469,9 +9541,9 @@ GameObject:
   - component: {fileID: 1796576147}
   - component: {fileID: 1796576146}
   - component: {fileID: 1796576149}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10039,9 +10111,9 @@ GameObject:
   - component: {fileID: 1952219759}
   - component: {fileID: 1952219758}
   - component: {fileID: 1952219761}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (5)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10172,9 +10244,9 @@ GameObject:
   - component: {fileID: 1959158227}
   - component: {fileID: 1959158226}
   - component: {fileID: 1959158229}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (3)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10297,9 +10369,9 @@ GameObject:
   - component: {fileID: 1959857424}
   - component: {fileID: 1959857423}
   - component: {fileID: 1959857426}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11014,9 +11086,9 @@ GameObject:
   - component: {fileID: 2022423492}
   - component: {fileID: 2022423491}
   - component: {fileID: 2022423494}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder (4)
-  m_TagString: Untagged
+  m_TagString: obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11165,4 +11237,3 @@ SceneRoots:
   - {fileID: 1975645158}
   - {fileID: 817282892}
   - {fileID: 2016594021}
-  - {fileID: 939688333}
