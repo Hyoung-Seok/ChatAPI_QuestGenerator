@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4000013170967800}
   - component: {fileID: 33000010483950884}
   - component: {fileID: 23000011718082198}
-  - component: {fileID: 64000011484861276}
+  - component: {fileID: 3210854243547020854}
   m_Layer: 0
   m_Name: Object084
   m_TagString: Untagged
@@ -84,8 +84,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64000011484861276
-MeshCollider:
+--- !u!65 &3210854243547020854
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -102,10 +102,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300004, guid: d0a6f0725fb579a45a39bf98830886a1, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 22.909018, y: 11.470167, z: 13.857673}
+  m_Center: {x: 0.013969187, y: -0.00000166893, z: -0.0000009536748}
 --- !u!1 &1000011889595636
 GameObject:
   m_ObjectHideFlags: 0
@@ -150,7 +149,7 @@ GameObject:
   - component: {fileID: 4000012097188042}
   - component: {fileID: 33000011682599136}
   - component: {fileID: 23000014080057990}
-  - component: {fileID: 64000013046495254}
+  - component: {fileID: 2637090500129795359}
   m_Layer: 0
   m_Name: Object085
   m_TagString: Untagged
@@ -223,8 +222,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &64000013046495254
-MeshCollider:
+--- !u!65 &2637090500129795359
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -241,7 +240,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300006, guid: d0a6f0725fb579a45a39bf98830886a1, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 16.138813, y: 6.274411, z: 7.844095}
+  m_Center: {x: 0.0000009536743, y: -0.00000011920929, z: 0.0000019073486}
