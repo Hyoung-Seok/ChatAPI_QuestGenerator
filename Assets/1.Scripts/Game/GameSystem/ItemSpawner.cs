@@ -13,7 +13,7 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     
     private AssetBundle _loadedBundle;
-    private readonly string PATH = Application.streamingAssetsPath;
+    private readonly string PATH = Path.Combine(Application.streamingAssetsPath, "Item");
     
     public async UniTask LoadItem(string itemName, int count)
     {
