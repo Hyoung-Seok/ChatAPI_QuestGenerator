@@ -32,7 +32,14 @@ public class WeaponManager : MonoBehaviour
 
     private void Start()
     {
+        if (currentWeapon == null)
+        {
+            return;
+        }
+        
+        currentWeapon.Init();
         _weaponData = currentWeapon.WeaponData;
+        
         currentWeapon.enabled = false;
     }
 

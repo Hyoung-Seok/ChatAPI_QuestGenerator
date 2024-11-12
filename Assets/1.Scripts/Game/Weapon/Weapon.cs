@@ -30,14 +30,6 @@ public class Weapon : MonoBehaviour
     private Vector2 _screenCenter;
     private Camera _mainCam;
     private List<AudioClip> _gunSoundClip;
-    
-    private void Start()
-    {
-        Init();
-        
-        _mainCam = Camera.main;
-        _screenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
-    }
 
     private void Update()
     {
@@ -85,6 +77,9 @@ public class Weapon : MonoBehaviour
         var playerInput = GameManager.Instance.PlayerInput;
         playerInput.actions["Fire"].performed += OnFire;
         playerInput.actions["Fire"].canceled += OnFire;
+        
+        _mainCam = Camera.main;
+        _screenCenter = new Vector2((float)Screen.width / 2, (float)Screen.height / 2);
     }
     
     public void Reload()

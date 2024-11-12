@@ -23114,6 +23114,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 921465117}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &923059684
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 923059685}
+  - component: {fileID: 923059686}
+  m_Layer: 0
+  m_Name: ZombieSpawner_1 (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &923059685
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923059684}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 138.15, y: 0, z: -3.18}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408330507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &923059686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923059684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 4469433113143549368, guid: cd2f8145f27046845b0b7dfd17b7d9c2,
+    type: 3}
+  spawnRange: 15
+  firstCreateCount: 10
+  firstSpawnCount: 5
+  maxTryCount: 10
+  normalEnemyStatus: {fileID: 11400000, guid: 8999486a380077e45af27561be384c44, type: 2}
 --- !u!1001 &927691459
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36386,9 +36437,9 @@ MonoBehaviour:
   <DefaultText>k__BackingField: "\uBB54\uAC00 \uC560\uC1A1\uC774?"
   questContainer:
   - QuestData:
-    - {fileID: 11400000, guid: 55883aa1bc59b4d4081f90870ceb9165, type: 2}
-    - {fileID: 11400000, guid: a9a18840f9e16784eaf24937dd850f82, type: 2}
-    - {fileID: 11400000, guid: 4c752b2d85bb2814580ba275d406e580, type: 2}
+    - {fileID: 11400000, guid: c67586437b429a142aeeb024b308c804, type: 2}
+    - {fileID: 11400000, guid: 26ec2fa5c6c08ce429ac22e2dbab5c5f, type: 2}
+    - {fileID: 11400000, guid: 345a65edc0a13aa4b94468e3dea01a59, type: 2}
 --- !u!1001 &1402288787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -36611,6 +36662,7 @@ Transform:
   m_Children:
   - {fileID: 1761955118}
   - {fileID: 1700886587}
+  - {fileID: 923059685}
   m_Father: {fileID: 447633492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1408700686
