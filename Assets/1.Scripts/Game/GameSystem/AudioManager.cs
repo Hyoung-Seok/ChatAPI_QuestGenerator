@@ -22,9 +22,11 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip[] gunSoundList;
     [SerializeField] private AudioClip[] playerHitVoice;
     [SerializeField] private AudioClip[] playerHitSounds;
+    [SerializeField] private AudioClip[] bgmSource;
     
     // path
     private const string SOUND_PATH = "Sound/";
+    private const string BGM_PATH = "BGM/";
     private const string GUNSOUND_PATH = "Enemy/HeadShot/";
     private const string HITVOICE_PATH = "Player/HitVoice/";
     private const string HITSOUND_PATH = "Player/HitSound/";
@@ -51,10 +53,16 @@ public class AudioManager : MonoBehaviour
         gunSoundList = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, GUNSOUND_PATH));
         playerHitVoice = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, HITVOICE_PATH));
         playerHitSounds = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, HITSOUND_PATH));
+        bgmSource = Resources.LoadAll<AudioClip>(Path.Combine(SOUND_PATH, BGM_PATH));
         
         _clipDic.Add("HeadShot", gunSoundList);
         _clipDic.Add("HitVoice", playerHitVoice);
         _clipDic.Add("HitSound", playerHitSounds);
+        _clipDic.Add("BGM", bgmSource);
+
+        bgmAudioSource.clip = _clipDic["BGM"].GetValue(1) as AudioClip;
+        bgmAudioSource.loop = true;
+        bgmAudioSource.Play();
     }
 
     public void PlaySound(ESoundType type, string key, bool is3DSound, Vector3 pos = default, int index = -1)
@@ -85,6 +93,11 @@ public class AudioManager : MonoBehaviour
     public AudioClip[] GetAudioClips(string key)
     {
         return _clipDic.GetValueOrDefault(key);
+    }
+
+    private void PlayBackGroundSource()
+    {
+        
     }
 
     private void PlayRandomSound(AudioClip clip, bool is3D)

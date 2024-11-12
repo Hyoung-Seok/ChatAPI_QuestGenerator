@@ -39,6 +39,7 @@ public class QuestGenerator
     public async Task<string> CreateJsonMessage(string chatMsg)
     {
         _systemMessage = await File.ReadAllTextAsync(FILE_PATH);
+        Debug.Log(_chat.Temperature);
         
         _chat.Messages = new[]
         {
