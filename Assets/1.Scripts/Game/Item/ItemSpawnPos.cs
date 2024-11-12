@@ -14,8 +14,8 @@ public class ItemSpawnPos : MonoBehaviour
     {
         Gizmos.color = Color.blue;
 
-        var rightDown = new Vector3(rightTop.position.x, 0, leftDown.position.z);
-        var leftTop = new Vector3(leftDown.position.x, 0, rightTop.position.z);
+        var rightDown = new Vector3(rightTop.position.x, leftDown.position.y, leftDown.position.z);
+        var leftTop = new Vector3(leftDown.position.x, leftDown.position.y, rightTop.position.z);
         
         Gizmos.DrawLine(leftDown.position, rightDown);
         Gizmos.DrawLine(rightDown, rightTop.position);

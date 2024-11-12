@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: CM0006
+  m_EditorClassIdentifier: 
+  questID: CM0003
+  title: "\uBCA0\uC774\uC2A4 \uCEA0\uD504\uC758 \uC0C8\uB85C\uC6B4 \uC704\uD611"
+  questType: 0
+  npcName: "\uCC30\uB9AC\uC911\uB839"
+  targetInfo:
+  - targetName: "\uC2A4\uD06C\uB9AC\uBA38"
+    targetCount: 5
+    CurTargetCount: 0
+  curQuestState: 0
+  scriptsData:
+    startScripts:
+    - "\uBCF4\uAE09\uD488 \uD68C\uC218\uB3C4 \uC798 \uB9C8\uCCE4\uAD70. \uD558\uC9C0\uB9CC,
+      \uAE30\uBED0\uD560 \uC2DC\uAC04\uC740 \uC544\uC9C1 \uC774\uB974\uB2E4. "
+    - " \uCD5C\uADFC '\uC2A4\uD06C\uB9AC\uBA38'\uB77C\uB294 \uC0C8\uB85C\uC6B4 \uC885\uB958\uC758
+      \uBCC0\uC774\uCCB4\uAC00 \uBC1C\uACAC\uB410\uC5B4. "
+    - " \uC774 \uB140\uC11D\uB4E4\uC740 \uBAB8\uC740 \uC57D\uD558\uC9C0\uB9CC \uB9E4\uC6B0
+      \uBE60\uB974\uACE0 \uC2DC\uC57C\uB3C4 \uB113\uC5B4\uC11C \uB9E4\uBCF5\uC5D0
+      \uC801\uD569\uD574. "
+    - " \uBCA0\uC774\uC2A4 \uCEA0\uD504 \uC8FC\uBCC0\uC5D0 5\uB9C8\uB9AC\uAC00 \uCD9C\uBAB0\uD55C
+      \uAC83\uC73C\uB85C \uD30C\uC545\uB418\uB2C8, \uC774\uB4E4\uC744 \uC81C\uAC70\uD574\uC904
+      \uC218 \uC788\uACA0\uC5B4?"
+    acceptScript: "\uB124\uAC00 \uB2E4\uC2DC \uD55C\uBC88 \uC99D\uBA85\uD574\uC8FC\uAE38
+      \uBC14\uB77C."
+    refuseScript: "\uB124\uAC00 \uD574\uB0BC \uC218 \uC5C6\uB2E4\uBA74, \uB2E4\uB978
+      \uBC29\uBC95\uC744 \uCC3E\uC544\uBD10\uC57C\uACA0\uC5B4."
+    processScript: "\uC2A4\uD06C\uB9AC\uBA38\uB4E4\uC774 \uC544\uC9C1 \uB3CC\uC544\uB2E4\uB2C8\uACE0
+      \uC788\uC5B4. \uC870\uC2EC\uD574\uC57C \uD574."
+    clearScript:
+    - "\uC2A4\uD06C\uB9AC\uBA38 \uC81C\uAC70 \uC644\uB8CC, \uC608\uC0C1\uB300\uB85C
+      \uC798 \uD574\uB0C8\uC5B4."

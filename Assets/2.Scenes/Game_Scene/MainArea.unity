@@ -1900,6 +1900,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 82880888}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &83124898
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 83124899}
+  - component: {fileID: 83124900}
+  m_Layer: 0
+  m_Name: BoomerSpawner_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &83124899
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83124898}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 143.48, y: 0, z: -47.42}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408330507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &83124900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 83124898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 4469433113143549368, guid: 874ddee6513d6d6499119588983cfac4,
+    type: 3}
+  spawnRange: 15
+  firstCreateCount: 8
+  firstSpawnCount: 3
+  maxTryCount: 10
+  normalEnemyStatus: {fileID: 11400000, guid: 028ef94ad7d02e044bd26a8f3529d515, type: 2}
 --- !u!1 &84982739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2109,6 +2160,52 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 88298469}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &91821429 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1000012666995862, guid: d885e290456a887418a2fd556c1b1517,
+    type: 3}
+  m_PrefabInstance: {fileID: 376333939}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &91821433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91821429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e3fdca004f2d45fe8abbed571a8abd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_OverrideArea: 0
+  m_Area: 0
+  m_OverrideGenerateLinks: 0
+  m_GenerateLinks: 0
+  m_IgnoreFromBuild: 0
+  m_ApplyToChildren: 1
+  m_AffectedAgents: ffffffff
+--- !u!65 &91821434
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 91821429}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.76, y: 2.6384964, z: 3.4096916}
+  m_Center: {x: -2.2737368e-13, y: 0.0000009536743, z: 0}
 --- !u!1001 &93428430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9862,6 +9959,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 347582851}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &348689167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 348689168}
+  - component: {fileID: 348689169}
+  m_Layer: 0
+  m_Name: ZombieSpawner_2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &348689168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348689167}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 67.58, y: 1.5, z: -15.12}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408330507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &348689169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 348689167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 4469433113143549368, guid: ad5562e74d9d66145beb55ecc88130d1,
+    type: 3}
+  spawnRange: 14
+  firstCreateCount: 10
+  firstSpawnCount: 5
+  maxTryCount: 10
+  normalEnemyStatus: {fileID: 11400000, guid: 4fe0aa154c0cd5648945d0416b4f1f99, type: 2}
 --- !u!1001 &351144073
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10385,7 +10533,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1000012666995862, guid: d885e290456a887418a2fd556c1b1517, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1000012666995862, guid: d885e290456a887418a2fd556c1b1517, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -10495,6 +10643,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 376333951}
+    - targetCorrespondingSourceObject: {fileID: 1000012666995862, guid: d885e290456a887418a2fd556c1b1517,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 91821434}
+    - targetCorrespondingSourceObject: {fileID: 1000012666995862, guid: d885e290456a887418a2fd556c1b1517,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 91821433}
     - targetCorrespondingSourceObject: {fileID: 1000012281593870, guid: d885e290456a887418a2fd556c1b1517,
         type: 3}
       insertIndex: -1
@@ -23125,7 +23281,7 @@ GameObject:
   - component: {fileID: 923059685}
   - component: {fileID: 923059686}
   m_Layer: 0
-  m_Name: ZombieSpawner_1 (1)
+  m_Name: FastZombieSpawner_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36662,7 +36818,9 @@ Transform:
   m_Children:
   - {fileID: 1761955118}
   - {fileID: 1700886587}
+  - {fileID: 348689168}
   - {fileID: 923059685}
+  - {fileID: 83124899}
   m_Father: {fileID: 447633492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1408700686
@@ -42738,7 +42896,7 @@ Transform:
   m_GameObject: {fileID: 1631449649}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 51.39, y: 0, z: -40.6}
+  m_LocalPosition: {x: 51.39, y: 1.6, z: -40.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -51326,7 +51484,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 0.2
+    m_Time: 1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
