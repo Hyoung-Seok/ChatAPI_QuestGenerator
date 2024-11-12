@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,7 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerUIManger playerUIManger;
     [SerializeField] private QuestManager questManager;
     [SerializeField] private QuestUIManager questUIManger;
-    [SerializeField] private ItemSpawner itemSpawner;
+    [SerializeField] private ItemSpawnManager itemSpawnManager;
     public NpcManager NpcManager { get; private set; }
 
     #region Property
@@ -41,7 +37,7 @@ public class GameManager : MonoBehaviour
     public QuestManager QuestManager => questManager;
     public QuestUIManager QuestUIManager => questUIManger;
     public QuestPresenter QuestPresenter { get; set; }
-    public ItemSpawner ItemSpawner => itemSpawner;
+    public ItemSpawnManager ItemSpawnManager => itemSpawnManager;
     
     #endregion
     
@@ -75,6 +71,9 @@ public class GameManager : MonoBehaviour
         questManager.Init();
         QuestUIManager.Init();
         QuestPresenter = new QuestPresenter(questUIManger, questManager, PlayerInventory);
+        
+        // Item Manager
+        itemSpawnManager.Init();
         
         // Action Register
         PlayerInput.actions["Escape"].performed -= OnEscapeAction;

@@ -92,7 +92,7 @@ public class QuestPresenter
             case EQuestType.Get:
                 foreach (var target in quest.TargetInfos)
                 {
-                    GameManager.Instance.ItemSpawner.LoadItem(target.TargetName, target.TargetCount).Forget();   
+                    GameManager.Instance.ItemSpawnManager.LoadItem(target.TargetName, target.TargetCount).Forget();   
                 }
                 break;
         }
