@@ -202,9 +202,7 @@ public class PlayerController : UnitStateController
     {
         PlayerInput.actions["Aim"].performed += OnAim;
         PlayerInput.actions["Aim"].canceled += OnAim;
-
         PlayerInput.actions["Equip"].performed += OnEquip;
-
         PlayerInput.actions["Reloading"].performed += OnReloading;
     }
     
