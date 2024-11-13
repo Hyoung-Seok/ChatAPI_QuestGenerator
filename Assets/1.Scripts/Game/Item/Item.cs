@@ -32,16 +32,8 @@ public class Item : Interactable
         }
         
         GameManager.Instance.PlayerInventory.AddItem(data);
+        GameManager.Instance.PlayerInput.actions["Interaction"].performed -= OnInteractionEvent;
         
-        gameObject.SetActive(false);
-        interaction.SetActive(false);
-    }
-
-    private void OnDisable()
-    {
-        if (GameManager.Instance.PlayerInput != null)
-        {
-            GameManager.Instance.PlayerInput.actions["Interaction"].performed -= OnInteractionEvent;   
-        }
+        Destroy(gameObject);
     }
 }

@@ -83,7 +83,7 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         _isLockMouse = true;
     }
-
+    
     public void SetCursorState(CursorLockMode mode)
     {
         Cursor.lockState = mode;
