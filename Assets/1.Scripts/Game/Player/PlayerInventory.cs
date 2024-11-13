@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class PlayerInventory
@@ -18,8 +16,6 @@ public class PlayerInventory
 
         _inventory[data.ItemName] += data.Count;
         CheckQuestAction?.Invoke(data, _inventory[data.ItemName]);
-        
-        LogInventoryData();
     }
 
     public void RemoveItem(QuestData data)
@@ -32,16 +28,6 @@ public class PlayerInventory
             }
 
             _inventory[target.TargetName] -= target.TargetCount;
-        }
-        
-        LogInventoryData();
-    }
-
-    private void LogInventoryData()
-    {
-        foreach (var value in _inventory)
-        {
-            Debug.Log($"{value.Key} / {value.Value}");
         }
     }
 }
