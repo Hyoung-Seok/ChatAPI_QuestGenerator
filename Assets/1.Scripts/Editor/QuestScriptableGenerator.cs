@@ -13,7 +13,7 @@ public static class QuestScriptableGenerator
             questData.InitQuestData(data);
         }
 
-        var path = "Assets/QuestData/" + data[0] + ".asset";
+        var path = "Assets/_QuestData/" + data[0] + ".asset";
         
         AssetDatabase.CreateAsset(sObj, path);
         AssetDatabase.SaveAssets();
@@ -30,7 +30,7 @@ public static class QuestScriptableGenerator
                 questData.InitQuestData(valueList);
             }            
             
-            var path = "Assets/QuestData/" + valueList[0] + ".asset";
+            var path = "Assets/_QuestData/" + valueList[0] + ".asset";
         
             AssetDatabase.CreateAsset(sObj, path);
             AssetDatabase.SaveAssets();

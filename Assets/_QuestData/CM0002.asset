@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: CM0002
+  m_EditorClassIdentifier: 
+  questID: CM0002
+  title: "\uBC84\uB824\uC9C4 \uD0C4\uC57D \uC0C1\uC790 \uD68C\uC218 \uC791\uC804"
+  questType: 1
+  npcName: "\uCC30\uB9AC\uC911\uB839"
+  targetInfo:
+  - targetName: "\uBC84\uB824\uC9C4 \uD0C4\uC57D \uC0C1\uC790"
+    targetCount: 3
+    CurTargetCount: 0
+  curQuestState: 0
+  scriptsData:
+    startScripts:
+    - "\uB124\uAC00 \uBC29\uAE08 \uBCF4\uC5EC\uC900 \uC2E4\uB825, \uC815\uB9D0 \uC778\uC0C1\uC801\uC774\uC5C8\uC5B4.
+      \uD558\uC9C0\uB9CC \uC6B0\uB9AC \uC55E\uC5D0\uB294 \uB354 \uB9CE\uC740 \uB3C4\uC804\uC774
+      \uAE30\uB2E4\uB9AC\uACE0 \uC788\uC9C0."
+    - "\uC11C\uCABD D1 \uAD6C\uC5ED\uC5D0 \uBC84\uB824\uC9C4 \uD0C4\uC57D \uC0C1\uC790\uB4E4\uC774
+      \uC788\uC5B4. \uC6B0\uB9AC\uC5D0\uAC90 \uADF8 \uD0C4\uC57D\uB4E4\uC774 \uC808\uC2E4\uD788
+      \uD544\uC694\uD558\uAC70\uB4E0."
+    - "\uD558\uC9C0\uB9CC \uADF8 \uC9C0\uC5ED\uC740 \uC704\uD5D8\uD574. \uBCC0\uC774\uCCB4\uB4E4\uB9CC
+      \uC788\uB294 \uAC8C \uC544\uB2C8\uC57C."
+    - "\uADF8\uB798\uB3C4 \uB124\uAC00 \uAC00\uC838\uC628\uB2E4\uBA74, \uC6B0\uB9AC\uB294
+      \uADF8\uB9CC\uD07C \uB354 \uAC15\uD574\uC9C8 \uC218 \uC788\uC5B4."
+    - "\uB124\uAC00 \uAC00\uC838\uC62C \uC218 \uC788\uACA0\uB098?"
+    acceptScript: "\uBE60\uB974\uACE0 \uC870\uC2EC\uC2A4\uB7FD\uAC8C \uD574. \uC6B0\uB9AC\uAC00
+      \uAE30\uB2E4\uB9AC\uACE0 \uC788\uC744\uAC8C."
+    refuseScript: "\uC54C\uACA0\uC5B4, \uB108\uC758 \uC120\uD0DD\uC744 \uC874\uC911\uD558\uC9C0.
+      \uD558\uC9C0\uB9CC \uC6B0\uB9AC\uAC00 \uCC98\uD55C \uC0C1\uD669\uC744 \uB2E4\uC2DC
+      \uC0DD\uAC01\uD574\uBD10."
+    processScript: "\uC544\uC9C1 \uD0C4\uC57D\uB4E4\uC744 \uCC3E\uC9C0 \uBABB\uD588\uB098?
+      \uC2DC\uAC04\uC774 \uC5C6\uC5B4, \uC11C\uB458\uB7EC."
+    clearScript:
+    - "\uC774\uAC78\uB85C \uC6B0\uB9AC\uB294 \uD55C\uCE35 \uB354 \uAC15\uD574\uC9C8
+      \uC218 \uC788\uC5B4. \uC218\uACE0\uD588\uC5B4."
