@@ -87,7 +87,7 @@ public class ControlPanel : EditorWindow
     private void InitEventAndField()
     {
         InitParser();
-        _questGenerator = new QuestGenerator(EChatModel.GPT4_TERBO, 0);
+        _questGenerator = new QuestGenerator(EChatModel.GPT4_TERBO, 0.1f);
         
         _applyBt.RegisterCallback<ClickEvent>(ApplyButtonClickEvent);
         _sendBt.RegisterCallback<ClickEvent>(SendButtonClickEvent);
@@ -123,9 +123,6 @@ public class ControlPanel : EditorWindow
         ResultWindow.UpdateResultMessage(message);
         
         GeneratorManager.ResultData = await _questGenerator.CreateJsonMessage(message);
-        
-        OtherDataUI.CurOtherData = string.Empty;
-        GeneratorManager.OtherData = string.Empty;
 
         var time = EndStopWatch();
         
