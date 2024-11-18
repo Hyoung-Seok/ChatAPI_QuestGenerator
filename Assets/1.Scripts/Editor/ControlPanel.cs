@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using OpenAI_API.Chat;
+using OpenAI_API.Models;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -87,7 +88,7 @@ public class ControlPanel : EditorWindow
     private void InitEventAndField()
     {
         InitParser();
-        _questGenerator = new QuestGenerator(EChatModel.GPT4_TERBO, 0.1f);
+        _questGenerator = new QuestGenerator(Model.GPT4_Turbo, 0.1f);
         
         _applyBt.RegisterCallback<ClickEvent>(ApplyButtonClickEvent);
         _sendBt.RegisterCallback<ClickEvent>(SendButtonClickEvent);

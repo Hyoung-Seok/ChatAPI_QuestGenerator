@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
+  m_Name: M02
+  m_EditorClassIdentifier: 
+  questID: M02
+  title: "\uC554\uD638\uD654\uB41C \uC77C\uC9C0\uC758 \uD574\uB3C5"
+  questType: 2
+  npcName: "\uCC30\uB9AC\uC911\uB839"
+  targetInfo:
+  - targetName: "\uB2C9"
+    targetCount: 1
+    CurTargetCount: 0
+  curQuestState: 0
+  scriptsData:
+    startScripts:
+    - "\uC774 \uC77C\uC9C0\uB97C \uB2C9\uC5D0\uAC8C \uAC00\uC838\uAC00 \uC918. \uADF8\uB294
+      \uC6B0\uB9AC \uCEA0\uD504\uC758 \uC0DD\uC874\uC790 \uC911 \uD558\uB098\uC57C."
+    - "\uAD70\uBD80\uB300\uC5D0\uC11C \uC554\uD638 \uD574\uB3C5\uAD00\uC73C\uB85C
+      \uC77C\uD558\uB358 \uC778\uC7AC\uC9C0."
+    - "\uC774 \uC77C\uC9C0\uAC00 \uBB34\uC5C7\uC744 \uC758\uBBF8\uD558\uB294\uC9C0,
+      \uADF8\uC5D0\uAC8C\uC11C \uB4E4\uC744 \uC218 \uC788\uC744 \uAC70\uC57C."
+    - "\uC2DC\uAC04\uC744 \uB0AD\uBE44\uD558\uC9C0 \uB9D0\uACE0 \uBC14\uB85C \uCC3E\uC544\uAC00."
+    - "\uC774 \uC77C\uC740 \uC6B0\uB9AC \uBAA8\uB450\uC758 \uC548\uB155\uACFC \uC9C1\uACB0\uB41C
+      \uBB38\uC81C\uC77C \uC218 \uC788\uC5B4."
+    acceptScript: "\uC88B\uC544, \uB2C9\uC5D0\uAC8C \uBE60\uB974\uAC8C \uC774 \uC77C\uC9C0\uB97C
+      \uC804\uB2EC\uD574 \uC918."
+    refuseScript: "\uB108\uBB34 \uC2DC\uAC04\uC744 \uC9C0\uCCB4\uD558\uBA74 \uC548
+      \uB3FC. \uB2E4\uC2DC \uC0DD\uAC01\uD574\uBCF4\uAE38 \uBC14\uB798."
+    processScript: "\uB2C9\uC744 \uCC3E\uC9C0 \uBABB\uD588\uB098? \uC6B0\uB9AC \uCEA0\uD504
+      \uB0B4\uC5D0\uC11C \uADF8\uB97C \uCC3E\uC544\uBD10."
+    clearScript:
+    - "\uC77C\uC9C0\uB97C \uB2C9\uC5D0\uAC8C \uC804\uB2EC\uD588\uAD70. \uC774\uC81C
+      \uADF8\uC758 \uBD84\uC11D \uACB0\uACFC\uB97C \uAE30\uB2E4\uB824\uBCF4\uC790."

@@ -17151,7 +17151,10 @@ MonoBehaviour:
   headRig: {fileID: 1002774040}
   headWeightTime: 1
   <DefaultText>k__BackingField: "\uC5B8\uC81C\uCBE4 \uC774 \uC545\uBABD\uC774 \uB05D\uB098\uC9C0..."
-  questContainer: []
+  questContainer:
+  - QuestData:
+    - {fileID: 11400000, guid: 2ac4f7c090af45b43abd63e232a13e10, type: 2}
+    - {fileID: 11400000, guid: 016fa8b99a363524ab4c864cc320f1d8, type: 2}
 --- !u!1001 &703341774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37548,9 +37551,14 @@ MonoBehaviour:
   <DefaultText>k__BackingField: "\uBB54\uAC00 \uC560\uC1A1\uC774?"
   questContainer:
   - QuestData:
-    - {fileID: 11400000, guid: c349a11a54112bb4280c7983f310c0f7, type: 2}
+    - {fileID: 11400000, guid: 1b6eea16667cc8c4ab0c7020f0a74469, type: 2}
     - {fileID: 11400000, guid: 41023308f7f292642a00567076277786, type: 2}
     - {fileID: 11400000, guid: f8dda4495282e484a98700a665e63a20, type: 2}
+  - QuestData:
+    - {fileID: 11400000, guid: 973a566505239304db7b51bff40ae949, type: 2}
+    - {fileID: 11400000, guid: ff7494bd080abb44da6edd7a239d6708, type: 2}
+    - {fileID: 11400000, guid: 037715188fb60df4a97a71d296177676, type: 2}
+    - {fileID: 11400000, guid: 1f3fbb6ac04db1e4ebe8a63ea2f44231, type: 2}
 --- !u!1001 &1402288787
 PrefabInstance:
   m_ObjectHideFlags: 0
