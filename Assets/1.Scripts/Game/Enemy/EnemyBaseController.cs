@@ -96,7 +96,8 @@ public class EnemyBaseController : UnitStateController
             return false;
         }
 
-        if (Physics.SphereCast(_position, 0.5f,_targetDir, out var hit, _detectDistance, ~LayerMask) == false)
+        if (Physics.SphereCast(_position + Vector3.up * 0.5f, 0.5f,_targetDir, out var hit, 
+                _detectDistance, ~LayerMask) == false)
         {
             return false;
         }
