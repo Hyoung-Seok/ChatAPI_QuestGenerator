@@ -17156,6 +17156,9 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 2ac4f7c090af45b43abd63e232a13e10, type: 2}
     - {fileID: 11400000, guid: 016fa8b99a363524ab4c864cc320f1d8, type: 2}
     - {fileID: 11400000, guid: af36cf441ffc00a4b8088e39435886da, type: 2}
+  - QuestData:
+    - {fileID: 11400000, guid: b73fe7801448c5b4e9c442d46bee06a9, type: 2}
+    - {fileID: 11400000, guid: cb708e0de99909c42873d7e8f66121c4, type: 2}
 --- !u!1001 &703341774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -45240,6 +45243,10 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 8a1aa3ca0bd41bb4d9e239c696ff4753, type: 2}
     - {fileID: 11400000, guid: 58f6f21a0e178bb4da6d183ec9ca4514, type: 2}
     - {fileID: 11400000, guid: e8167f83e58ad0944a1efdb8c8956ceb, type: 2}
+  - QuestData:
+    - {fileID: 11400000, guid: 1c132d56cfd5b6840891f177733cf970, type: 2}
+    - {fileID: 11400000, guid: 4fe67fa39e745f54faad6e1c4c08a763, type: 2}
+    - {fileID: 11400000, guid: 02d296f0a34898b49b167922f77830b4, type: 2}
 --- !u!1001 &1680638997
 PrefabInstance:
   m_ObjectHideFlags: 0
