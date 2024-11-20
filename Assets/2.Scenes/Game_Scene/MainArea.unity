@@ -17155,6 +17155,7 @@ MonoBehaviour:
   - QuestData:
     - {fileID: 11400000, guid: 2ac4f7c090af45b43abd63e232a13e10, type: 2}
     - {fileID: 11400000, guid: 016fa8b99a363524ab4c864cc320f1d8, type: 2}
+    - {fileID: 11400000, guid: af36cf441ffc00a4b8088e39435886da, type: 2}
 --- !u!1001 &703341774
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30161,6 +30162,57 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1137780890}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1143517750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1143517751}
+  - component: {fileID: 1143517752}
+  m_Layer: 0
+  m_Name: BossSpawner_1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1143517751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143517750}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 121.2, y: 0, z: -96.61}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1408330507}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1143517752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143517750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4446a8b447a9d904c82863e7f27bf3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyPrefab: {fileID: 2038966711523483619, guid: 23b8b4bf047a73046a7c8a93a9e7deee,
+    type: 3}
+  spawnRange: 7
+  firstCreateCount: 1
+  firstSpawnCount: 1
+  maxTryCount: 10
+  normalEnemyStatus: {fileID: 11400000, guid: 04bbd2ea4d0ffbc4485ed429a73f2649, type: 2}
 --- !u!1 &1145189995
 GameObject:
   m_ObjectHideFlags: 0
@@ -37559,6 +37611,11 @@ MonoBehaviour:
     - {fileID: 11400000, guid: ff7494bd080abb44da6edd7a239d6708, type: 2}
     - {fileID: 11400000, guid: 037715188fb60df4a97a71d296177676, type: 2}
     - {fileID: 11400000, guid: 1f3fbb6ac04db1e4ebe8a63ea2f44231, type: 2}
+  - QuestData:
+    - {fileID: 11400000, guid: 4fa1a81522e22d54d885d513131196fe, type: 2}
+    - {fileID: 11400000, guid: 95d48566ad55ba249a2f48520defe872, type: 2}
+    - {fileID: 11400000, guid: f5fc4823f51c87b4092c6088dafbf688, type: 2}
+    - {fileID: 11400000, guid: 9a552692d8de9b54786667958b1d639e, type: 2}
 --- !u!1001 &1402288787
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -37785,6 +37842,7 @@ Transform:
   - {fileID: 923059685}
   - {fileID: 83124899}
   - {fileID: 1856483108}
+  - {fileID: 1143517751}
   m_Father: {fileID: 447633492}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1408700686

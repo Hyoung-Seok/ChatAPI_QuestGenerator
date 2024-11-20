@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum EQuestState
@@ -81,16 +82,18 @@ public class QuestManager : MonoBehaviour
         {
             foreach (var target in quest.TargetInfos)
             {
-                var itemName = enemyName.Replace(" ", "");
+                if (quest.CurQuestState == EQuestState.Completion) continue;
+                if (target.CurTargetCount >= target.TargetCount) continue;
+                
+                var enemy = enemyName.Replace(" ", "");
                 var targetName = target.TargetName.Replace(" ", "");
                 
-                if (string.Equals(itemName, targetName) == false) continue;
-                if (quest.CurQuestState == EQuestState.Completion) continue;
+                if (string.Equals(enemy, targetName) == false) continue;
                 
                 target.CurTargetCount++;
                 UpdateProcessQuest?.Invoke(quest);
                 
-                if (target.CurTargetCount == target.TargetCount)
+                if (quest.TargetInfos.All(data => data.CurTargetCount >= data.TargetCount))
                 {
                     quest.CurQuestState = EQuestState.Completion;
                 }
@@ -117,7 +120,7 @@ public class QuestManager : MonoBehaviour
                 target.CurTargetCount = count;
                 UpdateItemProcessQuest?.Invoke(questData, count);
                 
-                if (target.CurTargetCount == target.TargetCount)
+                if (questData.TargetInfos.All(data => data.CurTargetCount >= data.TargetCount))
                 {
                     questData.CurQuestState = EQuestState.Completion;
                 }

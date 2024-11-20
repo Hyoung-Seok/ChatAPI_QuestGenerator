@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7e93f5cc547f634bb18dfdda7d90313, type: 3}
   m_Name: TM02
   m_EditorClassIdentifier: 
-  questID: TM01
+  questID: TM02
   title: "\uBC84\uB824\uC9C4 \uD0C4\uC57D \uC0C1\uC790 \uD68C\uC218 \uC791\uC804"
   questType: 1
   npcName: "\uCC30\uB9AC\uC911\uB839"
