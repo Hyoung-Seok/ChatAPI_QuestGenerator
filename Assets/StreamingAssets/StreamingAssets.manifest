@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 742588568
+CRC: 1861422832
 AssetBundleManifest:
   AssetBundleInfos:
     Info_0:
@@ -19,4 +19,19 @@ AssetBundleManifest:
       Dependencies: {}
     Info_5:
       Name: "item.\uAC00\uC871\uC0AC\uC9C4"
+      Dependencies: {}
+    Info_6:
+      Name: "item.cctv\uD30C\uC77C"
+      Dependencies: {}
+    Info_7:
+      Name: "item.\uACB0\uD63C\uBC18\uC9C0"
+      Dependencies: {}
+    Info_8:
+      Name: "item.\uACF0\uC778\uD615"
+      Dependencies: {}
+    Info_9:
+      Name: "item.\uD3ED\uD0C4"
+      Dependencies: {}
+    Info_10:
+      Name: "item.\uC554\uD638\uD574\uB3C5\uAE30"
       Dependencies: {}

@@ -1,15 +1,15 @@
 ManifestFileVersion: 0
-CRC: 1322588361
+CRC: 2911805256
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: ba090c783ba5b4fa3372a4a02b71867b
+    Hash: 1249706cb5ade95713e15bed1ab93129
   TypeTreeHash:
     serializedVersion: 2
     Hash: 7852a61e3e412440048f579b4df0106f
   IncrementalBuildHash:
     serializedVersion: 2
-    Hash: ba090c783ba5b4fa3372a4a02b71867b
+    Hash: 1249706cb5ade95713e15bed1ab93129
 HashAppended: 0
 ClassTypes:
 - Class: 1
@@ -38,6 +38,5 @@ ClassTypes:
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers: []
 Assets:
-- "Assets/3.Prefabs/Item/\uD56D\uC0DD\uC81C.prefab"
-- "Assets/3.Prefabs/Item/\uACB0\uD63C\uBC18\uC9C0.prefab"
+- "Assets/3.Prefabs/Item/\uC554\uD638\uD574\uB3C5\uAE30.prefab"
 Dependencies: []
